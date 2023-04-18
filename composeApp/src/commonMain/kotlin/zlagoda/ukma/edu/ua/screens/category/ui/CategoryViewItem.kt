@@ -43,7 +43,7 @@ internal fun CategoryViewItem(
                 Text("Back")
             }
             Button(
-                onClick = { onEvent(CategoryEvent.SaveCategory(state.id, state.name) )}
+                onClick = { onEvent(CategoryEvent.SaveCategory(state.name) )}
             ) {
                 Text("Save")
             }

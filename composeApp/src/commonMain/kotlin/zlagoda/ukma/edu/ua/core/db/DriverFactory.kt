@@ -1,7 +1,8 @@
+package zlagoda.ukma.edu.ua.core.db
+
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import zlagoda.ukma.edu.ua.db.MyDatabase
-import java.io.File
 
 class DriverFactory {
     companion object {

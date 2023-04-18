@@ -1,7 +1,10 @@
 package zlagoda.ukma.edu.ua.screens.category
 
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import com.adeo.kviewmodel.compose.observeAsState
 import com.adeo.kviewmodel.odyssey.StoredViewModel
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
@@ -26,6 +29,7 @@ internal fun CategoriesScreen() {
                 state = state,
                 onEvent = { viewModel.obtainEvent(it) }
             )
+            is CategoryState.Loading -> { Text("Loading") }
         }
 
 //        when (viewAction) {

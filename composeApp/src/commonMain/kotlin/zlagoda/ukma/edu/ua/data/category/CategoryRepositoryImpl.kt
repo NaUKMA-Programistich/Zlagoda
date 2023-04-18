@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.MyDatabase
 
-class CategoryReposiryImpl(
+class CategoryRepositoryImpl (
     db: MyDatabase
 ): CategoryRepository {
 
@@ -30,9 +30,9 @@ class CategoryReposiryImpl(
         }
     }
 
-    override suspend fun insertCategory(id: Long?, name: String) {
+    override suspend fun insertCategory(category: Category) {
         withContext(Dispatchers.IO) {
-            queries.insertCategory(id, name)
+            queries.insertCategory(category.id, category.name)
         }
     }
 }

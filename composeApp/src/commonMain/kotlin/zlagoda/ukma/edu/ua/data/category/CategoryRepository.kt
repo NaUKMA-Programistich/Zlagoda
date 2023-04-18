@@ -11,5 +11,5 @@ interface CategoryRepository {
 
     suspend fun deleteCategoryById(id: Long)
 
-    suspend fun insertCategory(id: Long? = null, name: String)
+    suspend fun insertCategory(category: Category)
 }

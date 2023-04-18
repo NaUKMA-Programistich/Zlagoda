@@ -7,7 +7,7 @@ sealed class CategoryEvent {
     data class SelectCategoryItem(val category: Category) : CategoryEvent()
     object AddNewCategory : CategoryEvent()
     data class DeleteCategory(val category: Category) : CategoryEvent()
-    data class SaveCategory(val id: Long?, val name: String) : CategoryEvent()
+    data class SaveCategory(val name: String) : CategoryEvent()
 
     data class SetCategoryName(val name: String) : CategoryEvent()
 
