@@ -1,5 +1,9 @@
 package zlagoda.ukma.edu.ua.navigation
 
+import DriverFactory
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import compose.icons.FontAwesomeIcons
@@ -16,6 +20,9 @@ import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import androidx.compose.ui.graphics.Color
 import compose.icons.fontawesomeicons.Regular
+import zlagoda.ukma.edu.ua.db.CategoryQueries
+import zlagoda.ukma.edu.ua.db.MyDatabase
+import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
@@ -33,6 +40,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 Text("Products")
             }
         }
+        tab(content = CategoriesTab(), colors = TabColors()) {
+            screen(NavigationRoute.Categories.name) {
+                CategoriesScreen()
+            }
+        }
     }
 }
 
@@ -44,6 +56,11 @@ private fun OrdersTab(): TabContent {
 @Composable
 private fun ProductsTab(): TabContent {
     return TabDefaults.content("Products", vector = null)
+}
+
+@Composable
+private fun CategoriesTab(): TabContent {
+    return TabDefaults.content("Categories", vector = null)
 }
 
 @Composable
@@ -61,5 +78,6 @@ internal enum class NavigationRoute {
     Login,
     Main,
     Orders,
-    Products
+    Products,
+    Categories
 }

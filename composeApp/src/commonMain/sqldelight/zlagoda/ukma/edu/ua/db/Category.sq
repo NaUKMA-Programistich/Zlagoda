@@ -1,0 +1,29 @@
+CREATE TABLE category (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+INSERT INTO category (id, name)
+VALUES (1, 'Meat');
+INSERT INTO category (id, name)
+VALUES (2, 'Bakery');
+INSERT INTO category (id, name)
+VALUES (3, 'Household essentials');
+
+getCategoryById:
+SELECT *
+FROM category
+WHERE id = :id;
+
+getAllCategories:
+SELECT *
+FROM category;
+
+insertCategory:
+INSERT OR REPLACE
+INTO category
+VALUES(?, ?);
+
+deleteCategoryById:
+DELETE FROM category
+WHERE id = :id;
