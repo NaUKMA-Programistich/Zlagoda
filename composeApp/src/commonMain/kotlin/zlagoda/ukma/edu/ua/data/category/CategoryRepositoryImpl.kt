@@ -32,7 +32,10 @@ class CategoryRepositoryImpl (
 
     override suspend fun insertCategory(category: Category) {
         withContext(Dispatchers.IO) {
-            queries.insertCategory(category.id, category.name)
+            queries.insertCategory(
+                id = category.id.takeIf { it != -1L } ,
+                category.name
+            )
         }
     }
 }

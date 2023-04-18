@@ -17,12 +17,10 @@ class CategoryViewModel(
     override fun obtainEvent(viewEvent: CategoryEvent) {
         when (viewEvent) {
             is CategoryEvent.SetCategoryList -> processChangeCategoryList(viewEvent.categoryList)
-            is CategoryEvent.SelectCategoryItem -> processSelectCategoryItem(viewEvent.category)
-            is CategoryEvent.SetCategoryName -> processSetCategoryName(viewEvent.name)
-            is CategoryEvent.SaveCategory -> processSaveCategory(viewEvent.name)
-            is CategoryEvent.BackToCategoryList -> getCategories()
-            is CategoryEvent.AddNewCategory -> processAddNewCategory()
+            is CategoryEvent.SaveCategory -> processSaveCategory(viewEvent.category)
             is CategoryEvent.DeleteCategory -> processDeleteCategory(viewEvent.category)
+            is CategoryEvent.EditCategory -> processEditCategory(viewEvent.category)
+            is CategoryEvent.CreateNewCategory -> processNewCategory()
         }
     }
 
@@ -39,53 +37,27 @@ class CategoryViewModel(
         }
     }
 
-    private fun processSelectCategoryItem(category: Category) {
+    private fun processSaveCategory(category: Category) {
         withViewModelScope {
-            val currentState = viewStates().value
-            if (currentState !is CategoryState.CategoryList) return@withViewModelScope
-
-            setViewState(CategoryState.CategoryItem(
-                id = category.id,
-                name = category.name
-            ))
-        }
-    }
-
-    private fun processSetCategoryName(name: String) {
-        withViewModelScope {
-            val currentState = viewStates().value
-            if (currentState !is CategoryState.CategoryItem) return@withViewModelScope
-
-            setViewState(CategoryState.CategoryItem(
-                id = currentState.id,
-                name = name
-            ))
-        }
-    }
-
-    private fun processSaveCategory(name: String) {
-        withViewModelScope {
-            repository.insertCategory(
-                Category(id = 0, name = name)
-            )
-        }
-    }
-
-    private fun processAddNewCategory() {
-        withViewModelScope {
-            val currentState = viewStates().value
-            if (currentState !is CategoryState.CategoryList) return@withViewModelScope
-
-            setViewState(CategoryState.CategoryItem(
-                id = null,
-                name = ""
-            ))
+            repository.insertCategory(category)
         }
     }
 
     private fun processDeleteCategory(category: Category) {
         withViewModelScope {
             repository.deleteCategoryById(category.id)
+        }
+    }
+
+    private fun processEditCategory(category: Category) {
+        withViewModelScope {
+            setViewAction(CategoryAction.OpenEditCategoryDialog(category))
+        }
+    }
+
+    private fun processNewCategory() {
+        withViewModelScope {
+            setViewAction(CategoryAction.OpenNewCategoryDialog)
         }
     }
 }
