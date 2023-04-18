@@ -33,10 +33,10 @@ internal fun CategoriesScreen() {
             }
         }
 
-        when (viewAction) {
+        when (val action = viewAction) {
             is CategoryAction.OpenEditCategoryDialog -> modalController.present(alertConfiguration) { key ->
                 CategoryItemDialog(
-                    category = (viewAction as CategoryAction.OpenEditCategoryDialog).category,
+                    category = action.category,
                     onCloseClick = { modalController.popBackStack(key) },
                     onEvent = { viewModel.obtainEvent(it) }
                 )
