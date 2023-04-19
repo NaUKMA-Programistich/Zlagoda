@@ -40,6 +40,9 @@ kotlin {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
                 implementation(libs.sqlDelight.driver.sqlite)
+
+                // Coroutines for sql delight
+                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0-alpha05")
             }
         }
 

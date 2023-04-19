@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua
+package zlagoda.ukma.edu.ua.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

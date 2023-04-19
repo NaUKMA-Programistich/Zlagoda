@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua
+package zlagoda.ukma.edu.ua.core.theme
 
 import androidx.compose.ui.graphics.Color
 

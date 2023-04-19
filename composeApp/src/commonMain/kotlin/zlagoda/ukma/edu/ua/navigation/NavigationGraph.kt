@@ -2,10 +2,7 @@ package zlagoda.ukma.edu.ua.navigation
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
-import compose.icons.fontawesomeicons.brands.WordpressSimple
-import compose.icons.fontawesomeicons.regular.IdCard
+import androidx.compose.ui.graphics.Color
 import ru.alexgladkov.odyssey.compose.extensions.bottomNavigation
 import ru.alexgladkov.odyssey.compose.extensions.screen
 import ru.alexgladkov.odyssey.compose.extensions.tab
@@ -13,9 +10,8 @@ import ru.alexgladkov.odyssey.compose.navigation.RootComposeBuilder
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabColors
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabContent
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
+import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
-import androidx.compose.ui.graphics.Color
-import compose.icons.fontawesomeicons.Regular
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
@@ -33,6 +29,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 Text("Products")
             }
         }
+        tab(content = CategoriesTab(), colors = TabColors()) {
+            screen(NavigationRoute.Categories.name) {
+                CategoriesScreen()
+            }
+        }
     }
 }
 
@@ -44,6 +45,11 @@ private fun OrdersTab(): TabContent {
 @Composable
 private fun ProductsTab(): TabContent {
     return TabDefaults.content("Products", vector = null)
+}
+
+@Composable
+private fun CategoriesTab(): TabContent {
+    return TabDefaults.content("Categories", vector = null)
 }
 
 @Composable
@@ -61,5 +67,6 @@ internal enum class NavigationRoute {
     Login,
     Main,
     Orders,
-    Products
+    Products,
+    Categories
 }
