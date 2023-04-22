@@ -1,5 +1,6 @@
 package zlagoda.ukma.edu.ua.navigation
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -7,18 +8,26 @@ import ru.alexgladkov.odyssey.compose.extensions.bottomNavigation
 import ru.alexgladkov.odyssey.compose.extensions.screen
 import ru.alexgladkov.odyssey.compose.extensions.tab
 import ru.alexgladkov.odyssey.compose.navigation.RootComposeBuilder
+import ru.alexgladkov.odyssey.compose.navigation.bottom_bar_navigation.BottomBarColors
+import ru.alexgladkov.odyssey.compose.navigation.bottom_bar_navigation.BottomBarDefaults
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabColors
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabContent
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
+import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
     screen(NavigationRoute.Login.name) {
         LoginScreen()
     }
-    bottomNavigation(NavigationRoute.Main.name) {
+    bottomNavigation(name = NavigationRoute.Main.name,colors = BottomBarDefaults.bottomColors(MaterialTheme.colors.onSecondary)) {
+        tab(content = ProfilesTab(), colors = TabColors()) {
+            screen(NavigationRoute.Profiles.name) {
+                EmployeeScreen()
+            }
+        }
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
                 Text("Orders")
@@ -53,6 +62,12 @@ private fun CategoriesTab(): TabContent {
 }
 
 @Composable
+private fun ProfilesTab(): TabContent {
+    return TabDefaults.content("Profiles", vector = null)
+}
+
+
+@Composable
 private fun TabColors(): TabColors {
     return TabDefaults.tabColors(
         selectedTextColor = Color.Black,
@@ -68,5 +83,6 @@ internal enum class NavigationRoute {
     Main,
     Orders,
     Products,
-    Categories
+    Categories,
+    Profiles
 }

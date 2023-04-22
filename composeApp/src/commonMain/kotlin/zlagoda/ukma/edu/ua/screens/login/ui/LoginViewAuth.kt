@@ -1,5 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.login.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +15,7 @@ import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginState
 @Composable
 internal fun LoginViewAuth(state: LoginState.Auth, onEvent: (LoginEvent) -> Unit) {
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
         Text(
             text = "Auth",
