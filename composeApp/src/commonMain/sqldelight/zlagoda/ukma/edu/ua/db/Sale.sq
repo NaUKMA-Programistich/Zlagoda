@@ -1,0 +1,28 @@
+CREATE TABLE sale (
+  upc TEXT NOT NULL ,
+  chequeNumber TEXT NOT NULL,
+  productNumber INTEGER NOT NULL,
+  sellingPrice REAL NOT NULL,
+  PRIMARY KEY (upc, chequeNumber)
+);
+
+INSERT INTO sale(upc, chequeNumber, productNumber, sellingPrice)
+VALUES ("29af18c3-e137-11ed-b5ea-0242ac120002", "28af18c5-e136-11ed-b5ea-0242ac120232", 2, 50.85);
+
+getSaleByUpcAndChequeNumber:
+SELECT *
+FROM sale
+WHERE upc = :cardNumber AND chequeNumber = :chequeNumber;
+
+getAllSales:
+SELECT *
+FROM sale;
+
+insertSale:
+INSERT OR REPLACE
+INTO sale
+VALUES(?, ?, ?, ?);
+
+deleteSaleByUpcAndChequeNumber:
+DELETE FROM sale
+WHERE upc = :cardNumber AND chequeNumber = :chequeNumber;

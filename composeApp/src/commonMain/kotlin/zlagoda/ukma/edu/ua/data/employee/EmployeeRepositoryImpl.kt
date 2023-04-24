@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.db.MyDatabase
-import java.util.*
 
 class EmployeeRepositoryImpl (
     db: MyDatabase
@@ -34,20 +33,22 @@ class EmployeeRepositoryImpl (
 
     override suspend fun insertEmployee(employee: Employee) {
         withContext(Dispatchers.IO) {
-            queries.insertEmployee(
-                id_of_employee = employee.id_of_employee,
-                empl_surname = employee.empl_surname,
-                empl_name = employee.empl_name,
-                empl_patronymic = employee.empl_patronymic,
-                empl_role = employee.empl_role,
-                salary = employee.salary,
-                date_of_birth = employee.date_of_birth,
-                date_of_start = employee.date_of_start,
-                phone_number = employee.phone_number,
-                city = employee.city,
-                street = employee.street,
-                zip_code = employee.zip_code
-            )
+            employee.id_of_employee.takeIf { it != "" }?.let { it ->
+                queries.insertEmployee(
+                    id_of_employee = it,
+                    empl_surname = employee.empl_surname,
+                    empl_name = employee.empl_name,
+                    empl_patronymic = employee.empl_patronymic.takeIf { p -> p?.isNotBlank()?: true},
+                    empl_role = employee.empl_role,
+                    salary = employee.salary,
+                    date_of_birth = employee.date_of_birth,
+                    date_of_start = employee.date_of_start,
+                    phone_number = employee.phone_number,
+                    city = employee.city,
+                    street = employee.street,
+                    zip_code = employee.zip_code
+                )
+            }
         }
     }
 }

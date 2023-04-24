@@ -1,0 +1,31 @@
+CREATE TABLE product (
+  idProduct INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  categoryNumber INTEGER NOT NULL,
+  productName TEXT NOT NULL,
+  characteristics TEXT NOT NULL
+);
+
+INSERT INTO product (idProduct, categoryNumber, productName, characteristics)
+VALUES (1, 1, "Product1", "Desc");
+INSERT INTO product (idProduct, categoryNumber, productName, characteristics)
+VALUES (2, 2, "Product2", "Desc");
+INSERT INTO product (idProduct, categoryNumber, productName, characteristics)
+VALUES (3, 3, "Product3", "Desc");
+
+getProductByIdProduct:
+SELECT *
+FROM product
+WHERE idProduct = :idProduct;
+
+getAllProducts:
+SELECT *
+FROM product;
+
+insertProduct:
+INSERT OR REPLACE
+INTO product
+VALUES(?, ?, ?, ?);
+
+deleteProductByIdProduct:
+DELETE FROM product
+WHERE idProduct = :idProduct;

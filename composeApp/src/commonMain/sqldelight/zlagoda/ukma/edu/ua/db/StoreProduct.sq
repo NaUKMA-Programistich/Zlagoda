@@ -1,0 +1,34 @@
+CREATE TABLE storeProduct (
+  upc TEXT NOT NULL PRIMARY KEY,
+  upcProm TEXT,
+  idProduct INTEGER NOT NULL,
+  sellingPrice REAL NOT NULL,
+  productsNumber INTEGER NOT NULL,
+  promotionalProduct INTEGER NOT NULL
+);
+/**
+ * Use Integer for promotionalProduct cause there no BOOLEAN in SQLite
+ */
+
+INSERT INTO storeProduct(upc, upcProm, idProduct, sellingPrice, productsNumber, promotionalProduct)
+VALUES ("29af18c3-e137-11ed-b5ea-0242ac120002", "39af18c3-e137-11ed-b5ea-0245ac120002", 1, 20.50, 1, 0);
+INSERT INTO storeProduct(upc, upcProm, idProduct, sellingPrice, productsNumber, promotionalProduct)
+VALUES ("39af18c3-e137-11ed-b5ea-0245ac120002", NULL, 1, 20.50, 1, 1);
+
+getStoreProductByUPC:
+SELECT *
+FROM storeProduct
+WHERE upc = :upc;
+
+getAllStoreProducts:
+SELECT *
+FROM storeProduct;
+
+insertStoreProduct:
+INSERT OR REPLACE
+INTO storeProduct
+VALUES(?, ?, ?, ?, ?, ?);
+
+deleteStoreProductByUPC:
+DELETE FROM storeProduct
+WHERE upc = :upc;

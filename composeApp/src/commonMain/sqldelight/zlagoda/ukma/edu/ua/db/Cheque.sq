@@ -1,0 +1,29 @@
+CREATE TABLE cheque (
+  chequeNumber TEXT NOT NULL PRIMARY KEY,
+  idEmployee TEXT NOT NULL,
+  cardNumber TEXT,
+  printDate TEXT NOT NULL,
+  sumTotal REAL NOT NULL,
+  vat REAL NOT NULL
+);
+
+INSERT INTO cheque(chequeNumber, idEmployee, cardNumber, printDate, sumTotal, vat)
+VALUES ("28af18c5-e136-11ed-b5ea-0242ac120232", "28af18c2-e136-11ed-b5ea-0242ac120002", NULL, "03/01/2022", 200, 5.5);
+
+getChequeByChequeNumber:
+SELECT *
+FROM cheque
+WHERE chequeNumber = :chequeNumber;
+
+getAllCheques:
+SELECT *
+FROM cheque;
+
+insertCheque:
+INSERT OR REPLACE
+INTO cheque
+VALUES(?, ?, ?, ?, ?, ?);
+
+deleteChequeByChequeNumber:
+DELETE FROM cheque
+WHERE chequeNumber = :chequeNumber;
