@@ -7,7 +7,7 @@ import zlagoda.ukma.edu.ua.App
 fun main() = application {
     Window(
         title = "Zlagoda",
-        state = rememberWindowState(width = 800.dp, height = 600.dp),
+        state = rememberWindowState(width = 900.dp, height = 800.dp),
         onCloseRequest = ::exitApplication,
     ) { App() }
 }

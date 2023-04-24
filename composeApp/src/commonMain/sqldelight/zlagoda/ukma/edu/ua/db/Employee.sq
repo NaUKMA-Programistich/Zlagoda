@@ -1,0 +1,44 @@
+CREATE TABLE employee (
+  id_of_employee TEXT NOT NULL PRIMARY KEY,
+  empl_surname TEXT NOT NULL,
+  empl_name TEXT NOT NULL,
+  empl_patronymic TEXT,
+  empl_role TEXT NOT NULL,
+  salary REAL NOT NULL,
+  date_of_birth TEXT NOT NULL,
+  date_of_start TEXT NOT NULL,
+  phone_number TEXT NOT NULL,
+  city TEXT NOT NULL,
+  street TEXT NOT NULL,
+  zip_code TEXT NOT NULL
+);
+
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
+VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers','Alop','Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
+VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
+VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
+VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+
+
+getEmployeeById:
+SELECT *
+FROM employee
+WHERE id_of_employee = :id_of_Employee;
+
+getAllEmployees:
+SELECT *
+FROM employee;
+
+insertEmployee:
+INSERT OR REPLACE
+INTO employee
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+
+
+deleteEmployeeById:
+DELETE FROM employee
+WHERE id_of_employee = :id_of_Employee;

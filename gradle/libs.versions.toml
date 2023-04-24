@@ -14,6 +14,7 @@ sqlDelight = "2.0.0-alpha05"
 viewmodel = "0.14"
 navigation = "1.4.0-alpha05"
 
+
 [libraries]
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -28,6 +29,7 @@ sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
+
 
 viewmodel = { module = "com.adeo:kviewmodel", version.ref = "viewmodel"}
 viewmodel-compose = { module = "com.adeo:kviewmodel-compose", version.ref = "viewmodel"}

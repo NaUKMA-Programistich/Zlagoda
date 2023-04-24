@@ -38,14 +38,14 @@ internal fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
+    /*val colors = if (!useDarkTheme) {
         LightColors
     } else {
         DarkColors
-    }
+    }*/
 
     MaterialTheme(
-        colors = colors,
+        colors = DarkColors,
         content = {
             Surface(content = content)
         }
