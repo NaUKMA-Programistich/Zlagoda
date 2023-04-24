@@ -5,16 +5,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.screens.category.viewmodel.CategoryEvent
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
+import zlagoda.ukma.edu.ua.utils.isBDayValid
+import zlagoda.ukma.edu.ua.utils.isPhoneNumberValid
+import zlagoda.ukma.edu.ua.utils.isStartDateValid
+import zlagoda.ukma.edu.ua.utils.isZipCodeValid
 import java.util.UUID
 
 @Composable
@@ -57,7 +57,7 @@ fun EmployeeItem (
                 Icon(imageVector = Icons.Default.Close, contentDescription = "Close dialog")
             }
         }
-        LazyColumn(modifier = Modifier.weight(1f)) {
+        LazyColumn(modifier = Modifier.weight(1f).padding(15.dp)) {
             item {
                 OutlinedTextField(
                     value = empl_nameState.value,
@@ -90,9 +90,21 @@ fun EmployeeItem (
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
+                    value = date_of_birthState.value,
+                    onValueChange = { date_of_birthState.value = it },
+                    label = { Text("Date of birth (yyyy-mm-dd)") },
+                    modifier = Modifier.fillMaxWidth().padding(5.dp)
+                )
+                OutlinedTextField(
+                    value = date_of_startState.value,
+                    onValueChange = { date_of_startState.value = it },
+                    label = { Text("Date of start (yyyy-mm-dd)") },
+                    modifier = Modifier.fillMaxWidth().padding(5.dp)
+                )
+                OutlinedTextField(
                     value = phone_numberState.value,
                     onValueChange = { phone_numberState.value = it },
-                    label = { Text("Phone") },
+                    label = { Text("Phone (length with + <=13)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
@@ -115,27 +127,70 @@ fun EmployeeItem (
                 )
             }
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+
+
+        Column(modifier = Modifier.fillMaxWidth().weight(0.3f), verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.CenterHorizontally) {
+
+            if (!date_of_birthState.value.isBDayValid())
+                Text("Wrong BDate format")
+            else if (!date_of_startState.value.isStartDateValid())
+                Text("Wrong Date of start format")
+            else if (!phone_numberState.value.isPhoneNumberValid())
+                Text("Wrong phone format")
+            else if (salaryState.value < 0)
+                Text("Salary cant be less then 0")
+            else if (!zip_codeState.value.isZipCodeValid())
+                Text("Zip code must consist of numbers")
+            else
+                Text("")
+
+
             Button(
+                modifier = Modifier.padding(15.dp),
                 onClick = {
-                    onEvent(EmployeeEvent.SaveEmployee(Employee(
-                        id_of_employee = if (employee.id_of_employee != "") employee.id_of_employee else UUID.randomUUID().toString(),
-                        empl_surname = empl_nameState.value,
-                        empl_name = empl_surnameState.value,
-                        empl_patronymic = empl_patronymicState.value,
-                        empl_role = empl_roleState.value,
-                        salary = salaryState.value,
-                        date_of_birth = "",
-                        date_of_start = "",
-                        phone_number = phone_numberState.value,
-                        city = cityState.value,
-                        street = streetState.value,
-                        zip_code = zip_codeState.value,)))
-                    onCloseClick()
+                    if (isValidEmployeeForm(
+                            date_of_birthState,
+                            date_of_startState,
+                            phone_numberState,
+                            salaryState,
+                            zip_codeState
+                        )
+                    ) {
+                        onEvent(
+                            EmployeeEvent.SaveEmployee(
+                                Employee(
+                                    id_of_employee = employee.id_of_employee.ifBlank { UUID.randomUUID().toString() },
+                                    empl_surname = empl_nameState.value,
+                                    empl_name = empl_surnameState.value,
+                                    empl_patronymic = empl_patronymicState.value,
+                                    empl_role = empl_roleState.value,
+                                    salary = salaryState.value,
+                                    date_of_birth = "",
+                                    date_of_start = "",
+                                    phone_number = phone_numberState.value,
+                                    city = cityState.value,
+                                    street = streetState.value,
+                                    zip_code = zip_codeState.value,
+                                )
+                            )
+                        )
+                        onCloseClick()
+                    }
                 },
             ) {
                 Text("Save")
             }
         }
     }
+}
+
+fun isValidEmployeeForm(
+    date_of_birthState: MutableState<String>,
+    date_of_startState: MutableState<String>,
+    phone_numberState: MutableState<String>,
+    salaryState: MutableState<Double>,
+    zip_codeState: MutableState<String>
+) : Boolean {
+    return (date_of_birthState.value.isBDayValid() && date_of_startState.value.isStartDateValid()
+            && phone_numberState.value.isPhoneNumberValid() && salaryState.value > 0 && zip_codeState.value.isZipCodeValid())
 }

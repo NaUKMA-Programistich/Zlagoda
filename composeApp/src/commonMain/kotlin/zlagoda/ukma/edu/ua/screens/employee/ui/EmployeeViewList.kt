@@ -22,6 +22,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.useResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +37,10 @@ import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeState
+import java.io.ByteArrayOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.imageio.ImageIO
 
 
 @Composable
@@ -73,7 +82,6 @@ fun EmployeeViewList(
 }
 
 
-
 @Composable
 fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
     Column (modifier = Modifier.size(370.dp,520.dp).padding(12.dp).clip(RoundedCornerShape(18.dp)).background(MaterialTheme.colors.onSecondary),
@@ -81,7 +89,16 @@ fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
             horizontalAlignment = Alignment.CenterHorizontally
     ){
 
-        Spacer(modifier = Modifier.weight(2f))
+        val icon = painterResource("no_icn.jpg")
+
+        Box(modifier = Modifier.weight(2f),
+        contentAlignment = Alignment.Center){
+            Image(
+                painter = icon,
+                contentDescription = "Icon",
+                modifier = Modifier.size(120.dp).clip(RoundedCornerShape(80.dp))
+            )
+        }
 
         Column(modifier = Modifier.weight(3f).width(320.dp).padding(12.dp),
             verticalArrangement = Arrangement.SpaceBetween,
