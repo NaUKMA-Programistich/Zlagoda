@@ -16,6 +16,7 @@ import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
+import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
@@ -35,7 +36,7 @@ internal fun RootComposeBuilder.NavigationGraph() {
         }
         tab(content = ProductsTab(), colors = TabColors()) {
             screen(NavigationRoute.Products.name) {
-                Text("Products")
+                ProductsScreen()
             }
         }
         tab(content = CategoriesTab(), colors = TabColors()) {
