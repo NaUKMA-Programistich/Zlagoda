@@ -2,6 +2,8 @@ package zlagoda.ukma.edu.ua.di
 
 import zlagoda.ukma.edu.ua.core.db.DriverFactory
 import zlagoda.ukma.edu.ua.data.category.CategoryRepositoryImpl
+import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepository
+import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepositoryImpl
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepositoryImpl
 import zlagoda.ukma.edu.ua.data.product.ProductRepositoryImpl
 
@@ -12,4 +14,5 @@ object Injection {
     val categoryRepository = CategoryRepositoryImpl(database)
     val employeeRepository = EmployeeRepositoryImpl(database)
     val productRepository = ProductRepositoryImpl(database)
+    val customerCardRepository = CustomerCardRepositoryImpl(database)
 }
