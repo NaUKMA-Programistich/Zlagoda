@@ -14,6 +14,7 @@ import ru.alexgladkov.odyssey.compose.navigation.tabs.TabColors
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabContent
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
+import zlagoda.ukma.edu.ua.screens.customer_cards.CustomerCardsScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
 import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
@@ -44,6 +45,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 CategoriesScreen()
             }
         }
+        tab(content = CustomerCardsTab(), colors = TabColors()) {
+            screen(NavigationRoute.Categories.name) {
+                CustomerCardsScreen()
+            }
+        }
     }
 }
 
@@ -67,6 +73,11 @@ private fun ProfilesTab(): TabContent {
     return TabDefaults.content("Profiles", vector = null)
 }
 
+@Composable
+private fun CustomerCardsTab(): TabContent {
+    return TabDefaults.content("Customer Cards", vector = null)
+}
+
 
 @Composable
 private fun TabColors(): TabColors {
@@ -85,5 +96,6 @@ internal enum class NavigationRoute {
     Orders,
     Products,
     Categories,
-    Profiles
+    Profiles,
+    CustomerCars
 }
