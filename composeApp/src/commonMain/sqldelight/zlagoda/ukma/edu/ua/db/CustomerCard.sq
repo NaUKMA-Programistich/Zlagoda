@@ -1,0 +1,34 @@
+CREATE TABLE customerCard (
+  cardNumber TEXT NOT NULL PRIMARY KEY,
+  custSurname TEXT NOT NULL,
+  custName TEXT NOT NULL,
+  custPatronymic TEXT,
+  phoneNumber TEXT NOT NULL,
+  city TEXT,
+  street TEXT,
+  zipCode TEXT,
+  percent INTEGER NOT NULL
+);
+
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c5-e136-11ed-b5ea-0242ac120002", "Patrick", "Bateman", NULL, "1234567", "New York", "A Stree", "12456", 20);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c6-e136-11ed-b5ea-0242ac120002", "John", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+
+getCustomerCardByCardNumber:
+SELECT *
+FROM customerCard
+WHERE cardNumber = :cardNumber;
+
+getAllCustomerCards:
+SELECT *
+FROM customerCard;
+
+insertCustomerCard:
+INSERT OR REPLACE
+INTO customerCard
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteCustomerCardByCardNumber:
+DELETE FROM customerCard
+WHERE cardNumber = :cardNumber;
