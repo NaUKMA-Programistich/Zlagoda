@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua.screens.store_product.ui
+package zlagoda.ukma.edu.ua.screens.store_products.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.DropDownItem
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.db.StoreProduct
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsEvent
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
 
 @Composable
 internal fun StoreProductItemDialog(

@@ -8,9 +8,9 @@ import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepository
 import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.di.Injection
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsAction
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsEvent
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsState
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsAction
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
 
 class StoreProductsViewModel(
     private val storeProductsRepository: StoreProductRepository = Injection.storeProductRepository,

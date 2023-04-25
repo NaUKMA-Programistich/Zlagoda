@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua.screens.store_product.ui
+package zlagoda.ukma.edu.ua.screens.store_products.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -25,8 +25,8 @@ import zlagoda.ukma.edu.ua.core.theme.add_button_color
 import zlagoda.ukma.edu.ua.core.theme.delete_button_color
 import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.db.StoreProduct
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsEvent
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsState
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
 
 
 @Composable

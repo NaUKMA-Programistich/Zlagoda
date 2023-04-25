@@ -8,11 +8,12 @@ import com.adeo.kviewmodel.odyssey.StoredViewModel
 import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
-import zlagoda.ukma.edu.ua.screens.store_product.ui.StoreProductItemDialog
-import zlagoda.ukma.edu.ua.screens.store_product.ui.StoreProductViewList
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsAction
-import zlagoda.ukma.edu.ua.screens.store_product.viewmodel.StoreProductsState
+import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductItemDialog
+import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductViewList
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsAction
+import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
 import zlagoda.ukma.edu.ua.screens.store_storeProduct.viewmodel.StoreProductsViewModel
+import zlagoda.ukma.edu.ua.screens.store_storeProducts_search.StoreProductSearchScreen
 
 @Composable
 internal fun StoreProductsScreen() {
@@ -50,7 +51,7 @@ internal fun StoreProductsScreen() {
                 )
             }
             is StoreProductsAction.OpenSearchDialog -> modalController.present(alertConfiguration) { key ->
-                //StoreProductSearchScreen(onCloseClick = { modalController.popBackStack(key) })
+                StoreProductSearchScreen(onCloseClick = { modalController.popBackStack(key) })
             }
             null -> {}
         }

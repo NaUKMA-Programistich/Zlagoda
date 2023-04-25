@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua.screens.store_product.viewmodel
+package zlagoda.ukma.edu.ua.screens.store_products.viewmodel
 
 import zlagoda.ukma.edu.ua.db.StoreProduct
 
