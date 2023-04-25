@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 import zlagoda.ukma.edu.ua.screens.options.OptionsScreen
 import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
+import zlagoda.ukma.edu.ua.screens.store_storeProduct.StoreProductsScreen
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
@@ -58,13 +60,13 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 StoreProductsScreen()
             }
         }
-        // if (LoginViewModel.user.empl_role == "Manager") {
+        if (LoginViewModel.user.empl_role == "Manager") {
             tab(content = CategoriesTab(), colors = TabColors()) {
                 screen(NavigationRoute.Categories.name) {
                     CategoriesScreen()
                 }
             }
-        // }
+        }
         tab(content = CustomerCardsTab(), colors = TabColors()) {
             screen(NavigationRoute.Categories.name) {
                 CustomerCardsScreen()
@@ -90,7 +92,7 @@ private fun ProductsTab(): TabContent {
 
 @Composable
 private fun StoreProductsTab(): TabContent {
-    return TabDefaults.content("Store Products", vector = null)
+    return TabDefaults.content("Store Products", vector = Icons.Default.Place)
 }
 
 
