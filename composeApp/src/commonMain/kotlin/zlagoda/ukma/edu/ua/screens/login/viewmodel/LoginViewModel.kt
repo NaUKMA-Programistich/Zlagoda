@@ -37,7 +37,10 @@ class LoginViewModel: ViewModel<LoginState, LoginAction, LoginEvent>(initialStat
     }
     
     companion object{
-        val user : Employee = Employee("28af1c8c-e136-11ed-b5ea-0242aa120002", "Admin","Admin",null,"Manager",10000.00,"1998-01-03","2022-12-07","+1234567890","London","Baker","123");
+        val user : Employee = Employee("28af1c8c-e136-11ed-b5ea-0242aa120002", "Admin","Admin",null,"Seller",10000.00,"1998-01-03","2022-12-07","+1234567890","London","Baker","123");
+
+        fun isSeller(): Boolean = user.empl_role == "Seller"
+        fun isManager(): Boolean = user.empl_role == "Manager"
     }
 
 }

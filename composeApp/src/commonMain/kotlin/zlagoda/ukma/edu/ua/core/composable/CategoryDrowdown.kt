@@ -31,7 +31,7 @@ internal fun CategoryDropdown(
     current: Category?,
     dropdownItems: List<Category>,
     modifier: Modifier = Modifier,
-    isDisabled: Boolean = false,
+    isEnabled: Boolean = false,
     onItemClick: (Category?) -> Unit
 ) {
     var isContextMenuVisible by rememberSaveable { mutableStateOf(false) }
@@ -51,7 +51,7 @@ internal fun CategoryDropdown(
             modifier = Modifier
                 .indication(interactionSource, LocalIndication.current)
                 .clickable {
-                    if (!isDisabled) isContextMenuVisible = true
+                    if (isEnabled) isContextMenuVisible = true
                 }
                 .padding(16.dp)
         ) {
