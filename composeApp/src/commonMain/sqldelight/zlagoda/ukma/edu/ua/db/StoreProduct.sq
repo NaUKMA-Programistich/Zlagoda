@@ -45,3 +45,8 @@ FROM storeProduct
 JOIN product ON storeProduct.idProduct = product.idProduct
 JOIN category ON product.categoryNumber = category.id
 WHERE category.name LIKE :categoryName;
+
+getStoreProductsByIdProduct:
+SELECT *
+FROM storeProduct
+WHERE idProduct = :idProduct;
