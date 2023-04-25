@@ -39,15 +39,19 @@ internal fun ProductSearchList(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Менеджер  та касир
         OutlinedTextField(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Search Product Name") },
+            enabled = categorySelect == null,
             modifier = Modifier.padding(5.dp)
         )
+        // Тільки касир
         CategoryDropdown (
             current = categorySelect,
             dropdownItems = categories,
+            isDisabled = productName.isNotEmpty(),
             onItemClick = { categorySelect = it },
         )
 

@@ -27,11 +27,12 @@ import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.db.Category
 
 @Composable
-fun CategoryDropdown(
+internal fun CategoryDropdown(
     current: Category?,
     dropdownItems: List<Category>,
     modifier: Modifier = Modifier,
-    onItemClick: (Category) -> Unit
+    isDisabled: Boolean = false,
+    onItemClick: (Category?) -> Unit
 ) {
     var isContextMenuVisible by rememberSaveable { mutableStateOf(false) }
     val pressOffset by remember { mutableStateOf(DpOffset.Zero) }
@@ -50,7 +51,7 @@ fun CategoryDropdown(
             modifier = Modifier
                 .indication(interactionSource, LocalIndication.current)
                 .clickable {
-                    isContextMenuVisible = true
+                    if (!isDisabled) isContextMenuVisible = true
                 }
                 .padding(16.dp)
         ) {
@@ -75,6 +76,12 @@ fun CategoryDropdown(
                 }) {
                     Text(text = it.name)
                 }
+            }
+            DropdownMenuItem(onClick = {
+                onItemClick(null)
+                isContextMenuVisible = false
+            }) {
+                Text(text = "-")
             }
         }
     }
