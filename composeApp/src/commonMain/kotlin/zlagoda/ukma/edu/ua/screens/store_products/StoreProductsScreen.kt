@@ -13,7 +13,7 @@ import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductViewList
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsAction
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
 import zlagoda.ukma.edu.ua.screens.store_storeProduct.viewmodel.StoreProductsViewModel
-import zlagoda.ukma.edu.ua.screens.store_storeProducts_search.StoreProductSearchScreen
+import zlagoda.ukma.edu.ua.screens.store_products_search.StoreProductSearchScreen
 
 @Composable
 internal fun StoreProductsScreen() {
