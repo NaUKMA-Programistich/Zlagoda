@@ -43,4 +43,16 @@ class StoreProductRepositoryImpl(
             )
         }
     }
+
+    override suspend fun searchByProductName(productName: String): List<StoreProduct> {
+        return withContext(Dispatchers.IO) {
+            queries.searchStoreProductByProductName(productName).executeAsList()
+        }
+    }
+
+    override suspend fun searchByCategoryName(categoryName: String): List<StoreProduct> {
+        return withContext(Dispatchers.IO) {
+            queries.searchStoreProductByCategoryName(categoryName).executeAsList()
+        }
+    }
 }
