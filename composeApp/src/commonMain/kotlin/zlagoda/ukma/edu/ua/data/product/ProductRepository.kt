@@ -14,5 +14,6 @@ interface ProductRepository {
 
     suspend fun insertProduct(product: Product)
 
-    suspend fun searchByProductNameAndCategory(productName: String, category: String?): List<Product>
+    suspend fun searchByProductName(productName: String): List<Product>
+    suspend fun searchByCategoryName(categoryName: String): List<Product>
 }

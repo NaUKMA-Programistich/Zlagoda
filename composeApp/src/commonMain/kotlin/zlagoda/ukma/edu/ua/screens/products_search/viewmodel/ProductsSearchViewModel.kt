@@ -19,16 +19,19 @@ class ProductsSearchViewModel(
     initialState = ProductsSearchState.Loading,
 ) {
     init {
-        viewModelScope.launch {
-            productsRepository.getAllSortProducts().collectLatest { products ->
-                categoriesRepository.getAllCategories().collectLatest { categories ->
-                    setViewState(ProductsSearchState.ProductList(products, categories))
-                }
+        viewModelScope.launch { processNotFilter() }
+    }
+
+    private suspend fun processNotFilter() {
+        productsRepository.getAllSortProducts().collectLatest { products ->
+            categoriesRepository.getAllCategories().collectLatest { categories ->
+                setViewState(ProductsSearchState.ProductList(products, categories))
             }
         }
     }
 
     override fun obtainEvent(viewEvent: ProductsSearchEvent) {
+        println("ProductsSearchViewModel: obtainEvent $viewEvent")
         when (viewEvent) {
             is ProductsSearchEvent.SearchProducts -> processSearch(viewEvent.productName, viewEvent.category)
         }
@@ -36,12 +39,26 @@ class ProductsSearchViewModel(
 
     private fun processSearch(productName: String, category: Category?) {
         withViewModelScope {
-            setViewState(ProductsSearchState.Loading)
-//            productsRepository.searchByProductNameAndCategory(productName, category?.name).collectLatest { products ->
-//                categoriesRepository.getAllCategories().collectLatest { categories ->
-//                    setViewState(ProductsSearchState.ProductList(products, categories))
-//                }
-//            }
+            val state = viewStates().value
+            if (state !is ProductsSearchState.ProductList) return@withViewModelScope
+            val categories = state.categories
+
+            if (productName.isEmpty() && category == null) {
+                processNotFilter()
+                return@withViewModelScope
+            }
+
+            if (productName.isNotEmpty()) {
+                val filter = productsRepository.searchByProductName(productName)
+                setViewState(ProductsSearchState.ProductList(filter, categories))
+                return@withViewModelScope
+            }
+
+            if (category != null) {
+                val filter = productsRepository.searchByCategoryName(category.name)
+                setViewState(ProductsSearchState.ProductList(filter, categories))
+                return@withViewModelScope
+            }
         }
     }
 }

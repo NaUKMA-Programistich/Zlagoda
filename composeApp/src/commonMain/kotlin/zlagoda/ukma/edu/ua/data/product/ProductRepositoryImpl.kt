@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.MyDatabase
 import zlagoda.ukma.edu.ua.db.Product
+import zlagoda.ukma.edu.ua.db.SearchByCategoryName
 
 class ProductRepositoryImpl(
     db: MyDatabase
@@ -45,10 +46,26 @@ class ProductRepositoryImpl(
         }
     }
 
-    override suspend fun searchByProductNameAndCategory(
-        productName: String,
-        category: String?
-    ): List<Product> {
-        return listOf()
+    override suspend fun searchByProductName(productName: String): List<Product> {
+        return withContext(Dispatchers.IO) {
+            queries.searchByProductName(productName).executeAsList()
+        }
+    }
+
+    override suspend fun searchByCategoryName(categoryName: String): List<Product> {
+        return withContext(Dispatchers.IO) {
+            queries.searchByCategoryName(categoryName).executeAsList().toProducts()
+        }
+    }
+}
+
+private fun List<SearchByCategoryName>.toProducts(): List<Product> {
+    return map {
+        Product(
+            idProduct = it.idProduct,
+            categoryNumber = it.categoryNumber,
+            productName = it.productName,
+            characteristics = it.characteristics
+        )
     }
 }

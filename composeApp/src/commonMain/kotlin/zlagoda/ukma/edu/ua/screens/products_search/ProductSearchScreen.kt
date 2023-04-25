@@ -48,7 +48,6 @@ internal fun ProductSearchScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ProductSearchAppBar {
-                viewModel.clear()
                 onCloseClick()
             }
             when (val state = viewState) {

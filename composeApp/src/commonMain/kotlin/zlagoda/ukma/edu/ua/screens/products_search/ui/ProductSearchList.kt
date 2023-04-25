@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.CategoryDropdown
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Product
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 
 @Composable
 internal fun ProductSearchList(
@@ -39,15 +40,19 @@ internal fun ProductSearchList(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Касир
         OutlinedTextField(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Search Product Name") },
+            enabled = categorySelect == null && LoginViewModel.isSeller(),
             modifier = Modifier.padding(5.dp)
         )
+        // Менеджер  та касир
         CategoryDropdown (
             current = categorySelect,
             dropdownItems = categories,
+            isEnabled = productName.isEmpty() && (LoginViewModel.isSeller() || LoginViewModel.isManager()),
             onItemClick = { categorySelect = it },
         )
 
