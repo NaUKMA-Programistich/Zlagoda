@@ -95,6 +95,7 @@ internal fun ProductItemDialog(
     }
 
 }
-private fun Map<Long, String>.toDropDownItems(): List<DropDownItem> {
+fun Map<Long, String>.toDropDownItems(): List<DropDownItem> {
     return this.toList().map { DropDownItem(it.first, it.second) }
 }
+

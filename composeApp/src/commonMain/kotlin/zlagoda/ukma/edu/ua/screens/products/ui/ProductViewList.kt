@@ -34,7 +34,7 @@ internal fun ProductViewList (
     state: ProductsState.ProductList,
     onEvent: (ProductsEvent) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.End) {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
@@ -79,7 +79,7 @@ internal fun ProductItem(
         modifier = modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(20.dp))
+            .background(color = MaterialTheme.colors.onSecondary, shape = RoundedCornerShape(20.dp))
             .padding(vertical = 5.dp, horizontal = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

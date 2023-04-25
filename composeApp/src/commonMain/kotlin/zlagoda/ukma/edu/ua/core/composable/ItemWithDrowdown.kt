@@ -6,6 +6,7 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
@@ -20,9 +21,11 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
 data class DropDownItem(
-    val id: Long,
+    val id: Long = 0,
     val text: String
 )
+
+
 
 @Composable
 fun ItemWithDropdown(
@@ -54,6 +57,7 @@ fun ItemWithDropdown(
     ) {
         Box(
             modifier = Modifier
+              //  .height(150.dp)
                 .fillMaxWidth()
                 .indication(interactionSource, LocalIndication.current)
                 .clickable {

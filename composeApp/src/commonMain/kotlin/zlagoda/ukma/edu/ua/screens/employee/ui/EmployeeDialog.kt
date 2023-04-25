@@ -1,22 +1,32 @@
 package zlagoda.ukma.edu.ua.screens.employee.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.isSecondaryPressed
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
+import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
 import zlagoda.ukma.edu.ua.utils.isBDayValid
 import zlagoda.ukma.edu.ua.utils.isPhoneNumberValid
 import zlagoda.ukma.edu.ua.utils.isStartDateValid
 import zlagoda.ukma.edu.ua.utils.isZipCodeValid
 import java.util.UUID
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmployeeItem (
     employee: Employee = Employee("", "","","","",0.0,"","","","","",""),
@@ -24,13 +34,16 @@ fun EmployeeItem (
     onEvent:  (EmployeeEvent) -> Unit
 ){
 
-
     val empl_nameState = remember { mutableStateOf(employee.empl_name) }
     val empl_surnameState = remember { mutableStateOf(employee. empl_surname) }
     val empl_patronymicState = remember { mutableStateOf("") }
     if (employee.empl_patronymic!=null)
         empl_patronymicState.value = employee.empl_patronymic
-    val empl_roleState = remember { mutableStateOf(employee.empl_role) }
+
+    val employeeRoleMap = mapOf<Long, String>(0L to "Manager", 1L to "Seller")
+
+    var empl_role_indexState by remember { mutableStateOf(if (employee.empl_role == employeeRoleMap[0]) 0L else 1L) }
+
     val salaryState = remember { mutableStateOf(employee.salary) }
     val date_of_birthState = remember { mutableStateOf(employee.date_of_birth) }
     val date_of_startState = remember { mutableStateOf(employee.date_of_start) }
@@ -77,11 +90,11 @@ fun EmployeeItem (
                     label = { Text("Patronymic") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
-                OutlinedTextField(
-                    value = empl_roleState.value,
-                    onValueChange = { empl_roleState.value = it },
-                    label = { Text("Role") },
-                    modifier = Modifier.fillMaxWidth().padding(5.dp)
+                ItemWithDropdown(
+                    modifier = Modifier.fillMaxWidth().padding(5.dp),
+                    value = employeeRoleMap[empl_role_indexState]!!,
+                    dropdownItems = employeeRoleMap.toDropDownItems(),
+                    onItemClick = { empl_role_indexState = it.id }
                 )
                 OutlinedTextField(
                     value = salaryState.value.toString(),
@@ -129,6 +142,8 @@ fun EmployeeItem (
         }
 
 
+
+
         Column(modifier = Modifier.fillMaxWidth().weight(0.3f), verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.CenterHorizontally) {
 
             if (!date_of_birthState.value.isBDayValid())
@@ -160,13 +175,13 @@ fun EmployeeItem (
                             EmployeeEvent.SaveEmployee(
                                 Employee(
                                     id_of_employee = employee.id_of_employee.ifBlank { UUID.randomUUID().toString() },
-                                    empl_surname = empl_nameState.value,
-                                    empl_name = empl_surnameState.value,
+                                    empl_surname = empl_surnameState.value,
+                                    empl_name = empl_nameState.value,
                                     empl_patronymic = empl_patronymicState.value,
-                                    empl_role = empl_roleState.value,
+                                    empl_role = employeeRoleMap[empl_role_indexState]!!,
                                     salary = salaryState.value,
-                                    date_of_birth = "",
-                                    date_of_start = "",
+                                    date_of_birth = date_of_birthState.value,
+                                    date_of_start = date_of_startState.value,
                                     phone_number = phone_numberState.value,
                                     city = cityState.value,
                                     street = streetState.value,
@@ -193,4 +208,7 @@ fun isValidEmployeeForm(
 ) : Boolean {
     return (date_of_birthState.value.isBDayValid() && date_of_startState.value.isStartDateValid()
             && phone_numberState.value.isPhoneNumberValid() && salaryState.value > 0 && zip_codeState.value.isZipCodeValid())
+
+
 }
+
