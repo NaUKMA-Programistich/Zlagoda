@@ -44,7 +44,11 @@ INSERT OR REPLACE
 INTO employee
 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
-
+employeeSearchData:
+SELECT phone_number, city , street , zip_code
+FROM employee
+WHERE empl_surname LIKE '%' || ? || '%'
+ORDER BY phone_number;
 
 deleteEmployeeById:
 DELETE FROM employee

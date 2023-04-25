@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.db.EmployeeSearchData
 import zlagoda.ukma.edu.ua.db.MyDatabase
 
 class EmployeeRepositoryImpl (
@@ -23,6 +24,10 @@ class EmployeeRepositoryImpl (
 
     override fun getAllEmployees(): Flow<List<Employee>> {
         return queries.getAllEmployees().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun employeeSearchData(employee_surname : String): Flow<List<EmployeeSearchData>> {
+        return queries.employeeSearchData(employee_surname).asFlow().mapToList(Dispatchers.IO)
     }
 
     override fun getAllSellers(): Flow<List<Employee>> {

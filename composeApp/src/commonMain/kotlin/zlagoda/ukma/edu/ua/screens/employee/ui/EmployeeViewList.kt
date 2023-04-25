@@ -37,6 +37,8 @@ import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeState
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel.Companion.isManager
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel.Companion.isSeller
 import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -56,23 +58,26 @@ fun EmployeeViewList(
         val coroutineScope = rememberCoroutineScope()
 
 
-        if (LoginViewModel.user.empl_role != "Manager")
+        if (isSeller())
             EmployeeCard(employee = LoginViewModel.user, onEvent = onEvent)
-        else
-        LazyRow(modifier = Modifier.fillMaxWidth().padding(15.dp).draggable(
-            orientation = Orientation.Horizontal,
-            state = rememberDraggableState { delta ->
-                coroutineScope.launch {
-                    scrollState.scrollBy(-delta)
+        else {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth().padding(15.dp).draggable(
+                    orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { delta ->
+                        coroutineScope.launch {
+                            scrollState.scrollBy(-delta)
+                        }
+                    },
+                )
+            ) {
+                items(state.employees) { employee ->
+                    EmployeeCard(employee = employee, onEvent = onEvent)
                 }
-            },
-        )) {
-            items(state.employees) { employee ->
-                EmployeeCard(employee = employee, onEvent = onEvent)
-            }
 
+            }
         }
-        if (LoginViewModel.user.empl_role == "Manager") {
+        if (isManager()) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
@@ -110,6 +115,14 @@ fun EmployeeViewList(
                                 onEvent(EmployeeEvent.SetAllEmployeeList)
                         }
                     )
+                }
+
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                    onClick = { onEvent(EmployeeEvent.SearchEmployeeData) }
+                ) {
+                    Text("Search")
                 }
             }
         }
@@ -165,7 +178,7 @@ fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
 
 
         }
-        if (LoginViewModel.user.empl_role == "Manager") {
+        if (isManager()) {
             Row(
                 modifier = Modifier.weight(1.2f).width(220.dp).padding(15.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
