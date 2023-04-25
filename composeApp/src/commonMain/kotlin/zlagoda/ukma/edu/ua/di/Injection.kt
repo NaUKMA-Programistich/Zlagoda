@@ -6,6 +6,7 @@ import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepository
 import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepositoryImpl
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepositoryImpl
 import zlagoda.ukma.edu.ua.data.product.ProductRepositoryImpl
+import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepositoryImpl
 
 import zlagoda.ukma.edu.ua.db.MyDatabase
 
@@ -15,4 +16,5 @@ object Injection {
     val employeeRepository = EmployeeRepositoryImpl(database)
     val productRepository = ProductRepositoryImpl(database)
     val customerCardRepository = CustomerCardRepositoryImpl(database)
+    val storeProductRepository = StoreProductRepositoryImpl(database)
 }
