@@ -7,6 +7,7 @@ import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
+import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsAction
 
 
 class EmployeeViewModel (
@@ -21,6 +22,7 @@ class EmployeeViewModel (
 
     override fun obtainEvent(viewEvent: EmployeeEvent) {
         when (viewEvent) {
+            is EmployeeEvent.SearchEmployeeData -> processSearch()
             is EmployeeEvent.SetAllEmployeeList -> processSetAllEmployeeList()
             is EmployeeEvent.SetSellerList -> processSetSellerList()
             is EmployeeEvent.SetEmployeeList -> processChangeEmployeeList(viewEvent.employeeList)
@@ -31,6 +33,13 @@ class EmployeeViewModel (
             else -> {}
         }
     }
+
+    private fun processSearch() {
+        withViewModelScope {
+            setViewAction(EmployeeAction.OpenSearchDialog)
+        }
+    }
+
 
     private fun getEmployees() {
         repository.getAllEmployees()

@@ -1,6 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.employee
 
-import androidx.compose.material.Text
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.adeo.kviewmodel.compose.observeAsState
@@ -13,7 +13,9 @@ import zlagoda.ukma.edu.ua.screens.employee.ui.EmployeeViewList
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeAction
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeState
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeViewModel
+import zlagoda.ukma.edu.ua.screens.employee_search.EmployeeSearchScreen
 import zlagoda.ukma.edu.ua.screens.login.ui.LoginViewLoading
+
 
 @Composable
 internal fun EmployeeScreen() {
@@ -47,7 +49,11 @@ internal fun EmployeeScreen() {
                     onEvent = { viewModel.obtainEvent(it) }
                 )
             }
-            null -> {}
+            is EmployeeAction.OpenSearchDialog -> modalController.present(alertConfiguration) { key ->
+                EmployeeSearchScreen(onCloseClick = { modalController.popBackStack(key) })
+            }
+
+            else -> {}
         }
     }
 }
