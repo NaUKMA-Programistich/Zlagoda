@@ -1,16 +1,14 @@
 package zlagoda.ukma.edu.ua.screens.products_search.viewmodel
 
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
 import zlagoda.ukma.edu.ua.data.product.ProductRepository
 import zlagoda.ukma.edu.ua.db.Category
-import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.di.Injection
+import zlagoda.ukma.edu.ua.screens.employee_search.viewmodel.EmployeesSearchAction
+import zlagoda.ukma.edu.ua.screens.employee_search.viewmodel.EmployeesSearchEvent
 
 class ProductsSearchViewModel(
     private val productsRepository: ProductRepository = Injection.productRepository,
@@ -34,6 +32,7 @@ class ProductsSearchViewModel(
         println("ProductsSearchViewModel: obtainEvent $viewEvent")
         when (viewEvent) {
             is ProductsSearchEvent.SearchProducts -> processSearch(viewEvent.productName, viewEvent.category)
+            else -> {}
         }
     }
 

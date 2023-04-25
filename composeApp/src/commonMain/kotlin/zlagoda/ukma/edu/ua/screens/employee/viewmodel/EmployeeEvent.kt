@@ -1,5 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.employee.viewmodel
 import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsEvent
 
 
 sealed class EmployeeEvent {
@@ -8,6 +9,8 @@ sealed class EmployeeEvent {
 
     object SetAllEmployeeList : EmployeeEvent()
     object SetSellerList : EmployeeEvent()
+
+    object SearchEmployeeData: EmployeeEvent()
     data class DeleteEmployee(val employee: Employee) : EmployeeEvent()
 
     data class SaveEmployee(val employee: Employee) : EmployeeEvent()
