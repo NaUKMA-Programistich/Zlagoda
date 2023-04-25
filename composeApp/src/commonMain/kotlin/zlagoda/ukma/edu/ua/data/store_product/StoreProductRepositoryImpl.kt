@@ -44,6 +44,12 @@ class StoreProductRepositoryImpl(
         }
     }
 
+    override suspend fun getStoreProductsByIdProduct(idProduct: Long): List<StoreProduct> {
+        return withContext(Dispatchers.IO) {
+            queries.getStoreProductsByIdProduct(idProduct).executeAsList()
+        }
+    }
+
     override suspend fun searchByProductName(productName: String): List<StoreProduct> {
         return withContext(Dispatchers.IO) {
             queries.searchStoreProductByProductName(productName).executeAsList()

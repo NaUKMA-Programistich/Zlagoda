@@ -15,4 +15,6 @@ interface StoreProductRepository {
 
     suspend fun searchByProductName(productName: String): List<StoreProduct>
     suspend fun searchByCategoryName(categoryName: String): List<StoreProduct>
+
+    suspend fun getStoreProductsByIdProduct(idProduct: Long): List<StoreProduct>
 }
