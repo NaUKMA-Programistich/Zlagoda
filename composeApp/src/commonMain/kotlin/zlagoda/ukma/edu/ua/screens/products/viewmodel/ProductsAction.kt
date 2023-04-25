@@ -7,5 +7,5 @@ sealed class ProductsAction {
     data class OpenEditProductDialog(val product:  Product,val categoryNumberToName: Map<Long, String>) : ProductsAction()
 
     data class OpenNewProductDialog(val categoryNumberToName: Map<Long, String>) : ProductsAction()
-
+    object OpenSearchDialog : ProductsAction()
 }

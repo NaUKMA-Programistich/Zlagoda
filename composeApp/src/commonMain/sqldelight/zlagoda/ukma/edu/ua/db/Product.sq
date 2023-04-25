@@ -21,6 +21,11 @@ getAllProducts:
 SELECT *
 FROM product;
 
+getAllSortProducts:
+SELECT *
+FROM product
+ORDER BY productName;
+
 insertProduct:
 INSERT OR REPLACE
 INTO product
@@ -29,3 +34,17 @@ VALUES(?, ?, ?, ?);
 deleteProductByIdProduct:
 DELETE FROM product
 WHERE idProduct = :idProduct;
+
+searchByProductNameAndMaybeCategoryName:
+SELECT *
+FROM product
+WHERE productName LIKE :productName
+AND categoryNumber IN (SELECT categoryNumber
+                       FROM category
+                       WHERE name LIKE :categoryName);
+-- SELECT *
+-- FROM product
+-- WHERE productName LIKE :productName
+-- AND categoryNumber IN (SELECT categoryNumber
+--                        FROM category
+--                        WHERE name LIKE :categoryName);

@@ -13,6 +13,7 @@ import zlagoda.ukma.edu.ua.screens.products.ui.ProductViewList
 import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsAction
 import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsState
 import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsViewModel
+import zlagoda.ukma.edu.ua.screens.products_search.ProductSearchScreen
 
 @Composable
 internal fun ProductsScreen() {
@@ -48,6 +49,9 @@ internal fun ProductsScreen() {
                     onCloseClick = { modalController.popBackStack(key) },
                     onEvent = { viewModel.obtainEvent(it) }
                 )
+            }
+            is ProductsAction.OpenSearchDialog -> modalController.present(alertConfiguration) { key ->
+                ProductSearchScreen(onCloseClick = { modalController.popBackStack(key) })
             }
             null -> {}
         }

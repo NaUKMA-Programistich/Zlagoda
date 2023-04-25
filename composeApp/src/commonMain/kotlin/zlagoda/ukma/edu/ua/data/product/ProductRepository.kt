@@ -8,8 +8,11 @@ interface ProductRepository {
     suspend fun getProductByIdProduct(idProduct: Long): Product?
 
     fun getAllProducts(): Flow<List<Product>>
+    fun getAllSortProducts(): Flow<List<Product>>
 
     suspend fun deleteProductByIdProduct(idProduct: Long)
 
     suspend fun insertProduct(product: Product)
+
+    suspend fun searchByProductNameAndCategory(productName: String, category: String?): List<Product>
 }

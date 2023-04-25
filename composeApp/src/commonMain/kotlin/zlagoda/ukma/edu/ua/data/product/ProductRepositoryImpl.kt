@@ -24,6 +24,10 @@ class ProductRepositoryImpl(
         return queries.getAllProducts().asFlow().mapToList(Dispatchers.IO)
     }
 
+    override fun getAllSortProducts(): Flow<List<Product>> {
+        return queries.getAllSortProducts().asFlow().mapToList(Dispatchers.IO)
+    }
+
     override suspend fun deleteProductByIdProduct(idProduct: Long) {
         return withContext(Dispatchers.IO) {
             queries.deleteProductByIdProduct(idProduct)
@@ -39,5 +43,12 @@ class ProductRepositoryImpl(
                 characteristics = product.characteristics
             )
         }
+    }
+
+    override suspend fun searchByProductNameAndCategory(
+        productName: String,
+        category: String?
+    ): List<Product> {
+        return listOf()
     }
 }

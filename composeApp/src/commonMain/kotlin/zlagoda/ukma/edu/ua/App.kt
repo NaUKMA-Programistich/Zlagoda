@@ -1,5 +1,6 @@
 package zlagoda.ukma.edu.ua
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import ru.alexgladkov.odyssey.compose.setup.OdysseyConfiguration
@@ -9,7 +10,9 @@ import zlagoda.ukma.edu.ua.navigation.NavigationGraph
 
 @Composable
 internal fun App() = AppTheme {
-    val configuration = remember { OdysseyConfiguration() }
+    val backgroundColor = MaterialTheme.colors.background
+
+    val configuration = remember { OdysseyConfiguration(backgroundColor = backgroundColor) }
 
     setNavigationContent(configuration) {
         NavigationGraph()
