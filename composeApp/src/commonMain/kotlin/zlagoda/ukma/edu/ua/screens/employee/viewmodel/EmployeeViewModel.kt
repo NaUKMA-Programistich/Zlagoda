@@ -6,6 +6,7 @@ import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.di.Injection
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 
 
 class EmployeeViewModel (
@@ -14,15 +15,20 @@ class EmployeeViewModel (
     initialState = EmployeeState.Loading,
 ) {
 
-    init { getEmployees() }
+    init {
+         getEmployees()
+    }
 
     override fun obtainEvent(viewEvent: EmployeeEvent) {
         when (viewEvent) {
+            is EmployeeEvent.SetAllEmployeeList -> processSetAllEmployeeList()
+            is EmployeeEvent.SetSellerList -> processSetSellerList()
             is EmployeeEvent.SetEmployeeList -> processChangeEmployeeList(viewEvent.employeeList)
             is EmployeeEvent.SaveEmployee -> processSaveEmployee(viewEvent.employee)
             is EmployeeEvent.DeleteEmployee -> processDeleteEmployee(viewEvent.employee)
             is EmployeeEvent.EditEmployee -> processEditEmployee(viewEvent.employee)
             is EmployeeEvent.CreateNewEmployee -> processNewEmployee()
+            else -> {}
         }
     }
 
@@ -33,6 +39,26 @@ class EmployeeViewModel (
             }.launchIn(viewModelScope)
     }
 
+    private fun getAllSellers() {
+        repository.getAllSellers()
+            .onEach { employees ->
+                processChangeEmployeeList(employees)
+            }.launchIn(viewModelScope)
+    }
+    private fun processSetAllEmployeeList() {
+        withViewModelScope {
+            setViewState(EmployeeState.Loading)
+        }
+        getEmployees()
+    }
+
+
+    private fun processSetSellerList() {
+        withViewModelScope {
+            setViewState(EmployeeState.Loading)
+        }
+        getAllSellers()
+    }
 
     private fun processChangeEmployeeList(employees: List<Employee>) {
         withViewModelScope {

@@ -17,6 +17,7 @@ import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 import zlagoda.ukma.edu.ua.screens.customer_cards.CustomerCardsScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
 
 @Composable
@@ -24,12 +25,17 @@ internal fun RootComposeBuilder.NavigationGraph() {
     screen(NavigationRoute.Login.name) {
         LoginScreen()
     }
-    bottomNavigation(name = NavigationRoute.Main.name,colors = BottomBarDefaults.bottomColors(MaterialTheme.colors.onSecondary)) {
+    bottomNavigation(
+        name = NavigationRoute.Main.name,
+        colors = BottomBarDefaults.bottomColors(MaterialTheme.colors.onSecondary)
+    ) {
+
         tab(content = ProfilesTab(), colors = TabColors()) {
             screen(NavigationRoute.Profiles.name) {
                 EmployeeScreen()
             }
         }
+
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
                 Text("Orders")
@@ -40,9 +46,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 ProductsScreen()
             }
         }
-        tab(content = CategoriesTab(), colors = TabColors()) {
-            screen(NavigationRoute.Categories.name) {
-                CategoriesScreen()
+        if (LoginViewModel.user.empl_role == "Manager") {
+            tab(content = CategoriesTab(), colors = TabColors()) {
+                screen(NavigationRoute.Categories.name) {
+                    CategoriesScreen()
+                }
             }
         }
         tab(content = CustomerCardsTab(), colors = TabColors()) {

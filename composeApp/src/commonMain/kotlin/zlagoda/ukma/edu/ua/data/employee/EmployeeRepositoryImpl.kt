@@ -25,11 +25,16 @@ class EmployeeRepositoryImpl (
         return queries.getAllEmployees().asFlow().mapToList(Dispatchers.IO)
     }
 
+    override fun getAllSellers(): Flow<List<Employee>> {
+        return queries.getAllSellers().asFlow().mapToList(Dispatchers.IO)
+    }
+
     override suspend fun deleteEmployeeById(id: String) {
         withContext(Dispatchers.IO) {
             queries.deleteEmployeeById(id)
         }
     }
+
 
     override suspend fun insertEmployee(employee: Employee) {
         withContext(Dispatchers.IO) {

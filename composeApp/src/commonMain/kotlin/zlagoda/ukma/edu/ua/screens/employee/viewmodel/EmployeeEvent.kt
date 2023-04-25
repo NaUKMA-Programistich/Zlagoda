@@ -6,6 +6,8 @@ sealed class EmployeeEvent {
 
     data class SetEmployeeList(val employeeList: List<Employee>) : EmployeeEvent()
 
+    object SetAllEmployeeList : EmployeeEvent()
+    object SetSellerList : EmployeeEvent()
     data class DeleteEmployee(val employee: Employee) : EmployeeEvent()
 
     data class SaveEmployee(val employee: Employee) : EmployeeEvent()

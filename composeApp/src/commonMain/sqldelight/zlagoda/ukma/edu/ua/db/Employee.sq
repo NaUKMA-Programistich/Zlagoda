@@ -14,13 +14,13 @@ CREATE TABLE employee (
 );
 
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers','Alop','Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'absd','Peerers','Alop','Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'ssssdsdbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'Lars','Peerers',NULL,'Assistant Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'nnbsd','Peerers',NULL,'Seller',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
 
 
 getEmployeeById:
@@ -30,7 +30,14 @@ WHERE id_of_employee = :id_of_Employee;
 
 getAllEmployees:
 SELECT *
-FROM employee;
+FROM employee
+ORDER BY empl_surname;
+
+getAllSellers:
+SELECT *
+FROM employee
+WHERE empl_role == 'Seller'
+ORDER BY empl_surname;
 
 insertEmployee:
 INSERT OR REPLACE
