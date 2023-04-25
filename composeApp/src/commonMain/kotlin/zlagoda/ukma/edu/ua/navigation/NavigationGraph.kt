@@ -19,6 +19,7 @@ import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
+import zlagoda.ukma.edu.ua.screens.store_storeProduct.StoreProductsScreen
 
 @Composable
 internal fun RootComposeBuilder.NavigationGraph() {
@@ -46,6 +47,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 ProductsScreen()
             }
         }
+        tab(content = StoreProductsTab(), colors = TabColors()) {
+            screen(NavigationRoute.StoreProducts.name) {
+                StoreProductsScreen()
+            }
+        }
         if (LoginViewModel.user.empl_role == "Manager") {
             tab(content = CategoriesTab(), colors = TabColors()) {
                 screen(NavigationRoute.Categories.name) {
@@ -70,6 +76,12 @@ private fun OrdersTab(): TabContent {
 private fun ProductsTab(): TabContent {
     return TabDefaults.content("Products", vector = null)
 }
+
+@Composable
+private fun StoreProductsTab(): TabContent {
+    return TabDefaults.content("Store Products", vector = null)
+}
+
 
 @Composable
 private fun CategoriesTab(): TabContent {
@@ -103,6 +115,7 @@ internal enum class NavigationRoute {
     Main,
     Orders,
     Products,
+    StoreProducts,
     Categories,
     Profiles,
     CustomerCars

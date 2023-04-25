@@ -12,4 +12,7 @@ interface StoreProductRepository {
     suspend fun deleteStoreProductByUPC(upc: String)
 
     suspend fun insertStoreProduct(storeProduct: StoreProduct)
+
+    suspend fun searchByProductName(productName: String): List<StoreProduct>
+    suspend fun searchByCategoryName(categoryName: String): List<StoreProduct>
 }
