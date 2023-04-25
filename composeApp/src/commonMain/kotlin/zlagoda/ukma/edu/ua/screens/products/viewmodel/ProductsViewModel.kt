@@ -27,11 +27,18 @@ class ProductsViewModel(
             is ProductsEvent.DeleteProduct -> processDeleteProduct(viewEvent.product)
             is ProductsEvent.EditProduct -> processEditProduct(viewEvent.product)
             is ProductsEvent.CreateNewProduct -> processNewProduct()
+            is ProductsEvent.SearchProduct -> processSearch()
+        }
+    }
+
+    private fun processSearch() {
+        withViewModelScope {
+            setViewAction(ProductsAction.OpenSearchDialog)
         }
     }
 
     private fun getProducts() {
-        productsRepository.getAllProducts()
+        productsRepository.getAllSortProducts()
             .onEach { products ->
                 processChangeProductList(products)
             }.launchIn(viewModelScope)

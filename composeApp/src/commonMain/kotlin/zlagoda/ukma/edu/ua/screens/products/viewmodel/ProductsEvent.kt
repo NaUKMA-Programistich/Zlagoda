@@ -13,4 +13,5 @@ sealed class ProductsEvent {
     data class EditProduct(val product: Product) : ProductsEvent()
 
     object CreateNewProduct: ProductsEvent()
+    object SearchProduct: ProductsEvent()
 }

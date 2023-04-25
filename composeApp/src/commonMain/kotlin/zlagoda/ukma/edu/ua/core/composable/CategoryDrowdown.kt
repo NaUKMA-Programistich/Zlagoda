@@ -6,45 +6,37 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-
-data class DropDownItem(
-    val id: Long = 0,
-    val text: String
-)
-
+import zlagoda.ukma.edu.ua.db.Category
 
 @Composable
-fun ItemWithDropdown(
-    value: String,
-    dropdownItems: List<DropDownItem>,
+fun CategoryDropdown(
+    current: Category?,
+    dropdownItems: List<Category>,
     modifier: Modifier = Modifier,
-    onItemClick: (DropDownItem) -> Unit
+    onItemClick: (Category) -> Unit
 ) {
-    var isContextMenuVisible by rememberSaveable {
-        mutableStateOf(false)
-    }
-    var pressOffset by remember {
-        mutableStateOf(DpOffset.Zero)
-    }
-    var itemHeight by remember {
-        mutableStateOf(0.dp)
-    }
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
+    var isContextMenuVisible by rememberSaveable { mutableStateOf(false) }
+    val pressOffset by remember { mutableStateOf(DpOffset.Zero) }
+    var itemHeight by remember { mutableStateOf(0.dp) }
+    val interactionSource = remember { MutableInteractionSource() }
     val density = LocalDensity.current
 
     Card(
@@ -56,15 +48,16 @@ fun ItemWithDropdown(
     ) {
         Box(
             modifier = Modifier
-              //  .height(150.dp)
-                .fillMaxWidth()
                 .indication(interactionSource, LocalIndication.current)
                 .clickable {
                     isContextMenuVisible = true
                 }
                 .padding(16.dp)
         ) {
-            Text(text = value)
+            Text(
+                text = current?.name ?: "Choose Product Category",
+                textAlign = TextAlign.Right
+            )
         }
         DropdownMenu(
             expanded = isContextMenuVisible,
@@ -80,7 +73,7 @@ fun ItemWithDropdown(
                     onItemClick(it)
                     isContextMenuVisible = false
                 }) {
-                    Text(text = it.text)
+                    Text(text = it.name)
                 }
             }
         }

@@ -35,7 +35,16 @@ internal fun ProductViewList (
     onEvent: (ProductsEvent) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
-        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.End) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                onClick = { onEvent(ProductsEvent.SearchProduct) }
+            ) {
+                Text("Search")
+            }
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
                 onClick = { onEvent(ProductsEvent.CreateNewProduct) }
