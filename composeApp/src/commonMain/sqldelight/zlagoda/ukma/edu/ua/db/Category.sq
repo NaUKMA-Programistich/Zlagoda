@@ -9,6 +9,8 @@ INSERT INTO category (id, name)
 VALUES (2, 'Bakery');
 INSERT INTO category (id, name)
 VALUES (3, 'Household essentials');
+INSERT INTO category (id, name)
+VALUES (4, 'Aousehold essentials');
 
 getCategoryById:
 SELECT *
@@ -17,7 +19,8 @@ WHERE id = :id;
 
 getAllCategories:
 SELECT *
-FROM category;
+FROM category
+ORDER BY name;
 
 insertCategory:
 INSERT OR REPLACE

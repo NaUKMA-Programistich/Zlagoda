@@ -17,8 +17,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +36,7 @@ import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeState
+import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -55,6 +55,10 @@ fun EmployeeViewList(
         val scrollState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
 
+
+        if (LoginViewModel.user.empl_role != "Manager")
+            EmployeeCard(employee = LoginViewModel.user, onEvent = onEvent)
+        else
         LazyRow(modifier = Modifier.fillMaxWidth().padding(15.dp).draggable(
             orientation = Orientation.Horizontal,
             state = rememberDraggableState { delta ->
@@ -62,22 +66,53 @@ fun EmployeeViewList(
                     scrollState.scrollBy(-delta)
                 }
             },
-        )){
-            items(state.employees) {
-                    employee -> EmployeeCard (employee = employee, onEvent = onEvent)
+        )) {
+            items(state.employees) { employee ->
+                EmployeeCard(employee = employee, onEvent = onEvent)
+            }
 
+        }
+        if (LoginViewModel.user.empl_role == "Manager") {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                    onClick = { onEvent(EmployeeEvent.CreateNewEmployee) }
+                ) {
+                    Text("Add New")
+                }
+
+
+                var checked by remember {
+                    mutableStateOf(false)
+                }
+                Row(
+                    modifier = Modifier.padding(start = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = "Only Sellers"
+                    )
+
+                    Checkbox(
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = add_button_color,
+                            uncheckedColor = edit_button_color
+                        ),
+                        checked = checked,
+                        onCheckedChange = { checked_ ->
+                            checked = checked_
+                            if (checked)
+                                onEvent(EmployeeEvent.SetSellerList)
+                            else
+                                onEvent(EmployeeEvent.SetAllEmployeeList)
+                        }
+                    )
+                }
             }
         }
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
-                onClick = { onEvent(EmployeeEvent.CreateNewEmployee) }
-            ) {
-                Text("Add New")
-            }
-        }
-
     }
 }
 
@@ -130,23 +165,24 @@ fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
 
 
         }
-
-        Row(
-            modifier = Modifier.weight(1.2f).width(220.dp).padding(15.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = { onEvent(EmployeeEvent.EditEmployee(employee)) },
-                modifier = Modifier.background(color = edit_button_color, shape = CircleShape).size(55.dp)
+        if (LoginViewModel.user.empl_role == "Manager") {
+            Row(
+                modifier = Modifier.weight(1.2f).width(220.dp).padding(15.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit category")
-            }
-            IconButton(
-                onClick = { onEvent(EmployeeEvent.DeleteEmployee(employee)) },
-                modifier = Modifier.background(color = delete_button_color, shape = CircleShape).size(55.dp)
-            ) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete category")
+                IconButton(
+                    onClick = { onEvent(EmployeeEvent.EditEmployee(employee)) },
+                    modifier = Modifier.background(color = edit_button_color, shape = CircleShape).size(55.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit category")
+                }
+                IconButton(
+                    onClick = { onEvent(EmployeeEvent.DeleteEmployee(employee)) },
+                    modifier = Modifier.background(color = delete_button_color, shape = CircleShape).size(55.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete category")
+                }
             }
         }
     }

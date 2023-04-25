@@ -10,6 +10,8 @@ interface EmployeeRepository {
 
     fun getAllEmployees(): Flow<List<Employee>>
 
+    fun getAllSellers(): Flow<List<Employee>>
+
     suspend fun deleteEmployeeById(id: String)
 
     suspend fun insertEmployee(employee: Employee)
