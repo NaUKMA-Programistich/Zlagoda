@@ -12,7 +12,7 @@ fun validateTextPropertyWithMaxLength(value: String, name: String, maxLength: In
         throw InvalidModelException("The $name must contain up to 50 characters")
 }
 
-fun validateTextPropertyWithMaxLength(value: String?, name: String, maxLength: Int) {
+fun validateNullableTextPropertyWithMaxLength(value: String?, name: String, maxLength: Int) {
     value?.let {
         if(it.isBlank())
             throw InvalidModelException("The $name must be not blank")

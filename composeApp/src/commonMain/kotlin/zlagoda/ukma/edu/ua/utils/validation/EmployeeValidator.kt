@@ -11,7 +11,7 @@ class EmployeeValidator: Validator<Employee> {
     override fun validate(obj: Employee) {
         validateTextPropertyWithMaxLength(obj.empl_surname, "surname",50 )
         validateTextPropertyWithMaxLength(obj.empl_name, "name",50 )
-        validateTextPropertyWithMaxLength(obj.empl_patronymic, "patronymic",50 )
+        validateNullableTextPropertyWithMaxLength(obj.empl_patronymic, "patronymic",50 )
         validateTextPropertyWithMaxLength(obj.empl_role, "role",10 )
         validateTextPropertyWithMaxLength(obj.city, "city",50 )
         validateTextPropertyWithMaxLength(obj.street, "stree",50 )
