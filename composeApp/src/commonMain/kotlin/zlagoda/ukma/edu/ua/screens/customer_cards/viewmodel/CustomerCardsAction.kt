@@ -7,5 +7,6 @@ sealed class CustomerCardsAction {
     data class OpenEditCustomerCardDialog(val customerCard:  CustomerCard) : CustomerCardsAction()
 
     object OpenNewCustomerCardDialog : CustomerCardsAction()
+    object OpenSearch : CustomerCardsAction()
 
 }

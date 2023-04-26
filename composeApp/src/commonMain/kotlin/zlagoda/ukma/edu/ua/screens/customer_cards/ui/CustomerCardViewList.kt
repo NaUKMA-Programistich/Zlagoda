@@ -1,5 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.customer_cards.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -27,15 +28,26 @@ import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.db.CustomerCard
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsEvent
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsState
+import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsEvent
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun CustomerCardViewList (
     state: CustomerCardsState.CustomerCardList,
     onEvent: (CustomerCardsEvent) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
-        Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.End) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                onClick = { onEvent(CustomerCardsEvent.Search) }
+            ) {
+                Text("Search")
+            }
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
                 onClick = { onEvent(CustomerCardsEvent.CreateNewCustomerCard) }
@@ -47,6 +59,7 @@ internal fun CustomerCardViewList (
         val scrollState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
 
+        CustomerCardItem(Modifier, null, {}, {})
         LazyColumn(modifier = Modifier.fillMaxSize().draggable(
             orientation = Orientation.Horizontal,
             state = rememberDraggableState { delta ->
@@ -69,13 +82,12 @@ internal fun CustomerCardViewList (
 @Composable
 internal fun CustomerCardItem(
     modifier: Modifier = Modifier,
-    customerCard: CustomerCard,
+    customerCard: CustomerCard?,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = Modifier
             .padding(5.dp)
             .background(color = MaterialTheme.colors.onSecondary, shape = RoundedCornerShape(20.dp))
             .padding(vertical = 5.dp, horizontal = 15.dp),
@@ -84,35 +96,36 @@ internal fun CustomerCardItem(
     ) {
         Text(
             modifier = Modifier.weight(1f),
-            text = "Surname: ${customerCard.custSurname}"
+            text = customerCard?.custSurname ?: "Surname"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "Nane: ${customerCard.custName}"
+            text = customerCard?.custName ?: "Name"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "Partonimic: ${customerCard.custPatronymic}"
+            text = customerCard?.custPatronymic ?: "Patronymic"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "Phone Number: ${customerCard.phoneNumber}"
+            text = customerCard?.cardNumber ?: "Card Number"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "City: ${customerCard.city}"
+            text = customerCard?.city ?: "City"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "Street: ${customerCard.street}"
+            text = customerCard?.street ?: "Street"
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = "Zip Code: ${customerCard.zipCode}"
+            text = customerCard?.zipCode ?: "ZipCode"
         )
+        val percent = if(customerCard == null) "Percent" else "${customerCard.percent}"
         Text(
             modifier = Modifier.weight(1f),
-            text = "Percent: ${customerCard.percent}"
+            text = percent
         )
 
         Row(

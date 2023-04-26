@@ -14,6 +14,26 @@ INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phon
 VALUES ("28af18c5-e136-11ed-b5ea-0242ac120002", "Patrick", "Bateman", NULL, "1234567", "New York", "A Stree", "12456", 20);
 INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
 VALUES ("28af18c6-e136-11ed-b5ea-0242ac120002", "John", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120002", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120004", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120005", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120007", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120008", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120009", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120011", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120012", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120013", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
+VALUES ("28af18c7-e136-11ed-b5ea-0242ac120014", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
+
 
 getCustomerCardByCardNumber:
 SELECT *
@@ -22,7 +42,8 @@ WHERE cardNumber = :cardNumber;
 
 getAllCustomerCards:
 SELECT *
-FROM customerCard;
+FROM customerCard
+ORDER BY custSurname;
 
 insertCustomerCard:
 INSERT OR REPLACE
@@ -32,3 +53,14 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
 deleteCustomerCardByCardNumber:
 DELETE FROM customerCard
 WHERE cardNumber = :cardNumber;
+
+searchBySurname:
+SELECT *
+FROM customerCard
+WHERE custSurname LIKE '%' || ? || '%';
+
+searchByPercent:
+SELECT *
+FROM customerCard
+WHERE percent = ?
+ORDER BY custSurname;

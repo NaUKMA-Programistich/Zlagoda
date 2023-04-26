@@ -14,9 +14,10 @@ class EmployeeValidator: Validator<Employee> {
         validateTextPropertyWithMaxLength(obj.zip_code, "zip code",9 )
         if(!obj.phone_number.isPhoneNumberValid())
             throw InvalidModelException("The phone number must contain up to 13 numbers(including +)")
-        if(obj.date_of_birth.isBDayValid())
-            throw InvalidModelException("The birthdate is not valid")
-        if(obj.date_of_start.isStartDateValid())
+        // TODO
+//        if(obj.date_of_birth.isBDayValid())
+//            throw InvalidModelException("The birthdate is not valid")
+//        if(obj.date_of_start.isStartDateValid())
             throw InvalidModelException("The start date is not valid")
         validateNumberProperty(obj.salary, "salary")
     }

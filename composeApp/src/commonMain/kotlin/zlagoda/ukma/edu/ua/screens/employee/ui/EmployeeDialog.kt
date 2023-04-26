@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
+import zlagoda.ukma.edu.ua.core.ktx.toDate
+import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
@@ -18,12 +20,14 @@ import zlagoda.ukma.edu.ua.utils.validation.isBDayValid
 import zlagoda.ukma.edu.ua.utils.validation.isPhoneNumberValid
 import zlagoda.ukma.edu.ua.utils.validation.isStartDateValid
 import zlagoda.ukma.edu.ua.utils.validation.isZipCodeValid
+import java.time.Instant
+import java.util.Date
 import java.util.UUID
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmployeeItem (
-    employee: Employee = Employee("", "","","","",0.0,"","","","","","", "", ""),
+    employee: Employee = Employee("", "","","","",0.0, Date(), Date(),"","","","", "", ""),
     onCloseClick: () -> Unit,
     onEvent:  (EmployeeEvent) -> Unit
 ){
@@ -97,14 +101,20 @@ fun EmployeeItem (
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_birthState.value,
-                    onValueChange = { date_of_birthState.value = it },
+                    value = date_of_birthState.value.toStr(),
+                    onValueChange = {
+                        val date = it.toDate() ?: return@OutlinedTextField
+                        date_of_birthState.value = date
+                    },
                     label = { Text("Date of birth (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_startState.value,
-                    onValueChange = { date_of_startState.value = it },
+                    value = date_of_startState.value.toStr(),
+                    onValueChange = {
+                        val date = it.toDate() ?: return@OutlinedTextField
+                        date_of_startState.value = date
+                    },
                     label = { Text("Date of start (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
@@ -202,8 +212,8 @@ fun EmployeeItem (
 }
 
 fun isValidEmployeeForm(
-    date_of_birthState: MutableState<String>,
-    date_of_startState: MutableState<String>,
+    date_of_birthState: MutableState<Date>,
+    date_of_startState: MutableState<Date>,
     phone_numberState: MutableState<String>,
     salaryState: MutableState<Double>,
     zip_codeState: MutableState<String>

@@ -1,14 +1,17 @@
+import java.util.Date;
+
 CREATE TABLE cheque (
   chequeNumber TEXT NOT NULL PRIMARY KEY,
   idEmployee TEXT NOT NULL,
   cardNumber TEXT,
-  printDate TEXT NOT NULL,
+  printDate TEXT AS Date NOT NULL,
   sumTotal REAL NOT NULL,
   vat REAL NOT NULL
 );
 
+
 INSERT INTO cheque(chequeNumber, idEmployee, cardNumber, printDate, sumTotal, vat)
-VALUES ("28af18c5-e136-11ed-b5ea-0242ac120232", "28af18c2-e136-11ed-b5ea-0242ac120002", NULL, "03/01/2022", 200, 5.5);
+VALUES ("28af18c5-e136-11ed-b5ea-0242ac120232", "28af18c2-e136-11ed-b5ea-0242ac120002", NULL, "2022-01-03", 200, 5.5);
 
 getChequeByChequeNumber:
 SELECT *

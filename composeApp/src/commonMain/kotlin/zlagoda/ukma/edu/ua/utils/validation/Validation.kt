@@ -1,8 +1,11 @@
 package zlagoda.ukma.edu.ua.utils.validation
 
 
+import zlagoda.ukma.edu.ua.core.ktx.toDate
 import java.time.LocalDate
 import java.time.Period
+import java.time.ZoneId
+import java.util.Date
 
 
 fun String.isPhoneNumberValid(): Boolean {
@@ -10,9 +13,11 @@ fun String.isPhoneNumberValid(): Boolean {
     return this.matches(regex) && this.replace("+", "").length >= 5
 }
 
-fun String.isBDayValid () : Boolean{
+// TODO
+fun Date?.isBDayValid () : Boolean {
+    if (this == null) return false
     return try {
-        val start = LocalDate.parse(this)
+        val start: LocalDate = this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         val age = Period.between(start, LocalDate.now()).years
         age >= 18
     }
@@ -21,9 +26,11 @@ fun String.isBDayValid () : Boolean{
     }
 }
 
-fun String.isStartDateValid () : Boolean{
+fun Date?.isStartDateValid () : Boolean{
+    if (this == null) return false
+
     return try {
-        val dateToCheck = LocalDate.parse(this)
+        val dateToCheck = this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         val currentDate = LocalDate.now()
         return !dateToCheck.isAfter(currentDate)
     }

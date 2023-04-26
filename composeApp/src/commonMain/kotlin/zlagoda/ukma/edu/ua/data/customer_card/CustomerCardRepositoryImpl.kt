@@ -46,4 +46,16 @@ class CustomerCardRepositoryImpl(
             )
         }
     }
+
+    override suspend fun filterByPercent(percent: Long): List<CustomerCard> {
+        return withContext(Dispatchers.IO) {
+            queries.searchByPercent(percent).executeAsList()
+        }
+    }
+
+    override suspend fun filterBySurname(surname: String): List<CustomerCard> {
+        return withContext(Dispatchers.IO) {
+            queries.searchBySurname(surname).executeAsList()
+        }
+    }
 }

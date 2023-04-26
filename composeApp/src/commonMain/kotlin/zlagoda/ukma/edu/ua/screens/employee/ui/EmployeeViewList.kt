@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import zlagoda.ukma.edu.ua.core.ktx.isManager
 import zlagoda.ukma.edu.ua.core.ktx.isSeller
+import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.core.theme.add_button_color
 import zlagoda.ukma.edu.ua.core.theme.delete_button_color
 import zlagoda.ukma.edu.ua.core.theme.edit_button_color
@@ -177,8 +178,8 @@ fun EmployeeCard(user: Employee, employee: Employee, onEvent: (EmployeeEvent) ->
             Column(modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally){
-                Text(modifier = Modifier.padding(6.dp), text = "Start Date: " + employee.date_of_start, fontSize = 16.sp , fontWeight = FontWeight.Medium)
-                Text(text = "Birth Date: " + employee.date_of_birth, fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(6.dp), text = "Start Date: " + employee.date_of_start.toStr(), fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                Text(text = "Birth Date: " + employee.date_of_birth.toStr(), fontSize = 16.sp , fontWeight = FontWeight.Medium)
             }
 
             Column(modifier = Modifier.fillMaxWidth(),
