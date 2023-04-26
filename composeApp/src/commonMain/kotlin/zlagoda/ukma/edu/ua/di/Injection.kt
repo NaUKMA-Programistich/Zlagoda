@@ -14,7 +14,7 @@ import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepositoryImpl
 import zlagoda.ukma.edu.ua.db.MyDatabase
 
 object Injection {
-    private val database = MyDatabase(DriverFactory.createDriver())
+    private val database = DriverFactory.createDatabase()
     private val settings = Settings()
     val categoryRepository = CategoryRepositoryImpl(database)
     val employeeRepository = EmployeeRepositoryImpl(database)

@@ -1,6 +1,7 @@
 package zlagoda.ukma.edu.ua.utils.validation
 
 
+import zlagoda.ukma.edu.ua.core.ktx.toDate
 import java.time.LocalDate
 import java.time.Period
 
@@ -10,6 +11,7 @@ fun String.isPhoneNumberValid(): Boolean {
     return this.matches(regex) && this.replace("+", "").length >= 5
 }
 
+// TODO
 fun String.isBDayValid () : Boolean{
     return try {
         val start = LocalDate.parse(this)
