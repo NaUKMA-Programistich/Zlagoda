@@ -12,4 +12,8 @@ interface CustomerCardRepository {
     suspend fun deleteCustomerCardByCardNumber(cardNumber: String)
 
     suspend fun insertCustomerCard(customerCard: CustomerCard)
+
+    suspend fun filterByPercent(percent: Long): List<CustomerCard>
+
+    suspend fun filterBySurname(surname: String): List<CustomerCard>
 }

@@ -15,6 +15,7 @@ import zlagoda.ukma.edu.ua.screens.products_search.ui.ProductSearchAppBar
 import zlagoda.ukma.edu.ua.screens.products_search.ui.ProductSearchList
 import zlagoda.ukma.edu.ua.screens.products_search.viewmodel.ProductsSearchEvent
 import zlagoda.ukma.edu.ua.screens.products_search.viewmodel.ProductsSearchState
+import zlagoda.ukma.edu.ua.screens.customer_cards_search.viewmodel.CustomerCardsSearchViewModel
 import zlagoda.ukma.edu.ua.screens.products_search.viewmodel.ProductsSearchViewModel
 
 @Composable
@@ -43,10 +44,6 @@ internal fun ProductSearchScreen(
                 }
                 is ProductsSearchState.Loading -> CircularProgressIndicator()
             }
-        }
-
-        when (val action = viewAction) {
-            else -> {}
         }
     }
 }

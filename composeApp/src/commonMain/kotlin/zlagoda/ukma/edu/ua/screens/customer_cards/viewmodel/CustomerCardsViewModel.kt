@@ -2,13 +2,17 @@ package zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel
 
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import zlagoda.ukma.edu.ua.core.ktx.isManager
+import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepository
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.db.CustomerCard
 import zlagoda.ukma.edu.ua.di.Injection
 
 class CustomerCardViewModel(
-    private val repository: CustomerCardRepository = Injection.customerCardRepository
+    private val repository: CustomerCardRepository = Injection.customerCardRepository,
+    private val loginRepository: LoginRepository = Injection.loginRepository
 ): ViewModel<CustomerCardsState, CustomerCardsAction, CustomerCardsEvent>(
     initialState = CustomerCardsState.Loading,
 ) {
@@ -21,6 +25,13 @@ class CustomerCardViewModel(
             is CustomerCardsEvent.DeleteCustomerCard -> processDeleteCustomerCard(viewEvent.customerCard)
             is CustomerCardsEvent.EditCustomerCard -> processEditCustomerCard(viewEvent.customerCard)
             is CustomerCardsEvent.CreateNewCustomerCard -> processNewCustomerCard()
+            CustomerCardsEvent.Search -> processSearch()
+        }
+    }
+
+    private fun processSearch() {
+        withViewModelScope {
+            setViewAction(CustomerCardsAction.OpenSearch)
         }
     }
 

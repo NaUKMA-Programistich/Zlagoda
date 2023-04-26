@@ -13,6 +13,7 @@ import zlagoda.ukma.edu.ua.screens.customer_cards.ui.CustomerCardViewList
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardViewModel
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsAction
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsState
+import zlagoda.ukma.edu.ua.screens.customer_cards_search.CustomerCardsSearchScreen
 
 @Composable
 internal fun CustomerCardsScreen() {
@@ -48,6 +49,9 @@ internal fun CustomerCardsScreen() {
                 )
             }
             null -> {}
+            CustomerCardsAction.OpenSearch -> modalController.present(alertConfiguration) { key ->
+                CustomerCardsSearchScreen(onCloseClick = { modalController.popBackStack(key) })
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.extensions.push
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
+import zlagoda.ukma.edu.ua.core.composable.ComposableError
 import zlagoda.ukma.edu.ua.navigation.NavigationRoute
 import zlagoda.ukma.edu.ua.screens.login.ui.LoginViewAuth
 import zlagoda.ukma.edu.ua.screens.login.ui.LoginViewError
@@ -39,7 +40,7 @@ internal fun LoginScreen() {
                 navController.push(NavigationRoute.Main.name)
             }
             is LoginAction.ShowError -> modalController.present(alertConfiguration) { key ->
-                LoginViewError(message = action.message) { modalController.popBackStack(key) }
+                ComposableError(message = action.message) { modalController.popBackStack(key) }
             }
             null -> {}
         }

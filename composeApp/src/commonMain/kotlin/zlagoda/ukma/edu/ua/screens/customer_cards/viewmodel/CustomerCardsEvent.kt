@@ -13,4 +13,5 @@ sealed class CustomerCardsEvent {
     data class EditCustomerCard(val customerCard: CustomerCard) : CustomerCardsEvent()
 
     object CreateNewCustomerCard: CustomerCardsEvent()
+    object Search: CustomerCardsEvent()
 }
