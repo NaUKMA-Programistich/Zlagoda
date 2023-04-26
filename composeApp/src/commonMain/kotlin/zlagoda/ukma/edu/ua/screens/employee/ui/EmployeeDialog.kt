@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
+import zlagoda.ukma.edu.ua.core.ktx.toDate
+import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
@@ -18,12 +20,14 @@ import zlagoda.ukma.edu.ua.utils.validation.isBDayValid
 import zlagoda.ukma.edu.ua.utils.validation.isPhoneNumberValid
 import zlagoda.ukma.edu.ua.utils.validation.isStartDateValid
 import zlagoda.ukma.edu.ua.utils.validation.isZipCodeValid
+import java.time.Instant
+import java.util.Date
 import java.util.UUID
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmployeeItem (
-    employee: Employee = Employee("", "","","","",0.0,"","","","","","", "", ""),
+    employee: Employee = Employee("", "","","","",0.0, Date(), Date(),"","","","", "", ""),
     onCloseClick: () -> Unit,
     onEvent:  (EmployeeEvent) -> Unit
 ){
@@ -39,8 +43,8 @@ fun EmployeeItem (
     var empl_role_indexState by remember { mutableStateOf(if (employee.empl_role == employeeRoleMap[0]) 0L else 1L) }
 
     val salaryState = remember { mutableStateOf(employee.salary) }
-    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth) }
-    val date_of_startState = remember { mutableStateOf(employee.date_of_start) }
+    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth.toStr()) }
+    val date_of_startState = remember { mutableStateOf(employee.date_of_start.toStr()) }
     val phone_numberState = remember { mutableStateOf(employee.phone_number) }
     val cityState = remember { mutableStateOf(employee. city) }
     val streetState = remember { mutableStateOf(employee.street) }
@@ -180,8 +184,8 @@ fun EmployeeItem (
                                     empl_patronymic = empl_patronymicState.value,
                                     empl_role = employeeRoleMap[empl_role_indexState]!!,
                                     salary = salaryState.value,
-                                    date_of_birth = date_of_birthState.value,
-                                    date_of_start = date_of_startState.value,
+                                    date_of_birth = date_of_birthState.value.toDate()!!,
+                                    date_of_start = date_of_startState.value.toDate()!!,
                                     phone_number = phone_numberState.value,
                                     city = cityState.value,
                                     street = streetState.value,

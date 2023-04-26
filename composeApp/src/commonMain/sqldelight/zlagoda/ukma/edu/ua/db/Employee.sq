@@ -1,3 +1,6 @@
+import java.time.Instant;
+import java.util.Date;
+
 CREATE TABLE employee (
   id_of_employee TEXT NOT NULL PRIMARY KEY,
   empl_surname TEXT NOT NULL,
@@ -5,8 +8,8 @@ CREATE TABLE employee (
   empl_patronymic TEXT,
   empl_role TEXT NOT NULL,
   salary REAL NOT NULL,
-  date_of_birth TEXT NOT NULL,
-  date_of_start TEXT NOT NULL,
+  date_of_birth TEXT AS Date NOT NULL,
+  date_of_start TEXT AS Date NOT NULL,
   phone_number TEXT NOT NULL,
   city TEXT NOT NULL,
   street TEXT NOT NULL,
