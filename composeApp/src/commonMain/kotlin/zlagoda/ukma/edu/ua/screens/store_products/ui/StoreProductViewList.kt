@@ -15,12 +15,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import zlagoda.ukma.edu.ua.core.composable.DropDownItem
+import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.core.theme.add_button_color
 import zlagoda.ukma.edu.ua.core.theme.delete_button_color
 import zlagoda.ukma.edu.ua.core.theme.edit_button_color
@@ -34,6 +35,18 @@ internal fun StoreProductViewList (
     state: StoreProductsState.StoreProductList,
     onEvent: (StoreProductsEvent) -> Unit
 ) {
+    val sortTypeList = listOf(DropDownItem(0, "By Name"), DropDownItem(1, "By Amount"),)
+    val promTypeList = listOf(DropDownItem(0, "Promotional"), DropDownItem(1, "Not Promotional"),)
+
+    var showAll by remember { mutableStateOf(true) }
+    var promType by remember { mutableStateOf(0) }
+    var sortType by remember { mutableStateOf(0) }
+
+    LaunchedEffect(showAll, sortType, promType) {
+        onEvent(StoreProductsEvent.ChangeFilterSortType(showAll, promType==0, sortType==0))
+    }
+
+
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(5.dp),
@@ -50,6 +63,32 @@ internal fun StoreProductViewList (
                 onClick = { onEvent(StoreProductsEvent.CreateNewStoreProduct) }
             ) {
                 Text("Add New")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(5.dp),
+            horizontalArrangement = Arrangement.spacedBy(30.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("All")
+                Checkbox(
+                    checked = showAll,
+                    onCheckedChange = { showAll = it }
+                )
+            }
+            if (!showAll) {
+                ItemWithDropdown(
+                    modifier = Modifier.width(200.dp),
+                    value = promTypeList[promType].text,
+                    dropdownItems = promTypeList,
+                    onItemClick = { promType = it.id.toInt() }
+                )
+                ItemWithDropdown(
+                    modifier = Modifier.width(200.dp),
+                    value = sortTypeList[sortType].text,
+                    dropdownItems = sortTypeList,
+                    onItemClick = { sortType = it.id.toInt() }
+                )
             }
         }
 

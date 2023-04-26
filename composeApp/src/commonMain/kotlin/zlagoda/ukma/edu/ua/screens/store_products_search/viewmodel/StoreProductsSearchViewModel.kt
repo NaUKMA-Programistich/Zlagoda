@@ -38,11 +38,11 @@ class StoreProductsSearchViewModel(
     override fun obtainEvent(viewEvent: StoreProductsSearchEvent) {
         println("ProductsSearchViewModel: obtainEvent $viewEvent")
         when (viewEvent) {
-            is StoreProductsSearchEvent.SearchStoreProducts -> processSearch(viewEvent.productName, viewEvent.category)
+            is StoreProductsSearchEvent.SearchStoreProducts -> processSearch(viewEvent.productName, viewEvent.category, viewEvent.upc)
         }
     }
 
-    private fun processSearch(productName: String, category: Category?) {
+    private fun processSearch(productName: String, category: Category?, upc: String) {
         withViewModelScope {
             val state = viewStates().value
             if (state !is StoreProductsSearchState.StoreProductList) return@withViewModelScope
@@ -50,13 +50,20 @@ class StoreProductsSearchViewModel(
             val products = state.products
             val currentEmployee = state.currentEmployee
 
-            if (productName.isEmpty() && category == null) {
+            if (productName.isBlank() && upc.isBlank() && category == null) {
                 processNotFilter()
                 return@withViewModelScope
             }
 
-            if (productName.isNotEmpty()) {
+            if (productName.isNotBlank()) {
                 val filter = storeProductsRepository.searchByProductName(productName)
+                setViewState(StoreProductsSearchState.StoreProductList(filter, products, categories, currentEmployee))
+                return@withViewModelScope
+            }
+
+            if (upc.isNotBlank()) {
+                val res = storeProductsRepository.getStoreProductByUPC(upc)
+                val filter = if (res == null) emptyList() else listOf(res)
                 setViewState(StoreProductsSearchState.StoreProductList(filter, products, categories, currentEmployee))
                 return@withViewModelScope
             }

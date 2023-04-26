@@ -50,3 +50,40 @@ getStoreProductsByIdProduct:
 SELECT *
 FROM storeProduct
 WHERE idProduct = :idProduct;
+
+getStoreProductDescriptionByUPC:
+SELECT sellingPrice, productsNumber, product.productName, product.characteristics
+FROM storeProduct
+JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE upc = :upc;
+
+getStoreProductsSortedByProductsNumber:
+SELECT *
+FROM storeProduct
+ORDER BY productsNumber;
+
+getPromotionalStoreProductsSortedByProductsNumber:
+SELECT *
+FROM storeProduct
+WHERE promotionalProduct = 1
+ORDER BY productsNumber;
+
+getPromotionalStoreProductsSortedByName:
+SELECT upc, upcProm, storeProduct.idProduct, sellingPrice, productsNumber, promotionalProduct
+FROM storeProduct
+JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE promotionalProduct = 1
+ORDER BY product.productName;
+
+getNotPromotionalStoreProductsSortedByProductsNumber:
+SELECT *
+FROM storeProduct
+WHERE promotionalProduct = 0
+ORDER BY productsNumber;
+
+getNotPromotionalStoreProductsSortedByName:
+SELECT upc, upcProm, storeProduct.idProduct, sellingPrice, productsNumber, promotionalProduct
+FROM storeProduct
+JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE promotionalProduct = 0
+ORDER BY product.productName;

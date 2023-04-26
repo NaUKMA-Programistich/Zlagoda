@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import zlagoda.ukma.edu.ua.db.GetStoreProductDescriptionByUPC
 import zlagoda.ukma.edu.ua.db.MyDatabase
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import java.util.*
@@ -60,5 +61,31 @@ class StoreProductRepositoryImpl(
         return withContext(Dispatchers.IO) {
             queries.searchStoreProductByCategoryName(categoryName).executeAsList()
         }
+    }
+
+    override suspend fun getStoreProductDescriptionByUPC(upc: String): GetStoreProductDescriptionByUPC? {
+        return withContext(Dispatchers.IO) {
+            queries.getStoreProductDescriptionByUPC(upc).executeAsOneOrNull()
+        }
+    }
+
+    override fun getStoreProductsSortedByProductsNumber(): Flow<List<StoreProduct>> {
+        return queries.getStoreProductsSortedByProductsNumber().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun getPromotionalStoreProductsSortedByName(): Flow<List<StoreProduct>> {
+        return queries.getPromotionalStoreProductsSortedByName().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun getPromotionalStoreProductsSortedByProductsNumber(): Flow<List<StoreProduct>> {
+        return queries.getPromotionalStoreProductsSortedByProductsNumber().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun getNotPromotionalStoreProductsSortedByName(): Flow<List<StoreProduct>> {
+        return queries.getNotPromotionalStoreProductsSortedByName().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun getNotPromotionalStoreProductsSortedByProductsNumber(): Flow<List<StoreProduct>> {
+        return queries.getNotPromotionalStoreProductsSortedByProductsNumber().asFlow().mapToList(Dispatchers.IO)
     }
 }

@@ -36,8 +36,8 @@ internal fun StoreProductSearchScreen(
                 is StoreProductsSearchState.StoreProductList -> {
                     StoreProductSearchList(
                         state = state,
-                        onSearch = { productName, category ->
-                            viewModel.obtainEvent(StoreProductsSearchEvent.SearchStoreProducts(productName, category))
+                        onSearch = { productName, category, productUpc ->
+                            viewModel.obtainEvent(StoreProductsSearchEvent.SearchStoreProducts(productName, category, productUpc))
                         }
                     )
                 }

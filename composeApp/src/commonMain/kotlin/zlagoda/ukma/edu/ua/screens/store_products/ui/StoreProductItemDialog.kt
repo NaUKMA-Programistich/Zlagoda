@@ -61,7 +61,7 @@ internal fun StoreProductItemDialog(
             item {
                 OutlinedTextField(
                     value = sellingPrice.toString(),
-                    onValueChange = { sellingPrice = it.toDouble() },
+                    onValueChange = { sellingPrice = it.toDoubleOrNull()?: -1.0 },
                     label = { Text("Price") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
@@ -69,7 +69,7 @@ internal fun StoreProductItemDialog(
             item {
                 OutlinedTextField(
                     value = productsNumber.toString(),
-                    onValueChange = {  productsNumber = it.toLong() },
+                    onValueChange = {  productsNumber = it.toLongOrNull()?: -1 },
                     label = { Text("Amount") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
