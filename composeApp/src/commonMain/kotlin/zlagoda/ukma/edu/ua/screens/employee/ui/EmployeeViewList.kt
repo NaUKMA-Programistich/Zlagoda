@@ -72,7 +72,7 @@ fun EmployeeViewList(
 
 
         if (user.isSeller())
-            EmployeeCard(employee = user, onEvent = onEvent)
+            EmployeeCard(user = state.currentEmployee,employee = state.currentEmployee, onEvent = onEvent)
         else {
             LazyRow(
                 modifier = Modifier.fillMaxWidth().padding(15.dp).draggable(
@@ -85,7 +85,7 @@ fun EmployeeViewList(
                 )
             ) {
                 items(state.employees) { employee ->
-                    EmployeeCard(employee = employee, onEvent = onEvent)
+                    EmployeeCard(user = state.currentEmployee,employee = employee, onEvent = onEvent)
                 }
 
             }
@@ -144,7 +144,7 @@ fun EmployeeViewList(
 
 
 @Composable
-fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
+fun EmployeeCard(user: Employee, employee: Employee, onEvent: (EmployeeEvent) -> Unit){
     Column (modifier = Modifier.size(370.dp,520.dp).padding(12.dp).clip(RoundedCornerShape(18.dp)).background(MaterialTheme.colors.onSecondary),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -191,7 +191,7 @@ fun EmployeeCard(employee: Employee, onEvent: (EmployeeEvent) -> Unit){
 
 
         }
-        if (employee.isManager()) {
+        if (user.isManager()) {
             Row(
                 modifier = Modifier.weight(1.2f).width(220.dp).padding(15.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
