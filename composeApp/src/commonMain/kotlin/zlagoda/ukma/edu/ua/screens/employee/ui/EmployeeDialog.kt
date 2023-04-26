@@ -43,8 +43,8 @@ fun EmployeeItem (
     var empl_role_indexState by remember { mutableStateOf(if (employee.empl_role == employeeRoleMap[0]) 0L else 1L) }
 
     val salaryState = remember { mutableStateOf(employee.salary) }
-    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth) }
-    val date_of_startState = remember { mutableStateOf(employee.date_of_start) }
+    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth.toStr()) }
+    val date_of_startState = remember { mutableStateOf(employee.date_of_start.toStr()) }
     val phone_numberState = remember { mutableStateOf(employee.phone_number) }
     val cityState = remember { mutableStateOf(employee. city) }
     val streetState = remember { mutableStateOf(employee.street) }
@@ -101,20 +101,14 @@ fun EmployeeItem (
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_birthState.value.toStr(),
-                    onValueChange = {
-                        val date = it.toDate() ?: return@OutlinedTextField
-                        date_of_birthState.value = date
-                    },
+                    value = date_of_birthState.value,
+                    onValueChange = { date_of_birthState.value = it },
                     label = { Text("Date of birth (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_startState.value.toStr(),
-                    onValueChange = {
-                        val date = it.toDate() ?: return@OutlinedTextField
-                        date_of_startState.value = date
-                    },
+                    value = date_of_startState.value,
+                    onValueChange = { date_of_startState.value = it },
                     label = { Text("Date of start (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
@@ -156,9 +150,9 @@ fun EmployeeItem (
 
         Column(modifier = Modifier.fillMaxWidth().weight(0.3f), verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.CenterHorizontally) {
 
-            if (!date_of_birthState.value.isBDayValid())
+            if (!date_of_birthState.value.toDate().isBDayValid())
                 Text("Wrong BDate format")
-            else if (!date_of_startState.value.isStartDateValid())
+            else if (!date_of_startState.value.toDate().isStartDateValid())
                 Text("Wrong Date of start format")
             else if (!phone_numberState.value.isPhoneNumberValid())
                 Text("Wrong phone format")
@@ -190,8 +184,8 @@ fun EmployeeItem (
                                     empl_patronymic = empl_patronymicState.value,
                                     empl_role = employeeRoleMap[empl_role_indexState]!!,
                                     salary = salaryState.value,
-                                    date_of_birth = date_of_birthState.value,
-                                    date_of_start = date_of_startState.value,
+                                    date_of_birth = date_of_birthState.value.toDate()!!,
+                                    date_of_start = date_of_startState.value.toDate()!!,
                                     phone_number = phone_numberState.value,
                                     city = cityState.value,
                                     street = streetState.value,
@@ -212,13 +206,13 @@ fun EmployeeItem (
 }
 
 fun isValidEmployeeForm(
-    date_of_birthState: MutableState<Date>,
-    date_of_startState: MutableState<Date>,
+    date_of_birthState: MutableState<String>,
+    date_of_startState: MutableState<String>,
     phone_numberState: MutableState<String>,
     salaryState: MutableState<Double>,
     zip_codeState: MutableState<String>
 ) : Boolean {
-    return (date_of_birthState.value.isBDayValid() && date_of_startState.value.isStartDateValid()
+    return (date_of_birthState.value.toDate().isBDayValid() && date_of_startState.value.toDate().isStartDateValid()
             && phone_numberState.value.isPhoneNumberValid() && salaryState.value > 0 && zip_codeState.value.isZipCodeValid())
 
 
