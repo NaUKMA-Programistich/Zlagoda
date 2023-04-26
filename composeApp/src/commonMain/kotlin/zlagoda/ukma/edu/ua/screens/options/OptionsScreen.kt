@@ -22,7 +22,6 @@ import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsViewModel
 internal fun OptionsScreen() {
     StoredViewModel(factory = { OptionsViewModel() }) { viewModel ->
         val navController = LocalRootController.current
-        val alertConfiguration = AlertConfiguration(maxHeight = 0.7f, maxWidth = 0.8f, cornerRadius = 4)
         val viewState by viewModel.viewStates().observeAsState()
         val viewAction by viewModel.viewActions().observeAsState()
 

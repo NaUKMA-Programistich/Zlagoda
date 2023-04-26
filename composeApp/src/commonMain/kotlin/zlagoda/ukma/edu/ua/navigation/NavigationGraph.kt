@@ -40,9 +40,7 @@ import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
 import zlagoda.ukma.edu.ua.screens.store_storeProduct.StoreProductsScreen
 
 @Composable
-internal fun RootComposeBuilder.NavigationGraph(
-    employee: Employee?
-) {
+internal fun RootComposeBuilder.NavigationGraph() {
     screen(NavigationRoute.Login.name) {
         LoginScreen()
     }
@@ -72,15 +70,13 @@ internal fun RootComposeBuilder.NavigationGraph(
                 StoreProductsScreen()
             }
         }
-        if (employee?.isManager() == true) {
-            tab(content = CategoriesTab(), colors = TabColors()) {
-                screen(NavigationRoute.Categories.name) {
-                    CategoriesScreen()
-                }
+        tab(content = CategoriesTab(), colors = TabColors()) {
+            screen(NavigationRoute.Categories.name) {
+                CategoriesScreen()
             }
         }
         tab(content = CustomerCardsTab(), colors = TabColors()) {
-            screen(NavigationRoute.Categories.name) {
+            screen(NavigationRoute.CustomerCars.name) {
                 CustomerCardsScreen()
             }
         }

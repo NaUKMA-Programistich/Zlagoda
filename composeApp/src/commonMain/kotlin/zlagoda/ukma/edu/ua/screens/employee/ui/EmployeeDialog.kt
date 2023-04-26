@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
-import zlagoda.ukma.edu.ua.core.ktx.encrypt
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
@@ -46,7 +45,6 @@ fun EmployeeItem (
     val cityState = remember { mutableStateOf(employee. city) }
     val streetState = remember { mutableStateOf(employee.street) }
     val zip_codeState = remember { mutableStateOf(employee.zip_code) }
-    val passwordState = remember { mutableStateOf(employee.password) }
     val loginState = remember { mutableStateOf(employee.login) }
 
 
@@ -135,15 +133,9 @@ fun EmployeeItem (
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = streetState.value,
+                    value = loginState.value,
                     onValueChange = { loginState.value = it },
                     label = { Text("Login") },
-                    modifier = Modifier.fillMaxWidth().padding(5.dp)
-                )
-                OutlinedTextField(
-                    value = zip_codeState.value,
-                    onValueChange = { passwordState.value = it },
-                    label = { Text("Password") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
             }
@@ -195,7 +187,7 @@ fun EmployeeItem (
                                     street = streetState.value,
                                     zip_code = zip_codeState.value,
                                     login = loginState.value,
-                                    password = passwordState.value.encrypt()
+                                    password = employee.password
                                 )
                             )
                         )

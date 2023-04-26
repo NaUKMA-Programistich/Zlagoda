@@ -1,18 +1,30 @@
 package zlagoda.ukma.edu.ua.screens.category.viewmodel
 
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import zlagoda.ukma.edu.ua.core.ktx.isManager
+import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.di.Injection
 
 class CategoryViewModel(
-    private val repository: CategoryRepository = Injection.categoryRepository
+    private val repository: CategoryRepository = Injection.categoryRepository,
+    private val loginRepository: LoginRepository = Injection.loginRepository,
 ): ViewModel<CategoryState, CategoryAction, CategoryEvent>(
     initialState = CategoryState.Loading,
 ) {
-    init { getCategories() }
+    init {
+        withViewModelScope {
+            loginRepository.getCurrentEmployee().collectLatest {
+                if (it.isManager()) { getCategories() }
+                else { setViewState(CategoryState.NotSupport) }
+            }
+        }
+    }
 
     override fun obtainEvent(viewEvent: CategoryEvent) {
         when (viewEvent) {

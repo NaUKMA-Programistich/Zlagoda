@@ -5,4 +5,5 @@ import zlagoda.ukma.edu.ua.db.Category
 sealed class CategoryState {
     data class CategoryList(val categories: List<Category>) : CategoryState()
     object Loading : CategoryState()
+    object NotSupport : CategoryState()
 }

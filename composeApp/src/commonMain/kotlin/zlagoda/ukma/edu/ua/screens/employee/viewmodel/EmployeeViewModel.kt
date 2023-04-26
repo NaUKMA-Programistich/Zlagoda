@@ -33,7 +33,6 @@ class EmployeeViewModel (
             is EmployeeEvent.DeleteEmployee -> processDeleteEmployee(viewEvent.employee)
             is EmployeeEvent.EditEmployee -> processEditEmployee(viewEvent.employee)
             is EmployeeEvent.CreateNewEmployee -> processNewEmployee()
-            else -> {}
         }
     }
 
@@ -84,6 +83,7 @@ class EmployeeViewModel (
     private fun processSaveEmployee(employee: Employee) {
         withViewModelScope {
             repository.insertEmployee(employee)
+            loginRepository.loginInternal(employee.login)
         }
     }
 
@@ -104,7 +104,4 @@ class EmployeeViewModel (
             setViewAction(EmployeeAction.OpenNewEmployeeDialog)
         }
     }
-
-
-
 }

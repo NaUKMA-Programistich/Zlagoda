@@ -8,7 +8,7 @@ import com.adeo.kviewmodel.odyssey.StoredViewModel
 import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
-import zlagoda.ukma.edu.ua.core.ktx.decrypt
+import zlagoda.ukma.edu.ua.core.composable.ComposableLoading
 import zlagoda.ukma.edu.ua.screens.employee.ui.EmployeeItem
 import zlagoda.ukma.edu.ua.screens.employee.ui.EmployeeViewList
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeAction
@@ -31,17 +31,13 @@ internal fun EmployeeScreen() {
                 state = state,
                 onEvent = { viewModel.obtainEvent(it) }
             )
-            is EmployeeState.Loading -> {
-                LoginViewLoading()
-            }
+            is EmployeeState.Loading -> ComposableLoading()
         }
 
         when (val action = viewAction) {
             is EmployeeAction.OpenEditEmployeeDialog -> modalController.present(alertConfiguration) { key ->
                 EmployeeItem(
-                    employee = action.employee.copy(
-                        password = action.employee.password.decrypt()
-                    ),
+                    employee = action.employee,
                     onCloseClick = { modalController.popBackStack(key) },
                     onEvent = { viewModel.obtainEvent(it) }
                 )

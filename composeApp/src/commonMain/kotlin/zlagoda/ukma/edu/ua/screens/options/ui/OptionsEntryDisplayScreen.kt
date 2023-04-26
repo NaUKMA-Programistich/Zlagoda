@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.theme.add_button_color
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsEvent
@@ -26,12 +27,23 @@ internal fun OptionsEntryDisplayScreen(
     state: OptionsState.EntryDisplay,
     onEvent: (OptionsEvent) -> Unit
 ) {
+    val text = """
+        Current Employer: 
+        Name: "${state.employee.empl_name}"
+        SurName: "${state.employee.empl_surname}"
+        Login: "${state.employee.login}"
+        Role: "${state.employee.empl_role}"
+    """.trimIndent()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Current Employer: \"${state.employee.login}\" with role \"${state.employee.empl_role}\"")
+        Text(
+            text = text,
+            textAlign = TextAlign.Center
+        )
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
             onClick = { onEvent(OptionsEvent.LoadReport) }

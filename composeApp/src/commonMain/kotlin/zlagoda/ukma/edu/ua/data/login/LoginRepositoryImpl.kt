@@ -21,7 +21,7 @@ class LoginRepositoryImpl(
 
     private val currentUserFlow = MutableStateFlow<Employee?>(null)
 
-    override fun getCurrentEmployee(): Flow<Employee?> {
+    override fun getCurrentEmployee(): StateFlow<Employee?> {
         return currentUserFlow.asStateFlow()
     }
 
@@ -58,8 +58,19 @@ class LoginRepositoryImpl(
         return Result.success(Unit)
     }
 
-    override suspend fun loginInternal() {
-        val login = settings.get<String>("login") ?: return
+    override suspend fun loginInternal(login: String?) {
+        if (login == null) {
+            val loginInternal = settings.get<String>("login") ?: return
+
+            val searchEmployer = queries
+                .findEmployeeByLogin(loginInternal)
+                .executeAsOneOrNull() ?: return
+
+            currentUserFlow.emit(searchEmployer)
+            return
+        }
+
+        settings["login"] = login
 
         val searchEmployer = queries
             .findEmployeeByLogin(login)

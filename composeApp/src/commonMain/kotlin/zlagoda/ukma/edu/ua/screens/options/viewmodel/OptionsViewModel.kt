@@ -1,6 +1,9 @@
 package zlagoda.ukma.edu.ua.screens.options.viewmodel
 
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import zlagoda.ukma.edu.ua.core.file.buildReport
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository

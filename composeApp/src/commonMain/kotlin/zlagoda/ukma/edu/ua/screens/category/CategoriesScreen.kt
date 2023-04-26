@@ -8,6 +8,10 @@ import com.adeo.kviewmodel.odyssey.StoredViewModel
 import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
+import zlagoda.ukma.edu.ua.core.composable.ComposableLoading
+import zlagoda.ukma.edu.ua.core.ktx.isManager
+import zlagoda.ukma.edu.ua.core.ktx.isSeller
+import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.category.ui.CategoryItemDialog
 import zlagoda.ukma.edu.ua.screens.category.ui.CategoryViewList
 import zlagoda.ukma.edu.ua.screens.category.viewmodel.CategoryAction
@@ -28,8 +32,9 @@ internal fun CategoriesScreen() {
                 onEvent = { viewModel.obtainEvent(it) }
             )
 
-            is CategoryState.Loading -> {
-                Text("Loading")
+            is CategoryState.Loading -> ComposableLoading()
+            is CategoryState.NotSupport -> {
+                Text(text = "Not supported")
             }
         }
 
