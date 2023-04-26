@@ -1,5 +1,6 @@
-package zlagoda.ukma.edu.ua.screens.store_storeProduct.viewmodel
+package zlagoda.ukma.edu.ua.screens.store_products.viewmodel
 
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
@@ -8,9 +9,6 @@ import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepository
 import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.di.Injection
-import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsAction
-import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
-import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
 
 class StoreProductsViewModel(
     private val storeProductsRepository: StoreProductRepository = Injection.storeProductRepository,
@@ -18,6 +16,9 @@ class StoreProductsViewModel(
 ): ViewModel<StoreProductsState, StoreProductsAction, StoreProductsEvent>(
     initialState = StoreProductsState.Loading,
 ) {
+
+    private var job: Job? = null
+
     init {
         getStoreProducts()
         getProductNames()
@@ -31,6 +32,7 @@ class StoreProductsViewModel(
             is StoreProductsEvent.EditStoreProduct -> processEditStoreProduct(viewEvent.storeProduct)
             is StoreProductsEvent.CreateNewStoreProduct -> processNewStoreProduct()
             is StoreProductsEvent.SearchStoreProduct -> processSearch()
+            is StoreProductsEvent.ChangeFilterSortType -> getStoreProducts(viewEvent.all, viewEvent.prom, viewEvent.byName)
         }
     }
 
@@ -39,12 +41,22 @@ class StoreProductsViewModel(
             setViewAction(StoreProductsAction.OpenSearchDialog)
         }
     }
-
-    private fun getStoreProducts() {
-        storeProductsRepository.getAllStoreProducts()
-            .onEach { storeProducts ->
-                processChangeStoreProductList(storeProducts)
-            }.launchIn(viewModelScope)
+    private fun getStoreProducts(all: Boolean = true, prom: Boolean = true, byName: Boolean = true) {
+        job?.cancel() // cancel prev job if we have one
+        val storeProductsFlow = if (all) {
+            storeProductsRepository.getStoreProductsSortedByProductsNumber()
+        } else {
+            if (prom) {
+                if (byName) storeProductsRepository.getPromotionalStoreProductsSortedByName()
+                else storeProductsRepository.getPromotionalStoreProductsSortedByProductsNumber()
+            } else {
+                if (byName) storeProductsRepository.getNotPromotionalStoreProductsSortedByName()
+                else storeProductsRepository.getNotPromotionalStoreProductsSortedByProductsNumber()
+            }
+        }
+        job = storeProductsFlow.onEach { storeProducts ->
+            processChangeStoreProductList(storeProducts)
+        }.launchIn(viewModelScope)
     }
 
     private fun getProductNames() {

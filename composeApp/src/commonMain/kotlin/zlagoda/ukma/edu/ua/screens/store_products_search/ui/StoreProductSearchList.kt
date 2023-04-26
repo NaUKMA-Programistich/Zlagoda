@@ -28,13 +28,14 @@ internal fun StoreProductSearchList(
     storeProducts: List<StoreProduct>,
     products: List<Product>,
     categories: List<Category>,
-    onSearch: (String, Category?) -> Unit
+    onSearch: (String, Category?, String) -> Unit
 ) {
     var productName by remember { mutableStateOf("") }
+    var productUPC by remember { mutableStateOf("") }
     var categorySelect by remember { mutableStateOf<Category?>(null) }
 
-    LaunchedEffect(productName, categorySelect) {
-        onSearch(productName, categorySelect)
+    LaunchedEffect(productName, categorySelect, productUPC) {
+        onSearch(productName, categorySelect, productUPC)
     }
 
     Row(
@@ -42,19 +43,27 @@ internal fun StoreProductSearchList(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Касир
+
         OutlinedTextField(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Search Product Name") },
-            enabled = categorySelect == null && LoginViewModel.isSeller(),
+            enabled = categorySelect == null,
             modifier = Modifier.padding(5.dp)
         )
-        // Менеджер  та касир
+
+        OutlinedTextField(
+            value = productUPC,
+            onValueChange = { productUPC = it },
+            label = { Text("Exact Product UPC") },
+            enabled = categorySelect == null,
+            modifier = Modifier.padding(5.dp)
+        )
+
         CategoryDropdown (
             current = categorySelect,
             dropdownItems = categories,
-            isEnabled = productName.isEmpty() && (LoginViewModel.isSeller() || LoginViewModel.isManager()),
+            isEnabled = productName.isEmpty() ,
             onItemClick = { categorySelect = it },
         )
 

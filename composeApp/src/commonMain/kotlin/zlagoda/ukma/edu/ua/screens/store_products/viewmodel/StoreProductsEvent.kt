@@ -6,6 +6,12 @@ sealed class StoreProductsEvent {
 
     data class SetStoreProductList(val storeProductList: List<StoreProduct>) : StoreProductsEvent()
 
+    data class ChangeFilterSortType(
+        val all: Boolean = true,
+        val prom: Boolean = true,
+        val byName: Boolean = true
+    ) : StoreProductsEvent()
+
     data class DeleteStoreProduct(val storeProduct: StoreProduct) : StoreProductsEvent()
 
     data class SaveStoreProduct(val storeProduct: StoreProduct) : StoreProductsEvent()

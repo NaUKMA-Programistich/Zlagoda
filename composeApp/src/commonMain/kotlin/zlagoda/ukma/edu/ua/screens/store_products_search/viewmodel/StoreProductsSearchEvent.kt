@@ -4,6 +4,10 @@ import zlagoda.ukma.edu.ua.db.Category
 
 sealed class StoreProductsSearchEvent {
 
-    data class SearchStoreProducts(val productName: String, val category: Category?) : StoreProductsSearchEvent()
+    data class SearchStoreProducts(
+        val productName: String,
+        val category: Category? = null,
+        val upc: String
+    ) : StoreProductsSearchEvent()
 
 }
