@@ -43,8 +43,8 @@ fun EmployeeItem (
     var empl_role_indexState by remember { mutableStateOf(if (employee.empl_role == employeeRoleMap[0]) 0L else 1L) }
 
     val salaryState = remember { mutableStateOf(employee.salary) }
-    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth.toStr()) }
-    val date_of_startState = remember { mutableStateOf(employee.date_of_start.toStr()) }
+    val date_of_birthState = remember { mutableStateOf(employee.date_of_birth) }
+    val date_of_startState = remember { mutableStateOf(employee.date_of_start) }
     val phone_numberState = remember { mutableStateOf(employee.phone_number) }
     val cityState = remember { mutableStateOf(employee. city) }
     val streetState = remember { mutableStateOf(employee.street) }
@@ -101,14 +101,20 @@ fun EmployeeItem (
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_birthState.value,
-                    onValueChange = { date_of_birthState.value = it },
+                    value = date_of_birthState.value.toStr(),
+                    onValueChange = {
+                        val date = it.toDate() ?: return@OutlinedTextField
+                        date_of_birthState.value = date
+                    },
                     label = { Text("Date of birth (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
-                    value = date_of_startState.value,
-                    onValueChange = { date_of_startState.value = it },
+                    value = date_of_startState.value.toStr(),
+                    onValueChange = {
+                        val date = it.toDate() ?: return@OutlinedTextField
+                        date_of_startState.value = date
+                    },
                     label = { Text("Date of start (yyyy-mm-dd)") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
@@ -184,8 +190,8 @@ fun EmployeeItem (
                                     empl_patronymic = empl_patronymicState.value,
                                     empl_role = employeeRoleMap[empl_role_indexState]!!,
                                     salary = salaryState.value,
-                                    date_of_birth = date_of_birthState.value.toDate()!!,
-                                    date_of_start = date_of_startState.value.toDate()!!,
+                                    date_of_birth = date_of_birthState.value,
+                                    date_of_start = date_of_startState.value,
                                     phone_number = phone_numberState.value,
                                     city = cityState.value,
                                     street = streetState.value,
@@ -206,8 +212,8 @@ fun EmployeeItem (
 }
 
 fun isValidEmployeeForm(
-    date_of_birthState: MutableState<String>,
-    date_of_startState: MutableState<String>,
+    date_of_birthState: MutableState<Date>,
+    date_of_startState: MutableState<Date>,
     phone_numberState: MutableState<String>,
     salaryState: MutableState<Double>,
     zip_codeState: MutableState<String>
