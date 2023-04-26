@@ -1,29 +1,23 @@
 package zlagoda.ukma.edu.ua.screens.employee.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.mouseClickable
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.isSecondaryPressed
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
-import zlagoda.ukma.edu.ua.utils.isBDayValid
-import zlagoda.ukma.edu.ua.utils.isPhoneNumberValid
-import zlagoda.ukma.edu.ua.utils.isStartDateValid
-import zlagoda.ukma.edu.ua.utils.isZipCodeValid
+import zlagoda.ukma.edu.ua.utils.validation.isBDayValid
+import zlagoda.ukma.edu.ua.utils.validation.isPhoneNumberValid
+import zlagoda.ukma.edu.ua.utils.validation.isStartDateValid
+import zlagoda.ukma.edu.ua.utils.validation.isZipCodeValid
 import java.util.UUID
 
 @OptIn(ExperimentalFoundationApi::class)

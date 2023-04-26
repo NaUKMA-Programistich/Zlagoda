@@ -1,9 +1,8 @@
-package zlagoda.ukma.edu.ua.utils
+package zlagoda.ukma.edu.ua.utils.validation
 
 
 import java.time.LocalDate
 import java.time.Period
-import java.time.format.DateTimeFormatter
 
 
 fun String.isPhoneNumberValid(): Boolean {

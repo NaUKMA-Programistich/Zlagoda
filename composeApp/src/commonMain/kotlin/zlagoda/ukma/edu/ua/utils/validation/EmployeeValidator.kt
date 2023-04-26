@@ -1,10 +1,6 @@
 package zlagoda.ukma.edu.ua.utils.validation
 
-import zlagoda.ukma.edu.ua.db.CustomerCard
 import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.utils.isBDayValid
-import zlagoda.ukma.edu.ua.utils.isPhoneNumberValid
-import zlagoda.ukma.edu.ua.utils.isStartDateValid
 
 class EmployeeValidator: Validator<Employee> {
 

@@ -8,9 +8,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.db.CustomerCard
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsEvent
+import zlagoda.ukma.edu.ua.utils.validation.CustomerCardValidator
+import zlagoda.ukma.edu.ua.utils.validation.InvalidModelException
 
 @Composable
 internal fun CustomerCardItemDialog(
@@ -26,6 +29,10 @@ internal fun CustomerCardItemDialog(
     var street by remember { mutableStateOf(customerCard.street) }
     var zipCode by remember { mutableStateOf(customerCard.zipCode) }
     var percent by remember { mutableStateOf(customerCard.percent) }
+
+    val validator = CustomerCardValidator()
+    val validate = validator::validate
+    var errorText by remember { mutableStateOf("") }
 
 
     Column(
@@ -104,32 +111,40 @@ internal fun CustomerCardItemDialog(
             item {
                 OutlinedTextField(
                     value = percent.toString(),
-                    onValueChange = { percent = it.toLong() },
+                    onValueChange = { percent = it.toLongOrNull()?: -1 },
                     label = { Text("Percent") },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(
-                onClick = {
-                    onEvent(CustomerCardsEvent.SaveCustomerCard(
-                        CustomerCard(
-                            cardNumber = customerCard.cardNumber,
-                            custSurname = custSurname,
-                            custName = custName,
-                            custPatronymic = custPatronymic,
-                            phoneNumber = phoneNumber,
-                            city = city,
-                            street = street,
-                            zipCode = zipCode,
-                            percent = percent
-                        )
-                    ))
-                    onCloseClick()
-                },
-            ) {
-                Text("Save")
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = errorText, color = Color.Red)
+                Button(
+                    onClick = {
+                        try {
+                            val customerCardToSave = CustomerCard(
+                                cardNumber = customerCard.cardNumber,
+                                custSurname = custSurname,
+                                custName = custName,
+                                custPatronymic = custPatronymic,
+                                phoneNumber = phoneNumber,
+                                city = city,
+                                street = street,
+                                zipCode = zipCode,
+                                percent = percent
+                            )
+                            validate(customerCardToSave)
+                            onEvent(CustomerCardsEvent.SaveCustomerCard(customerCardToSave))
+                            onCloseClick()
+
+                        } catch (exception: InvalidModelException) {
+                            errorText = exception.message?: ""
+                        }
+                    },
+                ) {
+                    Text("Save")
+                }
             }
         }
     }

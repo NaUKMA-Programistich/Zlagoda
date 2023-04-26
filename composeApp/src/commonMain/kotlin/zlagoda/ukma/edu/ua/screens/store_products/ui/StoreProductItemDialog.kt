@@ -8,11 +8,14 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.composable.DropDownItem
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
+import zlagoda.ukma.edu.ua.utils.validation.InvalidModelException
+import zlagoda.ukma.edu.ua.utils.validation.StoreProductValidator
 
 @Composable
 internal fun StoreProductItemDialog(
@@ -25,6 +28,10 @@ internal fun StoreProductItemDialog(
     var sellingPrice by remember { mutableStateOf(storeProduct.sellingPrice) }
     var productsNumber by remember { mutableStateOf(storeProduct.productsNumber) }
     var promotionalProduct by remember { mutableStateOf(storeProduct.promotionalProduct) }
+
+    val validator = StoreProductValidator()
+    val validate = validator::validate
+    var errorText by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -82,23 +89,32 @@ internal fun StoreProductItemDialog(
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Button(
-                onClick = {
-                    onEvent(StoreProductsEvent.SaveStoreProduct(
-                        StoreProduct(
-                            storeProduct.upc,
-                            storeProduct.upcProm,
-                            idProduct,
-                            sellingPrice,
-                            productsNumber,
-                            promotionalProduct
-                        )
-                    ))
-                    onCloseClick()
-                },
-            ) {
-                Text("Save")
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = errorText, color = Color.Red)
+                Button(
+                    onClick = {
+                        try {
+                            val storePruductToSave = StoreProduct(
+                                storeProduct.upc,
+                                storeProduct.upcProm,
+                                idProduct,
+                                sellingPrice,
+                                productsNumber,
+                                promotionalProduct
+                            )
+                            validate(storePruductToSave)
+                            onEvent(StoreProductsEvent.SaveStoreProduct(storePruductToSave))
+                            onCloseClick()
+
+                        } catch (exception: InvalidModelException) {
+                            errorText = exception.message?: ""
+                        }
+                    },
+                ) {
+                    Text("Save")
+                }
             }
+
         }
     }
 
