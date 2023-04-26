@@ -8,12 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,16 +16,13 @@ import zlagoda.ukma.edu.ua.core.composable.CategoryDropdown
 import zlagoda.ukma.edu.ua.core.ktx.isManager
 import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.db.Category
-import zlagoda.ukma.edu.ua.db.Product
-import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
+import zlagoda.ukma.edu.ua.screens.store_products_search.viewmodel.StoreProductsSearchState
 
 @Composable
 internal fun StoreProductSearchList(
-    storeProducts: List<StoreProduct>,
-    products: List<Product>,
-    categories: List<Category>,
-    onSearch: (String, Category?) -> Unit
+    state: StoreProductsSearchState.StoreProductList,
+    onSearch: (String, Category?, String) -> Unit
 ) {
     val storeProducts = state.storeProducts
     val products = state.products
@@ -55,14 +47,23 @@ internal fun StoreProductSearchList(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Search Product Name") },
-            enabled = categorySelect == null && LoginViewModel.isSeller(),
+            enabled = categorySelect == null && currentEmployee.isSeller(),
             modifier = Modifier.padding(5.dp)
         )
+
+        OutlinedTextField(
+            value = productUPC,
+            onValueChange = { productUPC = it },
+            label = { Text("Exact Product UPC") },
+            enabled = categorySelect == null,
+            modifier = Modifier.padding(5.dp)
+        )
+
         // Менеджер  та касир
         CategoryDropdown (
             current = categorySelect,
             dropdownItems = categories,
-            isEnabled = productName.isEmpty() && (LoginViewModel.isSeller() || LoginViewModel.isManager()),
+            isEnabled = productName.isEmpty() && (currentEmployee.isSeller() || currentEmployee.isManager()),
             onItemClick = { categorySelect = it },
         )
 

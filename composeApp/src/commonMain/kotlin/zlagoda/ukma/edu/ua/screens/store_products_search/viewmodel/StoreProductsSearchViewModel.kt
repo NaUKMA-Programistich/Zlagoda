@@ -64,7 +64,7 @@ class StoreProductsSearchViewModel(
             if (upc.isNotBlank()) {
                 val res = storeProductsRepository.getStoreProductByUPC(upc)
                 val filter = if (res == null) emptyList() else listOf(res)
-                setViewState(StoreProductsSearchState.StoreProductList(filter, products, categories))
+                setViewState(StoreProductsSearchState.StoreProductList(filter, products, categories, currentEmployee))
                 return@withViewModelScope
             }
 
