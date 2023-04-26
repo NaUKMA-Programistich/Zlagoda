@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua.screens.store_storeProducts_search
+package zlagoda.ukma.edu.ua.screens.store_products_search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
