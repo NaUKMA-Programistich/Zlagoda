@@ -8,6 +8,7 @@ import com.adeo.kviewmodel.odyssey.StoredViewModel
 import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
+import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductDetailsDialog
 import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductItemDialog
 import zlagoda.ukma.edu.ua.screens.store_products.ui.StoreProductViewList
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsAction
@@ -52,6 +53,9 @@ internal fun StoreProductsScreen() {
             }
             is StoreProductsAction.OpenSearchDialog -> modalController.present(alertConfiguration) { key ->
                 StoreProductSearchScreen(onCloseClick = { modalController.popBackStack(key) })
+            }
+            is StoreProductsAction.OpenProductDetailsDialog -> modalController.present(alertConfiguration) { key ->
+                StoreProductDetailsDialog(onCloseClick = { modalController.popBackStack(key) })
             }
             null -> {}
         }

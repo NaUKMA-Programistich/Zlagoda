@@ -60,6 +60,12 @@ internal fun StoreProductViewList (
             }
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                onClick = { onEvent(StoreProductsEvent.GetStoreProductDetails) }
+            ) {
+                Text("Details")
+            }
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
                 onClick = { onEvent(StoreProductsEvent.CreateNewStoreProduct) }
             ) {
                 Text("Add New")

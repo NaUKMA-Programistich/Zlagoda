@@ -19,5 +19,7 @@ sealed class StoreProductsEvent {
     data class EditStoreProduct(val storeProduct: StoreProduct) : StoreProductsEvent()
 
     object CreateNewStoreProduct: StoreProductsEvent()
+
+    object GetStoreProductDetails: StoreProductsEvent()
     object SearchStoreProduct: StoreProductsEvent()
 }

@@ -8,4 +8,5 @@ sealed class StoreProductsAction {
 
     data class OpenNewStoreProductDialog(val idProductToName: Map<Long, String>) : StoreProductsAction()
     object OpenSearchDialog : StoreProductsAction()
+    object OpenProductDetailsDialog : StoreProductsAction()
 }

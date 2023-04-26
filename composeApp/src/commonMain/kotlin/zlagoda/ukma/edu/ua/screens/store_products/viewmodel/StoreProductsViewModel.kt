@@ -33,6 +33,7 @@ class StoreProductsViewModel(
             is StoreProductsEvent.CreateNewStoreProduct -> processNewStoreProduct()
             is StoreProductsEvent.SearchStoreProduct -> processSearch()
             is StoreProductsEvent.ChangeFilterSortType -> getStoreProducts(viewEvent.all, viewEvent.prom, viewEvent.byName)
+            StoreProductsEvent.GetStoreProductDetails -> processGetStoreProductDetails()
         }
     }
 
@@ -115,6 +116,15 @@ class StoreProductsViewModel(
             val currentState = viewStates().value
             if (currentState is StoreProductsState.StoreProductList) {
                 setViewAction(StoreProductsAction.OpenNewStoreProductDialog(currentState.idProductToName))
+            }
+        }
+    }
+
+    private fun processGetStoreProductDetails() {
+        withViewModelScope {
+            val currentState = viewStates().value
+            if (currentState is StoreProductsState.StoreProductList) {
+                setViewAction(StoreProductsAction.OpenProductDetailsDialog)
             }
         }
     }
