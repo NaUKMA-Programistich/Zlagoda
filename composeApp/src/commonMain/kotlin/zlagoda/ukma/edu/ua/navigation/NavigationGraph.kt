@@ -11,15 +11,25 @@ import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import com.adeo.kviewmodel.compose.observeAsState
+import com.adeo.kviewmodel.odyssey.StoredViewModel
+import com.adeo.kviewmodel.odyssey.ViewModelStore
 import ru.alexgladkov.odyssey.compose.extensions.bottomNavigation
 import ru.alexgladkov.odyssey.compose.extensions.screen
 import ru.alexgladkov.odyssey.compose.extensions.tab
 import ru.alexgladkov.odyssey.compose.navigation.RootComposeBuilder
 import ru.alexgladkov.odyssey.compose.navigation.bottom_bar_navigation.BottomBarDefaults
+import ru.alexgladkov.odyssey.compose.navigation.bottom_bar_navigation.MultiStackBuilder
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabColors
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabContent
 import ru.alexgladkov.odyssey.compose.navigation.tabs.TabDefaults
+import zlagoda.ukma.edu.ua.core.ktx.isManager
+import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
 import zlagoda.ukma.edu.ua.screens.customer_cards.CustomerCardsScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
@@ -30,7 +40,9 @@ import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
 import zlagoda.ukma.edu.ua.screens.store_storeProduct.StoreProductsScreen
 
 @Composable
-internal fun RootComposeBuilder.NavigationGraph() {
+internal fun RootComposeBuilder.NavigationGraph(
+    employee: Employee?
+) {
     screen(NavigationRoute.Login.name) {
         LoginScreen()
     }
@@ -60,7 +72,7 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 StoreProductsScreen()
             }
         }
-        if (LoginViewModel.user.empl_role == "Manager") {
+        if (employee?.isManager() == true) {
             tab(content = CategoriesTab(), colors = TabColors()) {
                 screen(NavigationRoute.Categories.name) {
                     CategoriesScreen()
@@ -79,6 +91,7 @@ internal fun RootComposeBuilder.NavigationGraph() {
         }
     }
 }
+
 
 @Composable
 private fun OrdersTab(): TabContent {

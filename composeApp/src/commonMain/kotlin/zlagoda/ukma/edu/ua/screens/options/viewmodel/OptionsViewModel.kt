@@ -1,20 +1,15 @@
 package zlagoda.ukma.edu.ua.screens.options.viewmodel
 
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import zlagoda.ukma.edu.ua.core.file.buildReport
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
 import zlagoda.ukma.edu.ua.data.cheque.ChequeRepository
-import zlagoda.ukma.edu.ua.data.cheque.ChequeRepositoryImpl
 import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepository
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
-import zlagoda.ukma.edu.ua.data.employee.EmployeeRepositoryImpl
 import zlagoda.ukma.edu.ua.data.product.ProductRepository
 import zlagoda.ukma.edu.ua.data.sale.SaleRepository
-import zlagoda.ukma.edu.ua.data.sale.SaleRepositoryImpl
 import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepository
-import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepositoryImpl
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Cheque
 import zlagoda.ukma.edu.ua.db.CustomerCard
@@ -23,7 +18,8 @@ import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.db.Sale
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.di.Injection
-import zlagoda.ukma.edu.ua.screens.options.utils.buildAll
+import zlagoda.ukma.edu.ua.core.ktx.buildAll
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
 
 class OptionsViewModel(
     private val productsRepository: ProductRepository = Injection.productRepository,
@@ -33,12 +29,31 @@ class OptionsViewModel(
     private val chequeCardRepository: ChequeRepository = Injection.chequeCardRepository,
     private val saleRepository: SaleRepository = Injection.saleRepository,
     private val storeProductRepository: StoreProductRepository = Injection.storeProductRepository,
+    private val loginRepository: LoginRepository = Injection.loginRepository
 ): ViewModel<OptionsState, OptionsAction, OptionsEvent>(
-    initialState = OptionsState.EntryDisplay
+    initialState = OptionsState.Loading
 ) {
+    init {
+        withViewModelScope {
+            loginRepository.getCurrentEmployee().collectLatest {
+                if (it == null) return@collectLatest
+                setViewState(OptionsState.EntryDisplay(it))
+            }
+        }
+    }
+
+
     override fun obtainEvent(viewEvent: OptionsEvent) {
         when (viewEvent) {
             OptionsEvent.LoadReport -> processLoadReport()
+            OptionsEvent.Exit -> processExit()
+        }
+    }
+
+    private fun processExit() {
+        withViewModelScope {
+            loginRepository.logout()
+            setViewAction(OptionsAction.GoToLogin)
         }
     }
 
@@ -53,15 +68,19 @@ class OptionsViewModel(
                             chequeCardRepository.getAllCheques().collectLatest { cheques ->
                                 saleRepository.getAllSales().collectLatest { sales ->
                                     storeProductRepository.getAllStoreProducts().collectLatest { storeProducts ->
-                                        collectData(
-                                            products = products,
-                                            categories = categories,
-                                            employees = employees,
-                                            customerCards = customerCards,
-                                            cheques = cheques,
-                                            sales = sales,
-                                            storeProducts = storeProducts
-                                        )
+                                        loginRepository.getCurrentEmployee().collectLatest { employee ->
+                                            if (employee == null) return@collectLatest
+                                            collectData(
+                                                products = products,
+                                                categories = categories,
+                                                employees = employees,
+                                                customerCards = customerCards,
+                                                cheques = cheques,
+                                                sales = sales,
+                                                storeProducts = storeProducts,
+                                                employee = employee
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -79,7 +98,8 @@ class OptionsViewModel(
         customerCards: List<CustomerCard>,
         cheques: List<Cheque>,
         sales: List<Sale>,
-        storeProducts: List<StoreProduct>
+        storeProducts: List<StoreProduct>,
+        employee: Employee
     ) {
         val csv = buildAll(
             products = products,
@@ -92,6 +112,6 @@ class OptionsViewModel(
         )
         buildReport(content = csv)
 
-        setViewState(OptionsState.EntryDisplay)
+        setViewState(OptionsState.EntryDisplay(employee))
     }
 }

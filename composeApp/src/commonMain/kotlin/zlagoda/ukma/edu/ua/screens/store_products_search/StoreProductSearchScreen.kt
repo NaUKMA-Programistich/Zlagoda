@@ -35,9 +35,7 @@ internal fun StoreProductSearchScreen(
             when (val state = viewState) {
                 is StoreProductsSearchState.StoreProductList -> {
                     StoreProductSearchList(
-                        storeProducts = state.storeProducts,
-                        products = state.products,
-                        categories = state.categories,
+                        state = state,
                         onSearch = { productName, category ->
                             viewModel.obtainEvent(StoreProductsSearchEvent.SearchStoreProducts(productName, category))
                         }

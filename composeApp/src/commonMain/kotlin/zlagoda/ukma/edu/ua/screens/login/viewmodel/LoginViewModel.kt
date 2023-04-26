@@ -1,13 +1,29 @@
 package zlagoda.ukma.edu.ua.screens.login.viewmodel
 
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
-import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
+import zlagoda.ukma.edu.ua.di.Injection
 
-class LoginViewModel: ViewModel<LoginState, LoginAction, LoginEvent>(initialState = LoginState.Auth("","")) {
+class LoginViewModel(
+    private val loginRepository: LoginRepository = Injection.loginRepository
+): ViewModel<LoginState, LoginAction, LoginEvent>(initialState = LoginState.Loading) {
+
+    init {
+        withViewModelScope {
+            if(loginRepository.isLogin()) {
+                loginRepository.loginInternal()
+                setViewAction(LoginAction.GoToMainScreen)
+                return@withViewModelScope
+            }
+
+            setViewState(LoginState.Auth("", ""))
+        }
+    }
+
     override fun obtainEvent(viewEvent: LoginEvent) {
         when (viewEvent) {
             is LoginEvent.SetPassword -> processChangePassword(viewEvent.password)
-            is LoginEvent.SetEmail -> processChangeEmail(viewEvent.email)
+            is LoginEvent.SetLogin -> processChangeEmail(viewEvent.email)
             is LoginEvent.Login -> processLogin()
         }
     }
@@ -16,7 +32,7 @@ class LoginViewModel: ViewModel<LoginState, LoginAction, LoginEvent>(initialStat
         withViewModelScope {
             val currentState = viewStates().value
             if (currentState is LoginState.Auth) {
-                setViewState(LoginState.Auth(currentState.email, password))
+                setViewState(LoginState.Auth(currentState.login, password))
             }
         }
     }
@@ -32,15 +48,23 @@ class LoginViewModel: ViewModel<LoginState, LoginAction, LoginEvent>(initialStat
 
     private fun processLogin() {
         withViewModelScope {
-            setViewAction(LoginAction.GoToMainScreen)
+            val state = viewStates().value
+            if (state !is LoginState.Auth) return@withViewModelScope
+
+            val login = state.login
+            val password = state.password
+
+            setViewState(LoginState.Loading)
+
+            val result = loginRepository.checkEmployee(state.login, state.password)
+            result.onSuccess {
+                setViewAction(LoginAction.GoToMainScreen)
+            }
+
+            result.onFailure {
+                setViewState(LoginState.Auth(login, password))
+                setViewAction(LoginAction.ShowError(it.message ?: "Unknown error"))
+            }
         }
     }
-    
-    companion object{
-        val user : Employee = Employee("28af1c8c-e136-11ed-b5ea-0242aa120002", "Admin","Admin",null,"Manager",10000.00,"1998-01-03","2022-12-07","+1234567890","London","Baker","123");
-
-        fun isSeller(): Boolean = user.empl_role == "Seller"
-        fun isManager(): Boolean = user.empl_role == "Manager"
-    }
-
 }

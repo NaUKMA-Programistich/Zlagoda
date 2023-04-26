@@ -1,9 +1,11 @@
 package zlagoda.ukma.edu.ua.screens.employee.viewmodel
 
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
@@ -11,7 +13,8 @@ import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsAction
 
 
 class EmployeeViewModel (
-    private val repository: EmployeeRepository = Injection.employeeRepository
+    private val repository: EmployeeRepository = Injection.employeeRepository,
+    private val loginRepository: LoginRepository = Injection.loginRepository
 ): ViewModel<EmployeeState, EmployeeAction, EmployeeEvent>(
     initialState = EmployeeState.Loading,
 ) {
@@ -71,7 +74,10 @@ class EmployeeViewModel (
 
     private fun processChangeEmployeeList(employees: List<Employee>) {
         withViewModelScope {
-            setViewState(EmployeeState.EmployeeList(employees))
+            loginRepository.getCurrentEmployee().collectLatest { currentEmployee ->
+                if (currentEmployee == null) return@collectLatest
+                setViewState(EmployeeState.EmployeeList(employees, currentEmployee))
+            }
         }
     }
 

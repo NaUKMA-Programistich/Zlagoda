@@ -56,7 +56,9 @@ class EmployeeRepositoryImpl (
                     phone_number = employee.phone_number,
                     city = employee.city,
                     street = employee.street,
-                    zip_code = employee.zip_code
+                    zip_code = employee.zip_code,
+                    login = employee.login,
+                    password = employee.password
                 )
             }
         }

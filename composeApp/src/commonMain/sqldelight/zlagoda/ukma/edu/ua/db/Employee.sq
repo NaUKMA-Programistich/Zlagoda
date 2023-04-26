@@ -10,17 +10,24 @@ CREATE TABLE employee (
   phone_number TEXT NOT NULL,
   city TEXT NOT NULL,
   street TEXT NOT NULL,
-  zip_code TEXT NOT NULL
+  zip_code TEXT NOT NULL,
+  password TEXT NOT NULL,
+  login TEXT NOT NULL
 );
 
-INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'absd','Peerers','Alop','Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
-INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
-INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'ssssdsdbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
-INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code)
-VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'nnbsd','Peerers',NULL,'Seller',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123');
+-- Peerers1337 123 Manager
+-- TestUser 123 Manager
+-- IPZ 123 Manager
+-- Ilia 123 Seller
+
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
+VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'absd','Peerers','Alop','Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123', '123', 'Peerers1337');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
+VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123', '123', 'TestUser');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
+VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'ssssdsdbsd','Peerers',NULL,'Manager',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123', '123', 'IPZ');
+INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
+VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'nnbsd','Peerers',NULL,'Seller',55000.00,'03/01/1998','07/12/2022','+123-456-7890','London','Baker','123', '123', 'Ilia');
 
 
 getEmployeeById:
@@ -42,7 +49,7 @@ ORDER BY empl_surname;
 insertEmployee:
 INSERT OR REPLACE
 INTO employee
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 employeeSearchData:
 SELECT phone_number, city , street , zip_code
@@ -53,3 +60,8 @@ ORDER BY phone_number;
 deleteEmployeeById:
 DELETE FROM employee
 WHERE id_of_employee = :id_of_Employee;
+
+findEmployeeByLogin:
+SELECT *
+FROM employee
+WHERE login = :login;

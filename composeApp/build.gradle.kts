@@ -26,6 +26,7 @@ kotlin {
                 implementation(libs.navigation.core)
                 implementation(libs.navigation.compose)
 
+                implementation(libs.settings)
             }
         }
 

@@ -10,7 +10,7 @@ import java.io.IOException
 
 actual suspend fun buildReport(content: String): String = withContext(Dispatchers.IO) {
     val time = System.currentTimeMillis()
-    val filePath = "../reports/Report_Zlagoda_$time.csv"
+    val filePath = "../Report_Zlagoda_$time.csv"
     val file = File(filePath).apply { createNewFile() }
 
     val outputStream = FileOutputStream(filePath)

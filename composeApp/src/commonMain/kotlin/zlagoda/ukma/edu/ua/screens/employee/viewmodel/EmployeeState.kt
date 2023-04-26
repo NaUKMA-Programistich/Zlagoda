@@ -4,7 +4,10 @@ import zlagoda.ukma.edu.ua.db.Employee
 
 sealed class EmployeeState {
 
-    data class EmployeeList(val employees: List<Employee>) : EmployeeState()
+    data class EmployeeList(
+        val employees: List<Employee>,
+        val currentEmployee: Employee,
+    ) : EmployeeState()
 
     object Loading : EmployeeState()
 }

@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
+import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.data.product.ProductRepository
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.di.Injection
@@ -12,7 +13,8 @@ import zlagoda.ukma.edu.ua.screens.employee_search.viewmodel.EmployeesSearchEven
 
 class ProductsSearchViewModel(
     private val productsRepository: ProductRepository = Injection.productRepository,
-    private val categoriesRepository: CategoryRepository = Injection.categoryRepository
+    private val categoriesRepository: CategoryRepository = Injection.categoryRepository,
+    private val loginRepository: LoginRepository = Injection.loginRepository,
 ): ViewModel<ProductsSearchState, ProductsSearchAction, ProductsSearchEvent>(
     initialState = ProductsSearchState.Loading,
 ) {
@@ -23,7 +25,10 @@ class ProductsSearchViewModel(
     private suspend fun processNotFilter() {
         productsRepository.getAllSortProducts().collectLatest { products ->
             categoriesRepository.getAllCategories().collectLatest { categories ->
-                setViewState(ProductsSearchState.ProductList(products, categories))
+                loginRepository.getCurrentEmployee().collectLatest { employee ->
+                    if (employee == null) return@collectLatest
+                    setViewState(ProductsSearchState.ProductList(products, categories, employee))
+                }
             }
         }
     }
@@ -41,6 +46,7 @@ class ProductsSearchViewModel(
             val state = viewStates().value
             if (state !is ProductsSearchState.ProductList) return@withViewModelScope
             val categories = state.categories
+            val employee = state.currentEmployee
 
             if (productName.isEmpty() && category == null) {
                 processNotFilter()
@@ -49,13 +55,13 @@ class ProductsSearchViewModel(
 
             if (productName.isNotEmpty()) {
                 val filter = productsRepository.searchByProductName(productName)
-                setViewState(ProductsSearchState.ProductList(filter, categories))
+                setViewState(ProductsSearchState.ProductList(filter, categories, employee))
                 return@withViewModelScope
             }
 
             if (category != null) {
                 val filter = productsRepository.searchByCategoryName(category.name)
-                setViewState(ProductsSearchState.ProductList(filter, categories))
+                setViewState(ProductsSearchState.ProductList(filter, categories, employee))
                 return@withViewModelScope
             }
         }

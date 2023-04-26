@@ -24,9 +24,9 @@ internal fun LoginViewAuth(state: LoginState.Auth, onEvent: (LoginEvent) -> Unit
         )
 
         OutlinedTextField(
-            value = state.email,
-            onValueChange = { email -> onEvent(LoginEvent.SetEmail(email)) },
-            label = { Text("Email") },
+            value = state.login,
+            onValueChange = { email -> onEvent(LoginEvent.SetLogin(email)) },
+            label = { Text("Login") },
             modifier = Modifier.fillMaxWidth().padding(16.dp)
         )
 

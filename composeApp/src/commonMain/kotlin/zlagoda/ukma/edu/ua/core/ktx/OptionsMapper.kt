@@ -1,4 +1,4 @@
-package zlagoda.ukma.edu.ua.screens.options.utils
+package zlagoda.ukma.edu.ua.core.ktx
 
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Cheque
