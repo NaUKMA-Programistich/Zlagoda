@@ -24,12 +24,13 @@ import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
-import zlagoda.ukma.edu.ua.screens.store_products_search.viewmodel.StoreProductsSearchState
 
 @Composable
 internal fun StoreProductSearchList(
-    onSearch: (String, Category?) -> Unit,
-    state: StoreProductsSearchState.StoreProductList
+    storeProducts: List<StoreProduct>,
+    products: List<Product>,
+    categories: List<Category>,
+    onSearch: (String, Category?) -> Unit
 ) {
     val storeProducts = state.storeProducts
     val products = state.products
@@ -37,10 +38,11 @@ internal fun StoreProductSearchList(
     val currentEmployee = state.currentEmployee
 
     var productName by remember { mutableStateOf("") }
+    var productUPC by remember { mutableStateOf("") }
     var categorySelect by remember { mutableStateOf<Category?>(null) }
 
-    LaunchedEffect(productName, categorySelect) {
-        onSearch(productName, categorySelect)
+    LaunchedEffect(productName, categorySelect, productUPC) {
+        onSearch(productName, categorySelect, productUPC)
     }
 
     Row(
@@ -53,14 +55,14 @@ internal fun StoreProductSearchList(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Search Product Name") },
-            enabled = categorySelect == null && currentEmployee.isSeller(),
+            enabled = categorySelect == null && LoginViewModel.isSeller(),
             modifier = Modifier.padding(5.dp)
         )
         // Менеджер  та касир
         CategoryDropdown (
             current = categorySelect,
             dropdownItems = categories,
-            isEnabled = productName.isEmpty() && (currentEmployee.isSeller() || currentEmployee.isManager()),
+            isEnabled = productName.isEmpty() && (LoginViewModel.isSeller() || LoginViewModel.isManager()),
             onItemClick = { categorySelect = it },
         )
 

@@ -16,6 +16,11 @@ class StoreProductValidator: Validator<StoreProduct> {
 
     private fun validateForProduct(obj: StoreProduct) {
         runBlocking {
+            val thisStoreProduct = storeProductsRepository.getStoreProductByUPC(obj.upc)
+            thisStoreProduct?.let {
+                // We just edit existing store product
+                return@runBlocking
+            }
             val storeProducts = storeProductsRepository.getStoreProductsByIdProduct(obj.idProduct)
             if (storeProducts.size > 1)  throw InvalidModelException("There are already 2 store product for this product")
             if (storeProducts.size == 1) {

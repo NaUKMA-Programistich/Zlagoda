@@ -33,6 +33,10 @@ internal fun StoreProductSearchItem(
     ) {
         Text(
             modifier = Modifier.weight(1f),
+            text = "UPC: ${storeProduct.upc}"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
             text = "Category: ${category.name}"
         )
         Text(
