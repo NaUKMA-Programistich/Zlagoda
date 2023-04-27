@@ -33,3 +33,76 @@ VALUES(?, ?, ?, ?, ?, ?);
 deleteChequeByChequeNumber:
 DELETE FROM cheque
 WHERE chequeNumber = :chequeNumber;
+
+
+-- Менеджер: Отримати інформацію про усі чеки,
+-- створені певним касиром за певний період часу
+-- (з можливістю перегляду куплених товарів у цьому чеку, їх назви, к-сті та ціни);
+getAllChecksInfoBySellerWithProductsInDateRange:
+SELECT cheque.chequeNumber, cheque.idEmployee, cheque.printDate, product.productName, sale.sellingPrice, sale.productNumber
+FROM cheque
+JOIN sale ON cheque.chequeNumber = sale.chequeNumber
+JOIN storeProduct ON sale.upc = storeProduct.upc
+JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE cheque.idEmployee = :idEmployee AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate)
+ORDER BY cheque.printDate DESC;
+
+-- Менеджер: Визначити загальну кількість одиниць певного товару,
+-- проданого за певний період часу.
+getTotalSoldAmountForProduct:
+SELECT SUM(sale.productNumber) AS totalSoldAmount
+FROM sale
+JOIN cheque ON sale.chequeNumber = cheque.chequeNumber
+JOIN storeProduct ON storeProduct.upc = sale.upc
+WHERE storeProduct.idProduct = :idProduct
+AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate);
+
+-- Менеджер: Отримати інформацію про усі чеки,
+-- створені усіма касирами за певний період часу
+-- (з можливістю перегляду куплених товарів у цьому чеку, їх назва, к-сті та ціни)
+getAllChecksInfoWithProductsInDateRange:
+SELECT cheque.chequeNumber, cheque.idEmployee, cheque.printDate, product.productName, sale.sellingPrice, sale.productNumber
+FROM cheque
+JOIN sale ON cheque.chequeNumber = sale.chequeNumber
+JOIN storeProduct ON sale.upc = storeProduct.upc
+JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate)
+ORDER BY cheque.printDate DESC;
+
+-- Менеджер: Визначити загальну суму проданих товарів з чеків,
+-- створених певним касиром за певний період часу;
+getTotalSalesAmountForSellerInDateRange:
+SELECT SUM(cheque.sumTotal) AS totalSalesSum
+FROM cheque
+WHERE cheque.idEmployee = :idEmployee
+AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate);
+
+
+
+-- Касир: Переглянути список усіх чеків, що створив касир за цей день
+getAllChequesBySellerForToday:
+SELECT cheque.*
+FROM cheque
+INNER JOIN employee ON cheque.idEmployee = employee.id_of_employee
+WHERE employee.id_of_employee = :idEmloyee
+AND datetime(cheque.printDate) BETWEEN datetime('now', 'start of day') AND datetime('now', 'localtime');
+
+-- Касир: Переглянути список усіх чеків, що створив касир за певний період часу
+getAllChequesBySellerInDateRange:
+SELECT cheque.*
+FROM cheque
+INNER JOIN employee ON cheque.idEmployee = employee.id_of_employee
+WHERE employee.id_of_employee = :idEmloyee
+AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate);
+
+-- Касир: За номером чеку вивести усю інформацію про даний чек,
+-- в тому числі інформацію про назву, к-сть та ціну товарів, придбаних в даному чеку
+getCheckDetailedDescription:
+SELECT cheque.chequeNumber, cheque.idEmployee, cheque.cardNumber, cheque.printDate, cheque.sumTotal, cheque.vat,
+       sale.upc, sale.productNumber, sale.sellingPrice,
+       product.productName, product.characteristics
+FROM cheque
+INNER JOIN sale ON cheque.chequeNumber = sale.chequeNumber
+INNER JOIN storeProduct ON sale.upc = storeProduct.upc
+INNER JOIN product ON storeProduct.idProduct = product.idProduct
+WHERE cheque.chequeNumber = :checkNumber;

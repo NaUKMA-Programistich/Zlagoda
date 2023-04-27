@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import zlagoda.ukma.edu.ua.db.GetAllStoreProductsWithNames
 import zlagoda.ukma.edu.ua.db.GetStoreProductDescriptionByUPC
 import zlagoda.ukma.edu.ua.db.MyDatabase
 import zlagoda.ukma.edu.ua.db.StoreProduct
@@ -20,6 +21,10 @@ class StoreProductRepositoryImpl(
         return withContext(Dispatchers.IO) {
             queries.getStoreProductByUPC(upc).executeAsOneOrNull()
         }
+    }
+
+    override fun getAllStoreProductsWithNames(): Flow<List<GetAllStoreProductsWithNames>> {
+        return queries.getAllStoreProductsWithNames().asFlow().mapToList(Dispatchers.IO)
     }
 
     override fun getAllStoreProducts(): Flow<List<StoreProduct>> {
