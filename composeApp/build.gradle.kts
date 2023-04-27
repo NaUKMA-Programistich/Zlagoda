@@ -66,8 +66,6 @@ compose.desktop {
 sqldelight {
   databases {
     create("MyDatabase") {
-      // Database configuration here.
-      // https://cashapp.github.io/sqldelight
       packageName.set("zlagoda.ukma.edu.ua.db")
     }
   }

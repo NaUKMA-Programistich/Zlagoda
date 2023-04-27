@@ -5,7 +5,7 @@ sealed class OptionsEvent {
     object Exit : OptionsEvent()
 
     object DzhosGroup : OptionsEvent()
-    object DzhosNot : OptionsEvent()
+    data class DzhosNot(val parameter: String) : OptionsEvent()
     object DubovikGroup : OptionsEvent()
     data class DubovikNot(val parameter: String) : OptionsEvent()
     object MelnykGroup : OptionsEvent()

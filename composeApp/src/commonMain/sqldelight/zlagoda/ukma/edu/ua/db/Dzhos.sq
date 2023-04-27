@@ -15,3 +15,25 @@ ORDER BY total_sales DESC;
 -- Групує дані за назвою категорії.
 -- Розраховує кількість продажів і загальний обсяг продажів для кожної категорії.
 -- Сортує результати за спаданням загального обсягу продажів.
+
+getProductsNotSoldAndNotPromotionalAndPriceGreatThan:
+SELECT p.idProduct, p.productName, sp.sellingPrice
+FROM product p
+JOIN storeProduct sp ON p.idProduct = sp.idProduct
+WHERE sp.sellingPrice >= ?
+AND NOT EXISTS (
+    SELECT 1
+    FROM sale s
+    WHERE s.upc = sp.upc
+)
+AND NOT EXISTS (
+    SELECT 1
+    FROM storeProduct sp2
+    WHERE sp2.upc = sp.upc AND sp2.promotionalProduct = 1
+);
+
+-- Цей запит відображає всі продукти, які не мають продажів і не є промоційними продуктами
+-- а також їх вартість більша або дорівнює заданому вхідному параметру
+-- Об'єднуємо таблиці product та storeProduct з відповідними зв'язками між ними.
+-- Застосовуємо умови з операторами NOT EXISTS для відбору продуктів, які відповідають критеріям.
+-- Використовуємо вхідний параметр для фільтрації результатів за вартістю sellingPrice.

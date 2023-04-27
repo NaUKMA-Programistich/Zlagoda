@@ -42,11 +42,11 @@ internal fun ComposableReportDzhos(onEvent: (OptionsEvent) -> Unit) {
             Button(
                 modifier = Modifier.weight(4f),
                 onClick = {
+                    onEvent(OptionsEvent.DzhosNot(param))
                     param = ""
-                    onEvent(OptionsEvent.DzhosNot)
                 }) {
                 Text(
-                    "Загальний обсяг продажів та кількість проданих одиниць для кожної категорії товарів",
+                    text = "Продукти, які не мають продажів та не є промоційними, з вартістю більшою або дорівнюють заданому параметру",
                     textAlign = TextAlign.Center
                 )
             }

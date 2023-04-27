@@ -3,6 +3,7 @@ package zlagoda.ukma.edu.ua.data.report
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.db.GetProductsNotSoldAndNotPromotionalAndPriceGreatThan
 import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
 import zlagoda.ukma.edu.ua.db.GetSalesSummaryByCategory
 import zlagoda.ukma.edu.ua.db.MyDatabase
@@ -18,6 +19,12 @@ class ReportRepositoryImpl(
     override suspend fun dzhosGetSalesSummaryByCategory(): List<GetSalesSummaryByCategory> {
         return withContext(Dispatchers.IO) {
             dzhosQueries.getSalesSummaryByCategory().executeAsList()
+        }
+    }
+
+    override suspend fun dzhosGetProductsNotSoldAndNotPromotionalAndPriceGreatThan(sellPrice: Double): List<GetProductsNotSoldAndNotPromotionalAndPriceGreatThan> {
+        return withContext(Dispatchers.IO) {
+            dzhosQueries.getProductsNotSoldAndNotPromotionalAndPriceGreatThan(sellPrice).executeAsList()
         }
     }
 

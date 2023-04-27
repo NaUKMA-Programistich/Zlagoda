@@ -30,9 +30,12 @@ internal fun ComposableReportDubovik(onEvent: (OptionsEvent) -> Unit) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 4.dp)
         )
-        Button(onClick = { onEvent(OptionsEvent.DubovikGroup) }) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onEvent(OptionsEvent.DubovikGroup) }
+        ) {
             Text(
-                "Кількість та загальна сума продажів для кожнго працівника",
+                "Кількість та загальна сума продажів для кожного працівника",
                 textAlign = TextAlign.Center
             )
         }

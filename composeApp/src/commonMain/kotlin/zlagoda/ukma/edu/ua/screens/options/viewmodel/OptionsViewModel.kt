@@ -50,11 +50,30 @@ class OptionsViewModel(
             OptionsEvent.LoadReport -> processLoadReport()
             OptionsEvent.Exit -> processExit()
             OptionsEvent.DzhosGroup -> processDzhosGroup()
-            OptionsEvent.DzhosNot -> TODO()
+            is OptionsEvent.DzhosNot -> processDzhosNot(viewEvent.parameter)
             OptionsEvent.DubovikGroup -> processDubovikGroup()
             is OptionsEvent.DubovikNot -> processDubovikNot(viewEvent.parameter)
-            OptionsEvent.MelnykGroup -> TODO()
-            OptionsEvent.MelnykNot -> TODO()
+            OptionsEvent.MelnykGroup -> {}
+            OptionsEvent.MelnykNot -> {}
+        }
+    }
+
+    private fun processDzhosNot(parameter: String) {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val parameterDouble = parameter.toDoubleOrNull()
+
+            if (parameterDouble == null) {
+                setViewState(state)
+                return@withViewModelScope
+            }
+
+            val data = reportRepository.dzhosGetProductsNotSoldAndNotPromotionalAndPriceGreatThan(parameterDouble)
+
+            setViewState(state)
+            setViewAction(OptionsAction.DzhosNot(data))
         }
     }
 
