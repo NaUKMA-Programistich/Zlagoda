@@ -31,7 +31,6 @@ import zlagoda.ukma.edu.ua.core.ktx.isManager
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
-import zlagoda.ukma.edu.ua.screens.cheque_details.OrderDetailsScreen
 import zlagoda.ukma.edu.ua.screens.customer_cards.CustomerCardsScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
@@ -59,11 +58,6 @@ internal fun RootComposeBuilder.NavigationGraph() {
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
                 OrderScreen()
-            }
-        }
-        tab(content = OrderDetailsTab(), colors = TabColors()) {
-            screen(NavigationRoute.Orders.name) {
-                OrderDetailsScreen()
             }
         }
         tab(content = ProductsTab(), colors = TabColors()) {
