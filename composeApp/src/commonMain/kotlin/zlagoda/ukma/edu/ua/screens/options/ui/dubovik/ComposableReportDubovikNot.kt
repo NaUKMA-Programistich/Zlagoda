@@ -23,11 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
+import zlagoda.ukma.edu.ua.db.Employee
 
 @Composable
-internal fun ComposableReportDubovikGroup(
-    action: List<GetSalesInfoForAllEmployees>,
+internal fun ComposableReportDubovikNot(
+    action: List<Employee>,
     onCloseClick: () -> Unit
 ) {
     Column(
@@ -40,7 +40,7 @@ internal fun ComposableReportDubovikGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Кількість та загальна сума продажів для кожнго працівника",
+                text = "Працівники що видавали товари ТІЛЬКИ для клієнтів з певним прізвищем",
                 style = MaterialTheme.typography.h5,
                 fontSize = 16.sp
             )
@@ -68,7 +68,7 @@ internal fun ComposableReportDubovikGroup(
 
 @Composable
 private fun ComposableGetSalesSummaryByEmployee(
-    data: GetSalesInfoForAllEmployees?
+    data: Employee?
 ) {
     Row(
         modifier = Modifier
@@ -96,12 +96,7 @@ private fun ComposableGetSalesSummaryByEmployee(
         Text(
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
-            text = data?.salesAmount?.toString()?: "Sales Amount"
-        )
-        Text(
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center,
-            text = data?.salesTotalPrice?.toString()?: "Total Price"
+            text = data?.salary?.toString()?: "Slalary"
         )
     }
 }

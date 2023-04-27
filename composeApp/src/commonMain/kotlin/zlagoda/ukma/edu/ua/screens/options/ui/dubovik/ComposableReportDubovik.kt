@@ -42,11 +42,10 @@ internal fun ComposableReportDubovik(onEvent: (OptionsEvent) -> Unit) {
             Button(
                 modifier = Modifier.weight(4f),
                 onClick = {
-                    param = ""
-                    onEvent(OptionsEvent.DubovikNot)
+                    onEvent(OptionsEvent.DubovikNot(param))
                 }) {
                 Text(
-                    "Кількість та загальна сума продажів для кожнго працівника",
+                    "Працівники що видавали товари ТІЛЬКИ для клієнтів з певним прізвищем",
                     textAlign = TextAlign.Center
                 )
             }
@@ -54,7 +53,7 @@ internal fun ComposableReportDubovik(onEvent: (OptionsEvent) -> Unit) {
                 modifier = Modifier.weight(1f),
                 value = param,
                 onValueChange = { param = it },
-                label = { Text("Параметр") }
+                label = { Text("Прізвище") }
             )
         }
     }

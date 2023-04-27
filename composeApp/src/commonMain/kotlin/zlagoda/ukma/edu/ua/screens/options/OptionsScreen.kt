@@ -16,6 +16,7 @@ import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfigura
 import zlagoda.ukma.edu.ua.navigation.NavigationRoute
 import zlagoda.ukma.edu.ua.screens.options.ui.OptionsEntryDisplayScreen
 import zlagoda.ukma.edu.ua.screens.options.ui.dubovik.ComposableReportDubovikGroup
+import zlagoda.ukma.edu.ua.screens.options.ui.dubovik.ComposableReportDubovikNot
 import zlagoda.ukma.edu.ua.screens.options.ui.dzhos.ComposableReportDzhosGroup
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsAction
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsState
@@ -54,6 +55,12 @@ internal fun OptionsScreen() {
             }
             is OptionsAction.DubovikGroup -> modalController.present(alertConfiguration) { key ->
                 ComposableReportDubovikGroup(
+                    action = action.data,
+                    onCloseClick = { modalController.popBackStack(key) },
+                )
+            }
+            is OptionsAction.DubovikNot -> modalController.present(alertConfiguration) { key ->
+                ComposableReportDubovikNot(
                     action = action.data,
                     onCloseClick = { modalController.popBackStack(key) },
                 )

@@ -2,7 +2,8 @@ package zlagoda.ukma.edu.ua.data.report
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmploees
+import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
 import zlagoda.ukma.edu.ua.db.GetSalesSummaryByCategory
 import zlagoda.ukma.edu.ua.db.MyDatabase
 
@@ -20,9 +21,15 @@ class ReportRepositoryImpl(
         }
     }
 
-    override suspend fun dubovikGetSalesInfoForAllEmploees(): List<GetSalesInfoForAllEmploees> {
+    override suspend fun dubovikGetSalesInfoForAllEmployees(): List<GetSalesInfoForAllEmployees> {
         return withContext(Dispatchers.IO) {
-            dubovikQueries.getSalesInfoForAllEmploees().executeAsList()
+            dubovikQueries.getSalesInfoForAllEmployees().executeAsList()
+        }
+    }
+
+    override suspend fun dubovikGetEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(surname: String): List<Employee> {
+        return withContext(Dispatchers.IO) {
+            dubovikQueries.getEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(surname).executeAsList()
         }
     }
 
