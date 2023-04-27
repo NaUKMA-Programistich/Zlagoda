@@ -20,7 +20,7 @@ CREATE TABLE employee (
 
 -- Peerers1337 123 (202c962c59075b64b07152d234b70) Manager
 -- TestUser alexasda098 (05643749522c5f331694a255) Manager
--- IPZ WVj5T6DpGHotf2KfGmed (756795000b0e2d22714156e76) Manager
+    -- IPZ WVj5T6DpGHotf2KfGmed (756795000b0e2d22714156e76) Manager
 -- Ilia 123 (756795000b0e2d22714156e76) Seller
 
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)

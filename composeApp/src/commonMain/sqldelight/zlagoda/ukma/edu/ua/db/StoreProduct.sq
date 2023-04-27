@@ -24,6 +24,12 @@ getAllStoreProducts:
 SELECT *
 FROM storeProduct;
 
+getAllStoreProductsWithNames:
+SELECT upc, sellingPrice, productsNumber, promotionalProduct, product.productName
+FROM storeProduct
+JOIN product ON storeProduct.idProduct = product.idProduct;
+
+
 insertStoreProduct:
 INSERT OR REPLACE
 INTO storeProduct
