@@ -20,6 +20,11 @@ getAllSales:
 SELECT *
 FROM sale;
 
+getSalesWithChequeNumber:
+SELECT *
+FROM sale
+WHERE chequeNumber = ?;
+
 insertSale:
 INSERT OR REPLACE
 INTO sale
