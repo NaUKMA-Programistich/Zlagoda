@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import zlagoda.ukma.edu.ua.db.Cheque
+import zlagoda.ukma.edu.ua.db.GetCheckDetailedDescription
 import zlagoda.ukma.edu.ua.db.MyDatabase
 import java.util.*
 
@@ -23,6 +24,10 @@ class ChequeRepositoryImpl(
 
     override fun getAllCheques(): Flow<List<Cheque>> {
         return queries.getAllCheques().asFlow().mapToList(Dispatchers.IO)
+    }
+
+    override fun getCheckDetailedDescription(checkNumber: String): Flow<List<GetCheckDetailedDescription>> {
+        return queries.getCheckDetailedDescription(checkNumber).asFlow().mapToList(Dispatchers.IO)
     }
 
     override suspend fun deleteChequeByChequeNumber(chequeNumber: String) {

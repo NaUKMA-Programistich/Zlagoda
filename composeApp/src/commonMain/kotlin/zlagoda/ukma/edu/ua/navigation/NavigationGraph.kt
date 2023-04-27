@@ -36,6 +36,7 @@ import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
 import zlagoda.ukma.edu.ua.screens.login.viewmodel.LoginViewModel
 import zlagoda.ukma.edu.ua.screens.options.OptionsScreen
+import zlagoda.ukma.edu.ua.screens.order.OrderScreen
 import zlagoda.ukma.edu.ua.screens.products.ProductsScreen
 import zlagoda.ukma.edu.ua.screens.store_storeProduct.StoreProductsScreen
 
@@ -57,7 +58,7 @@ internal fun RootComposeBuilder.NavigationGraph() {
 
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
-                Text("Orders")
+                OrderScreen()
             }
         }
         tab(content = ProductsTab(), colors = TabColors()) {
