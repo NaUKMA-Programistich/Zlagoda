@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderEvent
 import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderState
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 @Composable
 fun OrderList(state: OrderState.OrderList,
@@ -24,11 +25,13 @@ fun OrderList(state: OrderState.OrderList,
         }
 
 
-        Button(
-            onClick = { onEvent(OrderEvent.CreateNewOrder) },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = "Add Order")
+        if(Authorization.currentUserHasRole("Seller")) {
+            Button(
+                onClick = { onEvent(OrderEvent.CreateNewOrder) },
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(text = "Add Order")
+            }
         }
     }
 

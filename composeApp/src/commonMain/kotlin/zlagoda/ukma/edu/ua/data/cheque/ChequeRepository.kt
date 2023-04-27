@@ -22,6 +22,8 @@ interface ChequeRepository {
 
     suspend fun insertCheque(cheque: Cheque)
 
+    suspend fun getAllChequesBySellerForToday(idEmployee: String): Flow<List<Cheque>>
+
 }
 
 

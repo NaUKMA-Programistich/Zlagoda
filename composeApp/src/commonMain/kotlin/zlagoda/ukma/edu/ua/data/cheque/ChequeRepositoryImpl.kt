@@ -66,4 +66,9 @@ class ChequeRepositoryImpl(
             )
         }
     }
+
+    override suspend fun getAllChequesBySellerForToday(idEmployee: String): Flow<List<Cheque>> {
+        return queries.getAllChequesBySellerForToday(idEmployee).asFlow().mapToList(Dispatchers.IO)
+
+    }
 }
