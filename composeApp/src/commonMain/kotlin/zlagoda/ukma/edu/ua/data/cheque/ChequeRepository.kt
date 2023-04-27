@@ -21,6 +21,7 @@ interface ChequeRepository {
     suspend fun deleteChequeByChequeNumber(chequeNumber: String)
 
     suspend fun insertCheque(cheque: Cheque)
+
 }
 
 

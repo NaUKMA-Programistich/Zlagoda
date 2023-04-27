@@ -31,6 +31,7 @@ import zlagoda.ukma.edu.ua.core.ktx.isManager
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.category.CategoriesScreen
+import zlagoda.ukma.edu.ua.screens.cheque_details.OrderDetailsScreen
 import zlagoda.ukma.edu.ua.screens.customer_cards.CustomerCardsScreen
 import zlagoda.ukma.edu.ua.screens.login.LoginScreen
 import zlagoda.ukma.edu.ua.screens.employee.EmployeeScreen
@@ -55,10 +56,14 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 EmployeeScreen()
             }
         }
-
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
                 OrderScreen()
+            }
+        }
+        tab(content = OrderDetailsTab(), colors = TabColors()) {
+            screen(NavigationRoute.Orders.name) {
+                OrderDetailsScreen()
             }
         }
         tab(content = ProductsTab(), colors = TabColors()) {
@@ -93,6 +98,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
 @Composable
 private fun OrdersTab(): TabContent {
     return TabDefaults.content("Orders", vector = Icons.Default.ShoppingCart)
+}
+
+@Composable
+private fun OrderDetailsTab(): TabContent {
+    return TabDefaults.content("Order Details", vector = Icons.Default.ShoppingCart)
 }
 
 @Composable
@@ -142,6 +152,7 @@ internal enum class NavigationRoute {
     Login,
     Main,
     Orders,
+    OrderDetails,
     Products,
     StoreProducts,
     Categories,
