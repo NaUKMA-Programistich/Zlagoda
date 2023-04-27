@@ -8,6 +8,8 @@ CREATE TABLE sale (
 
 INSERT INTO sale(upc, chequeNumber, productNumber, sellingPrice)
 VALUES ("29af18c3-e137-11ed-b5ea-0242ac120002", "28af18c5-e136-11ed-b5ea-0242ac120232", 2, 50.85);
+INSERT INTO sale(upc, chequeNumber, productNumber, sellingPrice)
+VALUES ("39af18c3-e137-11ed-b5ea-0245ac120002", "28af18c6-e136-11ed-b5ea-0242ac120299", 3, 40.0);
 
 getSaleByUpcAndChequeNumber:
 SELECT *
