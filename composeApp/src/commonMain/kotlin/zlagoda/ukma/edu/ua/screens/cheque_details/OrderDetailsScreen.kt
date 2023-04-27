@@ -14,6 +14,7 @@ import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfigura
 import zlagoda.ukma.edu.ua.screens.category.ui.CategoryItemDialog
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsByDateRangeDialog
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsBySellerAndDateRangeDialog
+import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.TotalSoldProdcutAmountByDateRangeDialog
 
 @Composable
 internal fun OrderDetailsScreen() {
@@ -37,9 +38,13 @@ internal fun OrderDetailsScreen() {
                 DetailsByDateRangeDialog(onClose = { modalController.popBackStack(key) })
             }
         }) {
-            Text("Cheques details date range")
+            Text("Cheques details for date range")
         }
-        Button(onClick = {}) {
+        Button(onClick = {
+            modalController.present(alertConfiguration) { key ->
+                TotalSoldProdcutAmountByDateRangeDialog(onClose = { modalController.popBackStack(key) })
+            }
+        }){
             Text("Total sold product amount for date range")
         }
         Button(onClick = {}) {

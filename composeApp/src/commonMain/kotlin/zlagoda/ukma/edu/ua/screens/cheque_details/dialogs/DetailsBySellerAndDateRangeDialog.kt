@@ -1,37 +1,23 @@
 package zlagoda.ukma.edu.ua.screens.cheque_details.dialogs
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collectLatest
-import zlagoda.ukma.edu.ua.core.composable.CategoryDropdown
 import zlagoda.ukma.edu.ua.core.composable.DropDownItem
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
-import zlagoda.ukma.edu.ua.core.ktx.isManager
-import zlagoda.ukma.edu.ua.core.ktx.isSeller
-import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.data.cheque.ChequeRepository
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
-import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.db.GetAllChecksInfoBySellerWithProductsInDateRange
-import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.di.Injection
-import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
-import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsEvent
-import zlagoda.ukma.edu.ua.screens.products_search.ui.ProductSearchItem
-import zlagoda.ukma.edu.ua.utils.validation.InvalidModelException
-import zlagoda.ukma.edu.ua.utils.validation.ProductValidator
 
 @Composable
 internal fun DetailsBySellerAndDateRangeDialog(
