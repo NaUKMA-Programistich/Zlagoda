@@ -129,7 +129,7 @@ fun GetAllChecksInfoWithProductsInDateRangeItem(
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = data?.productName?: "Products Number"
+            text = data?.productNumber?.toString()?: "Products Number"
         )
     }
 }
