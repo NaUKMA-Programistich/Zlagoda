@@ -20,9 +20,11 @@ import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
 import zlagoda.ukma.edu.ua.core.ktx.isManager
 import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.core.ktx.toStr
+import zlagoda.ukma.edu.ua.data.cheque.ChequeRepository
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.db.Employee
+import zlagoda.ukma.edu.ua.db.GetAllChecksInfoBySellerWithProductsInDateRange
 import zlagoda.ukma.edu.ua.db.Product
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
@@ -34,12 +36,14 @@ import zlagoda.ukma.edu.ua.utils.validation.ProductValidator
 @Composable
 internal fun DetailsBySellerAndDateRangeDialog(
     onClose: () -> Unit,
-    employeeRepository: EmployeeRepository = Injection.employeeRepository
+    employeeRepository: EmployeeRepository = Injection.employeeRepository,
+    chequeRepository: ChequeRepository = Injection.chequeCardRepository
 ) {
     var dateStartStr by remember { mutableStateOf("2001-01-01") }
     var dateEndStr by remember { mutableStateOf("2031-01-01") }
     var sellers by remember { mutableStateOf(emptyList<Employee>()) }
     var selecetedSellerIndex by remember { mutableStateOf(0) }
+    var data by remember { mutableStateOf(emptyList<GetAllChecksInfoBySellerWithProductsInDateRange>()) }
 
     LaunchedEffect(key1 = true) {
         employeeRepository.getAllSellers().collectLatest {
@@ -47,8 +51,18 @@ internal fun DetailsBySellerAndDateRangeDialog(
         }
     }
 
+    LaunchedEffect(sellers, selecetedSellerIndex, dateStartStr, dateEndStr) {
+        chequeRepository.getAllChecksInfoBySellerWithProductsInDateRange(
+            idEmployee = if (sellers.isNotEmpty()) sellers[selecetedSellerIndex].id_of_employee else "",
+            startDate = dateStartStr,
+            endDate = dateEndStr
+        ).collectLatest {
+            data = it
+        }
+    }
+
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(20.dp),
@@ -90,11 +104,47 @@ internal fun DetailsBySellerAndDateRangeDialog(
                 label = { Text("End Date (yyyy-mm-dd)") },
                 modifier = Modifier.width(250.dp).padding(5.dp)
             )
-
         }
+        GetAllChecksInfoBySellerWithProductsInDateRangeItem(null)
         LazyColumn {
-
+            items(data) {
+                GetAllChecksInfoBySellerWithProductsInDateRangeItem(it)
+            }
         }
+    }
+}
+
+@Composable
+fun GetAllChecksInfoBySellerWithProductsInDateRangeItem(
+    data: GetAllChecksInfoBySellerWithProductsInDateRange?
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(20.dp)
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.chequeNumber?: "Cheque number"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.idEmployee?: "ID employee"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.printDate?.toString()?: "Date"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.productName?: "Product name"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.productName?: "Selling price"
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = data?.productName?: "Products Number"
+        )
     }
 }
 
