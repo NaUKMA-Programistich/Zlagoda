@@ -54,7 +54,7 @@ class OptionsViewModel(
             OptionsEvent.Exit -> processExit()
             OptionsEvent.DzhosGroup -> processDzhosGroup()
             OptionsEvent.DzhosNot -> TODO()
-            OptionsEvent.DubovikGroup -> TODO()
+            OptionsEvent.DubovikGroup -> processDubovykGroup()
             OptionsEvent.DubovikNot -> TODO()
             OptionsEvent.MelnykGroup -> TODO()
             OptionsEvent.MelnykNot -> TODO()
@@ -70,6 +70,18 @@ class OptionsViewModel(
 
             setViewState(state)
             setViewAction(OptionsAction.DzhosGroup(data))
+        }
+    }
+
+    private fun processDubovykGroup() {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dubovikGetSalesInfoForAllEmploees()
+
+            setViewState(state)
+            setViewAction(OptionsAction.DubovikGroup(data))
         }
     }
 

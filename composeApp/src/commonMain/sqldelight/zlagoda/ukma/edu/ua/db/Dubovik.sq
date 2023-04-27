@@ -1,3 +1,14 @@
-simpleDubovik:
-SELECT *
-FROM product;
+getSalesInfoForAllEmploees:
+SELECT
+    employee.empl_surname, employee.empl_name, empl_patronymic,
+    COUNT(*) AS salesAmount,
+    SUM(sale.sellingPrice) AS salesTotalPrice
+FROM employee
+JOIN cheque ON cheque.idEmployee == employee.id_of_employee
+JOIN sale ON sale.chequeNumber == cheque.chequeNumber
+GROUP BY employee.id_of_employee;
+
+-- Цей для кожного працівника виводить його ПІБ, кілкість здійснених продажів та загальну суму продажів:
+-- Об'єднуємо таблиці employee, cheque, sale з відповідними зв'язками між ними.
+-- Групує дані за ID працівників.
+-- Розраховує кількість продажів і загальну суму для кожної працівника.
