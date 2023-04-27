@@ -9,7 +9,8 @@ sealed class OrderState {
         val customerCardsData: Map<String, String>,
         val currentEmployee: Employee,
         val productMap: Map<String, GetAllStoreProductsWithNames>,
-        val employees: List<Employee>
+        val employees: List<Employee>,
+        val chequesWithSalesMap: Map<String, List<GetChequesData>>
     ) : OrderState()
 
 

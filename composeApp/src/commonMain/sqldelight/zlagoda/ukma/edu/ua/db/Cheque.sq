@@ -35,6 +35,15 @@ DELETE FROM cheque
 WHERE chequeNumber = :chequeNumber;
 
 
+getChequesData:
+SELECT c.chequeNumber, c.printDate, s.upc, s.productNumber, s.sellingPrice, p.productName, p.characteristics, e.empl_surname, e.empl_name
+FROM cheque c
+JOIN sale s ON c.chequeNumber = s.chequeNumber
+JOIN storeProduct sp ON s.upc = sp.upc
+JOIN product p ON sp.idProduct = p.idProduct
+JOIN employee e ON c.idEmployee = e.id_of_employee
+ORDER BY c.chequeNumber;
+
 -- Менеджер: Отримати інформацію про усі чеки,
 -- створені певним касиром за певний період часу
 -- (з можливістю перегляду куплених товарів у цьому чеку, їх назви, к-сті та ціни);
@@ -49,7 +58,7 @@ ORDER BY cheque.printDate DESC;
 
 -- Менеджер: Визначити загальну кількість одиниць певного товару,
 -- проданого за певний період часу.
-getTotalSoldAmountForProduct:
+                getTotalSoldAmountForProduct:
 SELECT SUM(sale.productNumber) AS totalSoldAmount
 FROM sale
 JOIN cheque ON sale.chequeNumber = cheque.chequeNumber

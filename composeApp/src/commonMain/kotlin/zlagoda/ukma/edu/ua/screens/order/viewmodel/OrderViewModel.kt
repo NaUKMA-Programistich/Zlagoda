@@ -7,10 +7,7 @@ import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.data.sale.SaleRepository
 import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepository
-import zlagoda.ukma.edu.ua.db.Cheque
-import zlagoda.ukma.edu.ua.db.GetAllStoreProductsWithNames
-import zlagoda.ukma.edu.ua.db.Sale
-import zlagoda.ukma.edu.ua.db.StoreProduct
+import zlagoda.ukma.edu.ua.db.*
 import zlagoda.ukma.edu.ua.di.Injection
 
 
@@ -38,16 +35,21 @@ class OrderViewModel(
                             it.upc to (it)
                         }
                         employeeRepository.getAllSellers().collectLatest { employees ->
+                            repository.getChequesData().collectLatest { chequesData ->
+
+                                val chequesWithSalesMap: Map<String, List<GetChequesData>> = chequesData.groupBy { it.chequeNumber }
+
 
                                 setViewState(
                                     OrderState.OrderList(
                                         customerCardsData = customerCardMap,
                                         currentEmployee = currentEmployee,
                                         productMap = productMap,
-                                        employees = employees
+                                        employees = employees,
+                                        chequesWithSalesMap = chequesWithSalesMap
                                     )
                                 )
-
+                            }
                         }
                     }
                 }
@@ -71,7 +73,8 @@ class OrderViewModel(
                     OrderAction.OpenNewOrderDialog(
                         customerCardsData = currentState.customerCardsData,
                         currentEmployee = currentState.currentEmployee,
-                        productMap = currentState.productMap
+                        productMap = currentState.productMap,
+                        chequesWithSalesMap = currentState.chequesWithSalesMap
                     )
                 )
             }
