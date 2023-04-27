@@ -201,7 +201,7 @@ fun saleItemAdder(
 
         OrderDataWithDropdown(
             modifier = Modifier.weight(1f).padding(5.dp, 8.dp, 5.dp, 5.dp),
-            value = product?.productName ?: "None",
+            value = if(product != null) "${product.productName} ${if(product.promotionalProduct>0) "Promotional" else ""}" else "None",
             dropdownItems = products.toDropDownProductDataItems(),
             onItemClick = { if (saleDataList.find { dataUpc -> dataUpc.upc.value == it.id } == null) data.upc.value = it.id }
         )
@@ -237,7 +237,10 @@ fun Map<String, String>.toDropDownOrderDataItems(): List<OrderDataWithDropdown> 
 
 
 fun Map<String, GetAllStoreProductsWithNames>.toDropDownProductDataItems(): List<OrderDataWithDropdown> {
-    return this.toList().map { OrderDataWithDropdown(it.first, it.second.productName) }
+    return this.toList().map { OrderDataWithDropdown(
+        id = it.first,
+        text = "${it.second.productName} ${if(it.second.promotionalProduct>0) "Promotional" else ""}"
+    ) }
 }
 
 data class OrderDataWithDropdown(
