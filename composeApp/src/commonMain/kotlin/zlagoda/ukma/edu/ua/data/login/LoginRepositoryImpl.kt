@@ -3,15 +3,13 @@ package zlagoda.ukma.edu.ua.data.login
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.set
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import zlagoda.ukma.edu.ua.core.ktx.encrypt
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.db.MyDatabase
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 class LoginRepositoryImpl(
     db: MyDatabase,
@@ -55,6 +53,7 @@ class LoginRepositoryImpl(
         settings["password"] = login
 
         currentUserFlow.emit(searchEmployer)
+        Authorization.updateCurrentUser(searchEmployer)
         return Result.success(Unit)
     }
 
@@ -67,6 +66,7 @@ class LoginRepositoryImpl(
                 .executeAsOneOrNull() ?: return
 
             currentUserFlow.emit(searchEmployer)
+            Authorization.updateCurrentUser(searchEmployer)
             return
         }
 
@@ -77,5 +77,6 @@ class LoginRepositoryImpl(
             .executeAsOneOrNull() ?: return
 
         currentUserFlow.emit(searchEmployer)
+        Authorization.updateCurrentUser(searchEmployer)
     }
 }

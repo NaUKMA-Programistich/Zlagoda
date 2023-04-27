@@ -29,6 +29,7 @@ import zlagoda.ukma.edu.ua.db.CustomerCard
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsEvent
 import zlagoda.ukma.edu.ua.screens.customer_cards.viewmodel.CustomerCardsState
 import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsEvent
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,16 +44,18 @@ internal fun CustomerCardViewList (
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
-                onClick = { onEvent(CustomerCardsEvent.Search) }
+                    colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                    onClick = { onEvent(CustomerCardsEvent.Search) }
             ) {
                 Text("Search")
             }
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
-                onClick = { onEvent(CustomerCardsEvent.CreateNewCustomerCard) }
-            ) {
-                Text("Add New")
+            if (Authorization.currentUserHasRole("Manager")) {
+                Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                        onClick = { onEvent(CustomerCardsEvent.CreateNewCustomerCard) }
+                ) {
+                    Text("Add New")
+                }
             }
         }
 
@@ -138,11 +141,13 @@ internal fun CustomerCardItem(
             ) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
             }
-            IconButton(
-                onClick = { onDeleteClick() },
-                modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
-            ) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+            if(Authorization.currentUserHasRole("Manager")) {
+                IconButton(
+                        onClick = { onDeleteClick() },
+                        modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                }
             }
         }
     }
