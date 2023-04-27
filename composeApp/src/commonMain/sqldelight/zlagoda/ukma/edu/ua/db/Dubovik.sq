@@ -1,0 +1,3 @@
+simpleDubovik:
+SELECT *
+FROM product;

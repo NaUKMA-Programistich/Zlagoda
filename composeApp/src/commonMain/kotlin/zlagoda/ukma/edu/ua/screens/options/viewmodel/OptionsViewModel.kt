@@ -23,6 +23,7 @@ import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.core.ktx.buildAll
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
+import zlagoda.ukma.edu.ua.data.report.ReportRepository
 
 class OptionsViewModel(
     private val productsRepository: ProductRepository = Injection.productRepository,
@@ -32,7 +33,8 @@ class OptionsViewModel(
     private val chequeCardRepository: ChequeRepository = Injection.chequeCardRepository,
     private val saleRepository: SaleRepository = Injection.saleRepository,
     private val storeProductRepository: StoreProductRepository = Injection.storeProductRepository,
-    private val loginRepository: LoginRepository = Injection.loginRepository
+    private val loginRepository: LoginRepository = Injection.loginRepository,
+    private val reportRepository: ReportRepository = Injection.reportRepository
 ): ViewModel<OptionsState, OptionsAction, OptionsEvent>(
     initialState = OptionsState.Loading
 ) {
@@ -50,6 +52,24 @@ class OptionsViewModel(
         when (viewEvent) {
             OptionsEvent.LoadReport -> processLoadReport()
             OptionsEvent.Exit -> processExit()
+            OptionsEvent.DzhosGroup -> processDzhosGroup()
+            OptionsEvent.DzhosNot -> TODO()
+            OptionsEvent.DubovikGroup -> TODO()
+            OptionsEvent.DubovikNot -> TODO()
+            OptionsEvent.MelnykGroup -> TODO()
+            OptionsEvent.MelnykNot -> TODO()
+        }
+    }
+
+    private fun processDzhosGroup() {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dzhosGetSalesSummaryByCategory()
+
+            setViewState(state)
+            setViewAction(OptionsAction.DzhosGroup(data))
         }
     }
 

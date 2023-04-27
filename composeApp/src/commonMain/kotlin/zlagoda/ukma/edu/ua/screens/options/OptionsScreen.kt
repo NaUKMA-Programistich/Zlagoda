@@ -9,11 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.adeo.kviewmodel.compose.observeAsState
 import com.adeo.kviewmodel.odyssey.StoredViewModel
+import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.extensions.push
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
 import zlagoda.ukma.edu.ua.navigation.NavigationRoute
 import zlagoda.ukma.edu.ua.screens.options.ui.OptionsEntryDisplayScreen
+import zlagoda.ukma.edu.ua.screens.options.ui.dzhos.ComposableReportDzhosGroup
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsAction
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsState
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsViewModel
@@ -22,6 +24,8 @@ import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsViewModel
 internal fun OptionsScreen() {
     StoredViewModel(factory = { OptionsViewModel() }) { viewModel ->
         val navController = LocalRootController.current
+        val modalController = navController.findModalController()
+        val alertConfiguration = AlertConfiguration(maxHeight = 0.7f, maxWidth = 0.5f, cornerRadius = 4)
         val viewState by viewModel.viewStates().observeAsState()
         val viewAction by viewModel.viewActions().observeAsState()
 
@@ -37,9 +41,15 @@ internal fun OptionsScreen() {
             }
         }
 
-        when (viewAction) {
+        when (val action = viewAction) {
             OptionsAction.GoToLogin -> {
                 navController.findRootController().push(NavigationRoute.Login.name)
+            }
+            is OptionsAction.DzhosGroup -> modalController.present(alertConfiguration) { key ->
+                ComposableReportDzhosGroup(
+                    action = action.data,
+                    onCloseClick = { modalController.popBackStack(key) },
+                )
             }
             null -> {}
         }
