@@ -26,7 +26,7 @@ CREATE TABLE employee (
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
 VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'absd','Peerers','Alop','Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '202c962c59075b64b07152d234b70', 'Peerers1337');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
-VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'1998-01-03','2022-12-07','+123456-7890','London','Baker','123', '05643749522c5f331694a255', 'TestUser');
+VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '05643749522c5f331694a255', 'TestUser');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
 VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'ssssdsdbsd','Peerers',NULL,'Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '756795000b0e2d22714156e76', 'IPZ');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
