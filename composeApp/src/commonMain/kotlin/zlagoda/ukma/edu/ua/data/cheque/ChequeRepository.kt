@@ -25,6 +25,8 @@ interface ChequeRepository {
     suspend fun getTotalSalesAmountForSellerInDateRange(idEmployee: String, startDate: String, endDate: String) : GetTotalSalesAmountForSellerInDateRange?
     suspend fun insertCheque(cheque: Cheque)
 
+    suspend fun getAllChequesBySellerForToday(idEmployee: String): Flow<List<Cheque>>
+
 }
 
 
