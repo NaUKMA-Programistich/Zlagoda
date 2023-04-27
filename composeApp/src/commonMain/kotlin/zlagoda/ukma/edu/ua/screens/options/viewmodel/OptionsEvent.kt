@@ -7,7 +7,7 @@ sealed class OptionsEvent {
     object DzhosGroup : OptionsEvent()
     object DzhosNot : OptionsEvent()
     object DubovikGroup : OptionsEvent()
-    object DubovikNot : OptionsEvent()
+    data class DubovikNot(val parameter: String) : OptionsEvent()
     object MelnykGroup : OptionsEvent()
     object MelnykNot : OptionsEvent()
 }

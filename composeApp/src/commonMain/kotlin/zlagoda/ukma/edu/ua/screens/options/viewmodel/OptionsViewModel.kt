@@ -1,9 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.options.viewmodel
 
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import zlagoda.ukma.edu.ua.core.file.buildReport
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
@@ -54,8 +51,8 @@ class OptionsViewModel(
             OptionsEvent.Exit -> processExit()
             OptionsEvent.DzhosGroup -> processDzhosGroup()
             OptionsEvent.DzhosNot -> TODO()
-            OptionsEvent.DubovikGroup -> TODO()
-            OptionsEvent.DubovikNot -> TODO()
+            OptionsEvent.DubovikGroup -> processDubovikGroup()
+            is OptionsEvent.DubovikNot -> processDubovikNot(viewEvent.parameter)
             OptionsEvent.MelnykGroup -> TODO()
             OptionsEvent.MelnykNot -> TODO()
         }
@@ -70,6 +67,30 @@ class OptionsViewModel(
 
             setViewState(state)
             setViewAction(OptionsAction.DzhosGroup(data))
+        }
+    }
+
+    private fun processDubovikGroup() {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dubovikGetSalesInfoForAllEmployees()
+
+            setViewState(state)
+            setViewAction(OptionsAction.DubovikGroup(data))
+        }
+    }
+
+    private fun processDubovikNot(parameter: String) {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dubovikGetEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(parameter)
+
+            setViewState(state)
+            setViewAction(OptionsAction.DubovikNot(data))
         }
     }
 

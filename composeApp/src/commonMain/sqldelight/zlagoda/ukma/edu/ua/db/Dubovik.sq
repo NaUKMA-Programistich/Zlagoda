@@ -1,3 +1,41 @@
-simpleDubovik:
+getSalesInfoForAllEmployees:
+SELECT
+    employee.empl_surname, employee.empl_name, empl_patronymic,
+    COUNT(*) AS salesAmount,
+    SUM(sale.sellingPrice) AS salesTotalPrice
+FROM sale
+LEFT JOIN cheque ON sale.chequeNumber == cheque.chequeNumber
+LEFT JOIN employee ON cheque.idEmployee == employee.id_of_employee
+GROUP BY employee.id_of_employee;
+
+-- Цей запит для кожного працівника виводить його ПІБ, кілкість здійснених продажів та загальну суму продажів:
+-- Об'єднуємо таблиці employee, cheque, sale з відповідними зв'язками між ними.
+-- Групує дані за ID працівників.
+-- Розраховує кількість продажів і загальну суму для кожної працівника.
+
+
+getEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname:
 SELECT *
-FROM product;
+FROM employee
+WHERE EXISTS (
+    SELECT *
+    FROM cheque
+    WHERE employee.id_of_employee == cheque.idEmployee
+) AND NOT EXISTS (
+    SELECT chequeNumber
+    FROM cheque
+    WHERE employee.id_of_employee == cheque.idEmployee AND chequeNumber NOT IN (
+        SELECT chequeNumber
+        FROM cheque
+        WHERE cheque.cardNumber IN (
+            SELECT cardNumber
+            FROM customerCard
+            WHERE custSurname = :surname
+        )
+    )
+);
+
+-- Цей запит для клієнта з певним прізвищем виводить всіх працівників що робили продажі для нього і ТІЛЬКИ для нього/них(клієнтів з цим прізвищем):
+-- Знаходимо всі номери чеків, де клієнт має потрібне прізвище
+-- Вибираємо всі номери чеків які не входять до минулого списку (всі інші чеки, де клієнт має інше прізвище)
+-- Перевіряємо щоб ID працівник не входив до списку тих номерів чеків, де клієнт має інше прізвище
