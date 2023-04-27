@@ -26,6 +26,10 @@ class SaleRepositoryImpl(
         return queries.getAllSales().asFlow().mapToList(Dispatchers.IO)
     }
 
+    override fun getSalesWithChequeNumber(chequeNumber: String): Flow<List<Sale>> {
+        return queries.getSalesWithChequeNumber(chequeNumber).asFlow().mapToList(Dispatchers.IO)
+    }
+
     override suspend fun deleteSaleByByUpcAndChequeNumber(upc: String, chequeNumber: String) {
         return withContext(Dispatchers.IO) {
             queries.deleteSaleByUpcAndChequeNumber(upc, chequeNumber)

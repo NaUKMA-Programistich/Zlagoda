@@ -36,10 +36,7 @@ class OrderViewModel(
                         }
                         employeeRepository.getAllSellers().collectLatest { employees ->
                             repository.getChequesData().collectLatest { chequesData ->
-
                                 val chequesWithSalesMap: Map<String, List<GetChequesData>> = chequesData.groupBy { it.chequeNumber }
-
-
                                 setViewState(
                                     OrderState.OrderList(
                                         customerCardsData = customerCardMap,
@@ -61,10 +58,14 @@ class OrderViewModel(
         when (viewEvent) {
             is OrderEvent.CreateNewOrder -> processNewOrder()
             is OrderEvent.SaveOrder -> processSaveOrder(viewEvent.cheque, viewEvent.saleList)
+            is OrderEvent.DeleteOrder -> processDeleteOrder(viewEvent.chequeNumber)
             else -> {}
         }
     }
 
+    private fun process() {
+
+    }
     private fun processNewOrder() {
         withViewModelScope {
             val currentState = viewStates().value
@@ -101,5 +102,30 @@ class OrderViewModel(
             repository.insertCheque(cheque)
         }
     }
+
+    private fun processDeleteOrder(chequeNumber: String) {
+       withViewModelScope {
+            saleRepository.getSalesWithChequeNumber(chequeNumber).collectLatest { saleList ->
+                for (sale in saleList) {
+                    var storeProduct = storeProductRepository.getStoreProductByUPC(sale.upc)
+                    if (storeProduct != null)
+                        storeProductRepository.insertStoreProduct(
+                            StoreProduct(
+                                upc = storeProduct.upc,
+                                upcProm = "",
+                                idProduct = storeProduct.idProduct,
+                                sellingPrice = storeProduct.sellingPrice,
+                                productsNumber = storeProduct.productsNumber + sale.productNumber,
+                                promotionalProduct = storeProduct.promotionalProduct,
+                            )
+                        )
+                    saleRepository.deleteSaleByByUpcAndChequeNumber(sale.upc,sale.chequeNumber)
+                }
+            }
+            repository.deleteChequeByChequeNumber(chequeNumber)
+        }
+    }
+
+
 
 }

@@ -9,6 +9,8 @@ interface SaleRepository {
 
     fun getAllSales(): Flow<List<Sale>>
 
+    fun getSalesWithChequeNumber(chequeNumber: String):Flow<List<Sale>>
+
     suspend fun deleteSaleByByUpcAndChequeNumber(upc:String, chequeNumber: String)
 
     suspend fun insertSale(sale: Sale)
