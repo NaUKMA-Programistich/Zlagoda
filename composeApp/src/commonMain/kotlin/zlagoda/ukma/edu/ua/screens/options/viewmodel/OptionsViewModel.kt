@@ -1,9 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.options.viewmodel
 
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import zlagoda.ukma.edu.ua.core.file.buildReport
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
@@ -23,6 +20,7 @@ import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.core.ktx.buildAll
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
+import zlagoda.ukma.edu.ua.data.report.ReportRepository
 
 class OptionsViewModel(
     private val productsRepository: ProductRepository = Injection.productRepository,
@@ -32,7 +30,8 @@ class OptionsViewModel(
     private val chequeCardRepository: ChequeRepository = Injection.chequeCardRepository,
     private val saleRepository: SaleRepository = Injection.saleRepository,
     private val storeProductRepository: StoreProductRepository = Injection.storeProductRepository,
-    private val loginRepository: LoginRepository = Injection.loginRepository
+    private val loginRepository: LoginRepository = Injection.loginRepository,
+    private val reportRepository: ReportRepository = Injection.reportRepository
 ): ViewModel<OptionsState, OptionsAction, OptionsEvent>(
     initialState = OptionsState.Loading
 ) {
@@ -50,6 +49,48 @@ class OptionsViewModel(
         when (viewEvent) {
             OptionsEvent.LoadReport -> processLoadReport()
             OptionsEvent.Exit -> processExit()
+            OptionsEvent.DzhosGroup -> processDzhosGroup()
+            OptionsEvent.DzhosNot -> TODO()
+            OptionsEvent.DubovikGroup -> processDubovikGroup()
+            is OptionsEvent.DubovikNot -> processDubovikNot(viewEvent.parameter)
+            OptionsEvent.MelnykGroup -> TODO()
+            OptionsEvent.MelnykNot -> TODO()
+        }
+    }
+
+    private fun processDzhosGroup() {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dzhosGetSalesSummaryByCategory()
+
+            setViewState(state)
+            setViewAction(OptionsAction.DzhosGroup(data))
+        }
+    }
+
+    private fun processDubovikGroup() {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dubovikGetSalesInfoForAllEmployees()
+
+            setViewState(state)
+            setViewAction(OptionsAction.DubovikGroup(data))
+        }
+    }
+
+    private fun processDubovikNot(parameter: String) {
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.dubovikGetEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(parameter)
+
+            setViewState(state)
+            setViewAction(OptionsAction.DubovikNot(data))
         }
     }
 

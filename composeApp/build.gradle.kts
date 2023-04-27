@@ -27,6 +27,7 @@ kotlin {
                 implementation(libs.navigation.compose)
 
                 implementation(libs.settings)
+                implementation(libs.klock.common)
             }
         }
 
@@ -41,9 +42,9 @@ kotlin {
                 implementation(compose.desktop.common)
                 implementation(compose.desktop.currentOs)
                 implementation(libs.sqlDelight.driver.sqlite)
+                implementation(libs.sqlDelight.driver.coroutines)
 
-                // Coroutines for sql delight
-                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0-alpha05")
+                implementation(libs.klock.jvm)
             }
         }
 

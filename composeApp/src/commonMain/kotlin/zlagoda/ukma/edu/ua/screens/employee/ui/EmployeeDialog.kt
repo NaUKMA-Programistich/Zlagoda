@@ -1,21 +1,30 @@
 package zlagoda.ukma.edu.ua.screens.employee.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.soywiz.klock.DateTimeTz
+import ru.alexgladkov.odyssey.compose.extensions.present
+import ru.alexgladkov.odyssey.compose.local.LocalRootController
+import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
+import zlagoda.ukma.edu.ua.core.composable.Calendar
 import zlagoda.ukma.edu.ua.core.composable.ItemWithDropdown
+import zlagoda.ukma.edu.ua.core.ktx.getValueOrNull
 import zlagoda.ukma.edu.ua.core.ktx.toDate
 import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 import zlagoda.ukma.edu.ua.utils.validation.isBDayValid
 import zlagoda.ukma.edu.ua.utils.validation.isPhoneNumberValid
 import zlagoda.ukma.edu.ua.utils.validation.isStartDateValid
@@ -31,6 +40,9 @@ fun EmployeeItem (
     onCloseClick: () -> Unit,
     onEvent:  (EmployeeEvent) -> Unit
 ){
+
+    val modalController = LocalRootController.current.findModalController()
+    val alertConfiguration = AlertConfiguration(maxHeight = 0.6f, maxWidth = 0.45f, cornerRadius = 4)
 
     val empl_nameState = remember { mutableStateOf(employee.empl_name) }
     val empl_surnameState = remember { mutableStateOf(employee. empl_surname) }
@@ -50,6 +62,45 @@ fun EmployeeItem (
     val streetState = remember { mutableStateOf(employee.street) }
     val zip_codeState = remember { mutableStateOf(employee.zip_code) }
     val loginState = remember { mutableStateOf(employee.login) }
+
+    var isShowCalendarBirth by remember { mutableStateOf(false) }
+    var isShowCalendarStart by remember { mutableStateOf(false) }
+
+    if (isShowCalendarBirth) {
+        modalController.present(alertConfiguration) { key ->
+            val date = getValueOrNull(date_of_birthState.value) ?: DateTimeTz.nowLocal()
+            Calendar(
+                selectedDate = date.local,
+                onDateSelected = {
+                    modalController.popBackStack(key)
+                    date_of_birthState.value = it.toStr()
+                    isShowCalendarBirth = false
+                },
+                onCloseClick = {
+                    modalController.popBackStack(key)
+                    isShowCalendarBirth = false
+                }
+            )
+        }
+    }
+
+    if (isShowCalendarStart) {
+        modalController.present(alertConfiguration) { key ->
+            val date = getValueOrNull(date_of_startState.value) ?: DateTimeTz.nowLocal()
+            Calendar(
+                selectedDate = date.local,
+                onDateSelected = {
+                    modalController.popBackStack(key)
+                    date_of_startState.value = it.toStr()
+                    isShowCalendarStart = false
+                },
+                onCloseClick = {
+                    modalController.popBackStack(key)
+                    isShowCalendarBirth = false
+                }
+            )
+        }
+    }
 
 
     Column(
@@ -102,14 +153,42 @@ fun EmployeeItem (
                 )
                 OutlinedTextField(
                     value = date_of_birthState.value,
-                    onValueChange = { date_of_birthState.value = it },
-                    label = { Text("Date of birth (yyyy-mm-dd)") },
+                    onValueChange = {
+                        date_of_birthState.value = it
+                    },
+                    label = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    Text("Date of birth (yyyy-mm-dd)")
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = "Calendar",
+                                        modifier = Modifier.clickable { isShowCalendarBirth = true }
+                                    )
+                                }
+                            },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(
                     value = date_of_startState.value,
-                    onValueChange = { date_of_startState.value = it },
-                    label = { Text("Date of start (yyyy-mm-dd)") },
+                    onValueChange = {
+                        date_of_startState.value = it
+                    },
+                    label = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Text("Date of start (yyyy-mm-dd)")
+                            Icon(
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "Calendar",
+                                modifier = Modifier.clickable { isShowCalendarStart = true }
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth().padding(5.dp)
                 )
                 OutlinedTextField(

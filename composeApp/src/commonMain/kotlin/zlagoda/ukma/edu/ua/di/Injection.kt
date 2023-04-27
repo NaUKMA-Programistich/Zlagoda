@@ -8,6 +8,7 @@ import zlagoda.ukma.edu.ua.data.customer_card.CustomerCardRepositoryImpl
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepositoryImpl
 import zlagoda.ukma.edu.ua.data.login.LoginRepositoryImpl
 import zlagoda.ukma.edu.ua.data.product.ProductRepositoryImpl
+import zlagoda.ukma.edu.ua.data.report.ReportRepositoryImpl
 import zlagoda.ukma.edu.ua.data.sale.SaleRepositoryImpl
 import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepositoryImpl
 
@@ -24,4 +25,5 @@ object Injection {
     val saleRepository = SaleRepositoryImpl(database)
     val storeProductRepository = StoreProductRepositoryImpl(database)
     val loginRepository = LoginRepositoryImpl(database, settings)
+    val reportRepository = ReportRepositoryImpl(database)
 }

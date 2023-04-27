@@ -28,6 +28,7 @@ import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.db.StoreProduct
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsEvent
 import zlagoda.ukma.edu.ua.screens.store_products.viewmodel.StoreProductsState
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 
 @Composable
@@ -64,11 +65,13 @@ internal fun StoreProductViewList (
             ) {
                 Text("Details")
             }
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
-                onClick = { onEvent(StoreProductsEvent.CreateNewStoreProduct) }
-            ) {
-                Text("Add New")
+            if (Authorization.currentUserHasRole("Manager")) {
+                Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                        onClick = { onEvent(StoreProductsEvent.CreateNewStoreProduct) }
+                ) {
+                    Text("Add New")
+                }
             }
         }
         Row(
@@ -159,17 +162,19 @@ internal fun StoreProductItem(
             modifier = Modifier.width(120.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(
-                onClick = { onEditClick() },
-                modifier = Modifier.background(color = edit_button_color, shape = CircleShape)
-            ) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
-            }
-            IconButton(
-                onClick = { onDeleteClick() },
-                modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
-            ) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+            if (Authorization.currentUserHasRole("Manager")) {
+                IconButton(
+                        onClick = { onEditClick() },
+                        modifier = Modifier.background(color = edit_button_color, shape = CircleShape)
+                ) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+                }
+                IconButton(
+                        onClick = { onDeleteClick() },
+                        modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                }
             }
         }
     }

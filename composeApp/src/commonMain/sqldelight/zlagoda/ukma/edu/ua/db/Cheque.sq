@@ -13,6 +13,9 @@ CREATE TABLE cheque (
 INSERT INTO cheque(chequeNumber, idEmployee, cardNumber, printDate, sumTotal, vat)
 VALUES ("28af18c5-e136-11ed-b5ea-0242ac120232", "28af18c2-e136-11ed-b5ea-0242ac120002", NULL, "2022-01-03", 200, 5.5);
 
+INSERT INTO cheque(chequeNumber, idEmployee, cardNumber, printDate, sumTotal, vat)
+VALUES ("28af18c6-e136-11ed-b5ea-0242ac120299", "28af20a6-e136-11ed-b5ea-0242ac120002", "28af18c5-e136-11ed-b5ea-0242ac120002", "2022-01-03", 60, 4.5);
+
 getChequeByChequeNumber:
 SELECT *
 FROM cheque

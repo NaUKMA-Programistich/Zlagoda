@@ -1,0 +1,17 @@
+getSalesSummaryByCategory:
+SELECT
+  c.name AS category_name,
+  COUNT(*) AS num_of_sales,
+  SUM(sp.sellingPrice * s.productNumber) AS total_sales
+FROM category c
+JOIN product p ON c.id = p.categoryNumber
+JOIN storeProduct sp ON p.idProduct = sp.idProduct
+JOIN sale s ON sp.upc = s.upc
+GROUP BY c.name
+ORDER BY total_sales DESC;
+
+-- Цей запит обчислює загальний обсяг продажів та кількість проданих одиниць для кожної категорії товарів:
+-- Об'єднуємо таблиці category, product, storeProduct, sale з відповідними зв'язками між ними.
+-- Групує дані за назвою категорії.
+-- Розраховує кількість продажів і загальний обсяг продажів для кожної категорії.
+-- Сортує результати за спаданням загального обсягу продажів.

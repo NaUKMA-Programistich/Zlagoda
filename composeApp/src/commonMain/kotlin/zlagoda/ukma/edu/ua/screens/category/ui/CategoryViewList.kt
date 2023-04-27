@@ -27,6 +27,7 @@ import zlagoda.ukma.edu.ua.core.theme.delete_button_color
 import zlagoda.ukma.edu.ua.core.theme.edit_button_color
 import zlagoda.ukma.edu.ua.screens.category.viewmodel.CategoryEvent
 import zlagoda.ukma.edu.ua.screens.category.viewmodel.CategoryState
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 
 @Composable
@@ -36,11 +37,13 @@ internal fun CategoryViewList (
 ) {
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
         Row(modifier = Modifier.fillMaxWidth().padding(5.dp), horizontalArrangement = Arrangement.End) {
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
-                onClick = { onEvent(CategoryEvent.CreateNewCategory) }
-            ) {
-                Text("Add New")
+            if(Authorization.currentUserHasRole("Manager")) {
+                Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = add_button_color),
+                        onClick = { onEvent(CategoryEvent.CreateNewCategory) }
+                ) {
+                    Text("Add New")
+                }
             }
         }
 
@@ -73,17 +76,19 @@ internal fun CategoryViewList (
                         modifier = Modifier.width(120.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(
-                            onClick = { onEvent(CategoryEvent.EditCategory(category)) },
-                            modifier = Modifier.background(color = edit_button_color, shape = CircleShape)
-                        ) {
-                            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit category")
-                        }
-                        IconButton(
-                            onClick = { onEvent(CategoryEvent.DeleteCategory(category)) },
-                            modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
-                        ) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete category")
+                        if(Authorization.currentUserHasRole("Manager")) {
+                            IconButton(
+                                onClick = { onEvent(CategoryEvent.EditCategory(category)) },
+                                modifier = Modifier.background(color = edit_button_color, shape = CircleShape)
+                            ) {
+                                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit category")
+                            }
+                            IconButton(
+                                    onClick = { onEvent(CategoryEvent.DeleteCategory(category)) },
+                                    modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
+                            ) {
+                                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete category")
+                            }
                         }
                     }
                 }

@@ -3,6 +3,7 @@ package zlagoda.ukma.edu.ua.screens.login.viewmodel
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.di.Injection
+import zlagoda.ukma.edu.ua.utils.authorization.Authorization
 
 class LoginViewModel(
     private val loginRepository: LoginRepository = Injection.loginRepository

@@ -1,0 +1,3 @@
+simpleMelnik:
+SELECT *
+FROM product;
