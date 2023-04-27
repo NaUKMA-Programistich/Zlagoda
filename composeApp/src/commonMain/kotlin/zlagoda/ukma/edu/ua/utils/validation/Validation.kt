@@ -13,7 +13,6 @@ fun String.isPhoneNumberValid(): Boolean {
     return this.matches(regex) && this.replace("+", "").length >= 5
 }
 
-// TODO
 fun Date?.isBDayValid () : Boolean {
     if (this == null) return false
     return try {
