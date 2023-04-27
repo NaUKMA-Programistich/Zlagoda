@@ -20,6 +20,9 @@ interface ChequeRepository {
     suspend fun getTotalSoldAmountForProduct(idProduct: Long, startDate: String, endDate: String): GetTotalSoldAmountForProduct?
     suspend fun deleteChequeByChequeNumber(chequeNumber: String)
 
+    fun getAllChequesBySellerInDateRange(idEmployee: String, startDate: String, endDate: String) : Flow<List<Cheque>>
+
+    suspend fun getTotalSalesAmountForSellerInDateRange(idEmployee: String, startDate: String, endDate: String) : GetTotalSalesAmountForSellerInDateRange?
     suspend fun insertCheque(cheque: Cheque)
 
 }
@@ -27,16 +30,6 @@ interface ChequeRepository {
 
 
 /*
-
-
--- Менеджер: Визначити загальну суму проданих товарів з чеків,
--- створених певним касиром за певний період часу;
-getTotalSalesAmountForSellerInDateRange:
-SELECT SUM(cheque.sumTotal) AS totalSalesSum
-FROM cheque
-WHERE cheque.idEmployee = :idEmployee
-AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate);
-
 
 
 -- Касир: Переглянути список усіх чеків, що створив касир за цей день

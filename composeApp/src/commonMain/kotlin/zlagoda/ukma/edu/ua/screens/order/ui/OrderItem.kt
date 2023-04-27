@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,45 +29,49 @@ import zlagoda.ukma.edu.ua.db.Employee
 import zlagoda.ukma.edu.ua.db.GetChequesData
 import zlagoda.ukma.edu.ua.screens.employee.viewmodel.EmployeeEvent
 import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderEvent
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 @Composable
 fun OrderCard(user: Employee, getChequesDataList : List<GetChequesData>, onEvent: (OrderEvent) -> Unit){
-    Column (modifier = Modifier.size(550.dp,350.dp).padding(12.dp).clip(RoundedCornerShape(18.dp)).background(
+    Column (modifier = Modifier.size(550.dp,370.dp).padding(12.dp).clip(RoundedCornerShape(18.dp)).background(
         MaterialTheme.colors.onSecondary),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 
 
-        Column(modifier = Modifier.weight(3f).padding(12.dp),
+        Column(modifier = Modifier.weight(3f).padding(6.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally){
 
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateString = format.format(getChequesDataList[0].printDate)
+
             Column(modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally){
-                Text(modifier = Modifier.padding(4.dp),text = "Cheque: " + getChequesDataList[0].printDate , fontSize = 21.sp , fontWeight = FontWeight.Medium)
-                Text(modifier = Modifier.padding(8.dp),text = getChequesDataList[0].chequeNumber , fontSize = 18.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(4.dp),text = "Cheque: $dateString", fontSize = 20.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(8.dp),text = getChequesDataList[0].chequeNumber , fontSize = 16.sp , fontWeight = FontWeight.Medium)
             }
 
 
             Column(modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally){
-                Text(modifier = Modifier.padding(6.dp), text = "Employee: " + getChequesDataList[0].empl_name + " " + getChequesDataList[0].empl_surname, fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(6.dp), text = "Employee: " + getChequesDataList[0].empl_name + " " + getChequesDataList[0].empl_surname, fontSize = 17.sp , fontWeight = FontWeight.Medium)
             }
+
 
             LazyColumn(modifier = Modifier.weight(1f)) {
                 item{
                     Row(modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround){
-                        Text(modifier = Modifier.padding(4.dp),text = "productName" , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.padding(4.dp),text = "productNumber" , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.padding(4.dp),text = "sellingPrice" , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.padding(4.dp),text = "characteristics" , fontSize = 18.sp , fontWeight = FontWeight.Medium)
+                        verticalAlignment = Alignment.CenterVertically){
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "productName" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "productNumber" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "sellingPrice" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "characteristics" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
                     }
 
                 }
@@ -75,10 +81,10 @@ fun OrderCard(user: Employee, getChequesDataList : List<GetChequesData>, onEvent
                      Row(modifier = Modifier.fillMaxWidth().padding(8.dp),
                      verticalAlignment = Alignment.CenterVertically,
                      horizontalArrangement = Arrangement.SpaceBetween){
-                         Text(modifier = Modifier.padding(8.dp),text = data.productName , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                         Text(modifier = Modifier.padding(8.dp),text = data.productNumber.toString() , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                         Text(modifier = Modifier.padding(8.dp),text = data.sellingPrice.toString()  , fontSize = 18.sp , fontWeight = FontWeight.Medium)
-                         Text(modifier = Modifier.padding(8.dp),text = data.characteristics , fontSize = 18.sp , fontWeight = FontWeight.Medium)
+                         Text(modifier = Modifier.weight(1f).padding(8.dp),text = data.productName , fontSize = 15.sp , fontWeight = FontWeight.Medium)
+                         Text(modifier = Modifier.weight(1f).padding(8.dp),text = data.productNumber.toString() , fontSize = 15.sp , fontWeight = FontWeight.Medium)
+                         Text(modifier = Modifier.weight(1f).padding(8.dp),text = data.sellingPrice.toString()  , fontSize = 15.sp , fontWeight = FontWeight.Medium)
+                         Text(modifier = Modifier.weight(1f).padding(8.dp),text = data.characteristics , fontSize = 15.sp , fontWeight = FontWeight.Medium)
                      }
 
                 }

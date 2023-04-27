@@ -27,7 +27,7 @@ import zlagoda.ukma.edu.ua.db.GetAllStoreProductsWithNames
 import zlagoda.ukma.edu.ua.db.Sale
 import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderEvent
 import java.util.*
-
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -212,7 +212,7 @@ fun saleItemAdder(
                 onValueChange = {
                     val str = it.replace(Regex("[^\\d]"), "")
                     data.productNumber.value = if (str.isNotEmpty()) str.toLong() else 0L;
-                    data.sellingPrice.value = data.productNumber.value * product.sellingPrice * if (product.promotionalProduct == 1L) 0.8 else 1.0
+                    data.sellingPrice.value = (100 * data.productNumber.value * product.sellingPrice * if (product.promotionalProduct == 1L) 0.8 else 1.0).roundToInt().toDouble()/100.0
                     if (data.productNumber.value > product.productsNumber)
                         data.productNumber.value = product.productsNumber
                 },

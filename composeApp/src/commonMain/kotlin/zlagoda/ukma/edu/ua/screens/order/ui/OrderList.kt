@@ -1,6 +1,8 @@
 package zlagoda.ukma.edu.ua.screens.order.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +17,22 @@ import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderState
 fun OrderList(state: OrderState.OrderList,
               onEvent: (OrderEvent) -> Unit) {
 
+
+
+
     Column (modifier = Modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally){
-        Row (modifier = Modifier.fillMaxWidth()){
-            for (cheque in state.chequesWithSalesMap){
-                OrderCard(user = state.currentEmployee, getChequesDataList = cheque.value, onEvent = onEvent)
-            }
+
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 450.dp)
+        ) {
+                for (cheque in state.chequesWithSalesMap){
+                    item {
+                        OrderCard(user = state.currentEmployee, getChequesDataList = cheque.value, onEvent = onEvent)
+                    }
+                }
         }
+
 
 
         Button(

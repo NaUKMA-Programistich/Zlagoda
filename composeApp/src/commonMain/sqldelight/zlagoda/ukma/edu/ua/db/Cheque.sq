@@ -101,7 +101,7 @@ getAllChequesBySellerInDateRange:
 SELECT cheque.*
 FROM cheque
 INNER JOIN employee ON cheque.idEmployee = employee.id_of_employee
-WHERE employee.id_of_employee = :idEmloyee
+WHERE employee.id_of_employee = :idEpmloyee
 AND date(cheque.printDate) BETWEEN date(:startDate) AND date(:endDate);
 
 -- Касир: За номером чеку вивести усю інформацію про даний чек,

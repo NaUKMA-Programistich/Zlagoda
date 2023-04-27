@@ -12,8 +12,10 @@ import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
 import zlagoda.ukma.edu.ua.screens.category.ui.CategoryItemDialog
+import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.*
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsByDateRangeDialog
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsBySellerAndDateRangeDialog
+import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.TotalSalesAmountForSellerInDateRange
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.TotalSoldProdcutAmountByDateRangeDialog
 
 @Composable
@@ -47,17 +49,31 @@ internal fun OrderDetailsScreen() {
         }){
             Text("Total sold product amount for date range")
         }
-        Button(onClick = {}) {
+
+        Button(onClick = {
+            modalController.present(alertConfiguration) { key ->
+                TotalSalesAmountForSellerInDateRange(onClose = { modalController.popBackStack(key) })
+            }
+        }) {
             Text("Total sales amount for seller in date range")
         }
-        Button(onClick = {}) {
+        Button(onClick = {
+            modalController.present(alertConfiguration) { key ->
+                AllChequesBySellerInDateRange(onClose = { modalController.popBackStack(key) })
+            }
+        }) {
             Text("Cheques by seller and date range")
         }
         Button(onClick = {}) {
             Text("Cheques by seller for today")
         }
-        Button(onClick = {}) {
+        Button(onClick = {
+            modalController.present(alertConfiguration) { key ->
+                CheckDetailedDescription(onClose = { modalController.popBackStack(key) })
+            }
+        }) {
             Text("Cheque details by check number")
         }
     }
 }
+

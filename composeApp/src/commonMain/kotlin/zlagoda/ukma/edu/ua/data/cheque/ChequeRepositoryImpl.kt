@@ -54,6 +54,19 @@ class ChequeRepositoryImpl(
         }
     }
 
+    override fun getAllChequesBySellerInDateRange(idEmployee: String, startDate: String, endDate: String): Flow<List<Cheque>> {
+        return queries.getAllChequesBySellerInDateRange(idEpmloyee = idEmployee, startDate = startDate, endDate = endDate).asFlow().mapToList(Dispatchers.IO)
+    }
+
+
+
+
+    override suspend fun getTotalSalesAmountForSellerInDateRange( idEmployee: String, startDate: String, endDate: String) : GetTotalSalesAmountForSellerInDateRange? {
+        return withContext(Dispatchers.IO) {
+            queries.getTotalSalesAmountForSellerInDateRange(idEmployee, startDate, endDate).executeAsOneOrNull()
+        }
+    }
+
     override suspend fun insertCheque(cheque: Cheque) {
         withContext(Dispatchers.IO) {
             queries.insertCheque(
