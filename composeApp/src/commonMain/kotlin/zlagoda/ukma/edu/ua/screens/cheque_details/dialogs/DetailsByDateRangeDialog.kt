@@ -22,10 +22,7 @@ import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.core.ktx.toStr
 import zlagoda.ukma.edu.ua.data.cheque.ChequeRepository
 import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
-import zlagoda.ukma.edu.ua.db.Category
-import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.db.GetAllChecksInfoBySellerWithProductsInDateRange
-import zlagoda.ukma.edu.ua.db.Product
+import zlagoda.ukma.edu.ua.db.*
 import zlagoda.ukma.edu.ua.di.Injection
 import zlagoda.ukma.edu.ua.screens.products.ui.toDropDownItems
 import zlagoda.ukma.edu.ua.screens.products.viewmodel.ProductsEvent
@@ -34,7 +31,7 @@ import zlagoda.ukma.edu.ua.utils.validation.InvalidModelException
 import zlagoda.ukma.edu.ua.utils.validation.ProductValidator
 
 @Composable
-internal fun DetailsBySellerAndDateRangeDialog(
+internal fun DetailsByDateRangeDialog(
     onClose: () -> Unit,
     employeeRepository: EmployeeRepository = Injection.employeeRepository,
     chequeRepository: ChequeRepository = Injection.chequeCardRepository
@@ -43,7 +40,7 @@ internal fun DetailsBySellerAndDateRangeDialog(
     var dateEndStr by remember { mutableStateOf("2031-01-01") }
     var sellers by remember { mutableStateOf(emptyList<Employee>()) }
     var selecetedSellerIndex by remember { mutableStateOf(0) }
-    var data by remember { mutableStateOf(emptyList<GetAllChecksInfoBySellerWithProductsInDateRange>()) }
+    var data by remember { mutableStateOf(emptyList<GetAllChecksInfoWithProductsInDateRange>()) }
 
     LaunchedEffect(key1 = true) {
         employeeRepository.getAllSellers().collectLatest {
@@ -52,8 +49,7 @@ internal fun DetailsBySellerAndDateRangeDialog(
     }
 
     LaunchedEffect(sellers, selecetedSellerIndex, dateStartStr, dateEndStr) {
-        chequeRepository.getAllChecksInfoBySellerWithProductsInDateRange(
-            idEmployee = if (sellers.isNotEmpty()) sellers[selecetedSellerIndex].id_of_employee else "",
+        chequeRepository.getAllChecksInfoWithProductsInDateRange(
             startDate = dateStartStr,
             endDate = dateEndStr
         ).collectLatest {
@@ -69,7 +65,7 @@ internal fun DetailsBySellerAndDateRangeDialog(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Cheques details by seller and date range",
+                text = "Cheques detals by date range",
                 style = MaterialTheme.typography.h5
             )
             IconButton(onClick = onClose) {
@@ -82,16 +78,6 @@ internal fun DetailsBySellerAndDateRangeDialog(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (sellers.isNotEmpty()) {
-                val seller = sellers[selecetedSellerIndex]
-                val sellerFullName = "${seller.empl_surname} ${seller.empl_name}"
-                ItemWithDropdown(
-                    modifier = Modifier.width(200.dp),
-                    value = sellerFullName,
-                    dropdownItems = sellers.toDropDownItems(),
-                    onItemClick = { selecetedSellerIndex = it.id.toInt() }
-                )
-            }
             OutlinedTextField(
                 value = dateStartStr,
                 onValueChange = { dateStartStr = it },
@@ -105,18 +91,18 @@ internal fun DetailsBySellerAndDateRangeDialog(
                 modifier = Modifier.width(250.dp).padding(5.dp)
             )
         }
-        GetAllChecksInfoBySellerWithProductsInDateRangeItem(null)
+        GetAllChecksInfoWithProductsInDateRangeItem(null)
         LazyColumn {
             items(data) {
-                GetAllChecksInfoBySellerWithProductsInDateRangeItem(it)
+                GetAllChecksInfoWithProductsInDateRangeItem(it)
             }
         }
     }
 }
 
 @Composable
-fun GetAllChecksInfoBySellerWithProductsInDateRangeItem(
-    data: GetAllChecksInfoBySellerWithProductsInDateRange?
+fun GetAllChecksInfoWithProductsInDateRangeItem(
+    data: GetAllChecksInfoWithProductsInDateRange?
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(20.dp)
@@ -145,12 +131,5 @@ fun GetAllChecksInfoBySellerWithProductsInDateRangeItem(
             modifier = Modifier.weight(1f),
             text = data?.productName?: "Products Number"
         )
-    }
-}
-
-private fun List<Employee>.toDropDownItems(): List<DropDownItem> {
-    return List(this.size) { DropDownItem(
-        id = it.toLong(),
-        text = "${this[it].empl_surname} ${this[it].empl_name}" )
     }
 }

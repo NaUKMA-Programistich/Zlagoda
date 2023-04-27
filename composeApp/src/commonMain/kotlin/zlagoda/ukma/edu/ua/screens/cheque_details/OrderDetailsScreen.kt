@@ -12,6 +12,7 @@ import ru.alexgladkov.odyssey.compose.extensions.present
 import ru.alexgladkov.odyssey.compose.local.LocalRootController
 import ru.alexgladkov.odyssey.compose.navigation.modal_navigation.AlertConfiguration
 import zlagoda.ukma.edu.ua.screens.category.ui.CategoryItemDialog
+import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsByDateRangeDialog
 import zlagoda.ukma.edu.ua.screens.cheque_details.dialogs.DetailsBySellerAndDateRangeDialog
 
 @Composable
@@ -31,7 +32,11 @@ internal fun OrderDetailsScreen() {
         }) {
             Text("Cheques detals by seller and date range")
         }
-        Button(onClick = {}) {
+        Button(onClick = {
+            modalController.present(alertConfiguration) { key ->
+                DetailsByDateRangeDialog(onClose = { modalController.popBackStack(key) })
+            }
+        }) {
             Text("Cheques details date range")
         }
         Button(onClick = {}) {
