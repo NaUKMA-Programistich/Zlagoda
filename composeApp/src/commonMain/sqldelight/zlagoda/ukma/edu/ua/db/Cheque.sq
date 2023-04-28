@@ -31,7 +31,7 @@ WHERE chequeNumber = :chequeNumber;
 
 
 getChequesData:
-SELECT c.chequeNumber, c.printDate, s.upc, s.productNumber, s.sellingPrice, p.productName, p.characteristics, e.empl_surname, e.empl_name
+SELECT c.chequeNumber, c.printDate, s.upc, s.productNumber, s.sellingPrice, p.productName, p.characteristics, e.empl_surname, e.empl_name, c.sumTotal, c.vat
 FROM cheque c
 JOIN sale s ON c.chequeNumber = s.chequeNumber
 JOIN storeProduct sp ON s.upc = sp.upc

@@ -8,11 +8,13 @@ import zlagoda.ukma.edu.ua.core.ktx.isSeller
 import zlagoda.ukma.edu.ua.core.viewmodel.ViewModel
 import zlagoda.ukma.edu.ua.data.category.CategoryRepository
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
+import zlagoda.ukma.edu.ua.data.product.ProductRepository
 import zlagoda.ukma.edu.ua.db.Category
 import zlagoda.ukma.edu.ua.di.Injection
 
 class CategoryViewModel(
     private val repository: CategoryRepository = Injection.categoryRepository,
+    private val productsRepository: ProductRepository = Injection.productRepository,
     private val loginRepository: LoginRepository = Injection.loginRepository,
 ): ViewModel<CategoryState, CategoryAction, CategoryEvent>(
     initialState = CategoryState.Loading,
@@ -20,7 +22,9 @@ class CategoryViewModel(
     init {
         withViewModelScope {
             loginRepository.getCurrentEmployee().collectLatest {
-                if (it.isManager()) { getCategories() }
+                if (it.isManager()) {
+                    getCategoriesAndProducts()
+                }
                 else { setViewState(CategoryState.NotSupport) }
             }
         }
@@ -28,7 +32,7 @@ class CategoryViewModel(
 
     override fun obtainEvent(viewEvent: CategoryEvent) {
         when (viewEvent) {
-            is CategoryEvent.SetCategoryList -> processChangeCategoryList(viewEvent.categoryList)
+            is CategoryEvent.SetCategoryList -> {}
             is CategoryEvent.SaveCategory -> processSaveCategory(viewEvent.category)
             is CategoryEvent.DeleteCategory -> processDeleteCategory(viewEvent.category)
             is CategoryEvent.EditCategory -> processEditCategory(viewEvent.category)
@@ -36,18 +40,16 @@ class CategoryViewModel(
         }
     }
 
-    private fun getCategories() {
-        repository.getAllCategories()
-            .onEach { categories ->
-                processChangeCategoryList(categories)
-            }.launchIn(viewModelScope)
-    }
-
-    private fun processChangeCategoryList(categoryList: List<Category>) {
+    private fun getCategoriesAndProducts() {
         withViewModelScope {
-            setViewState(CategoryState.CategoryList(categoryList))
+            repository.getAllCategories().collectLatest { categories ->
+                productsRepository.getAllProducts().collectLatest { products ->
+                    setViewState(CategoryState.CategoryList(categories, products))
+                }
+            }
         }
     }
+
 
     private fun processSaveCategory(category: Category) {
         withViewModelScope {
@@ -57,7 +59,13 @@ class CategoryViewModel(
 
     private fun processDeleteCategory(category: Category) {
         withViewModelScope {
-            repository.deleteCategoryById(category.id)
+            val state = viewStates().value
+            if(state !is CategoryState.CategoryList) return@withViewModelScope
+            if (state.products.any { it.idProduct == category.id }) {
+                // No action
+            } else {
+                repository.deleteCategoryById(category.id)
+            }
         }
     }
 

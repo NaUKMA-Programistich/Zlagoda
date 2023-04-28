@@ -54,7 +54,7 @@ internal fun ComposableReportDzhos(onEvent: (OptionsEvent) -> Unit) {
                 modifier = Modifier.weight(1f),
                 value = param,
                 onValueChange = { param = it },
-                label = { Text("Параметр") }
+                label = { Text("Ціна") }
             )
         }
     }

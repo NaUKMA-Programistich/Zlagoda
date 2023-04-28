@@ -84,8 +84,13 @@ internal fun CategoryViewList (
                                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit category")
                             }
                             IconButton(
-                                    onClick = { onEvent(CategoryEvent.DeleteCategory(category)) },
-                                    modifier = Modifier.background(color = delete_button_color, shape = CircleShape)
+                                    onClick = {
+                                              if(!state.products.any { it.idProduct == category.id }) {
+                                                  onEvent(CategoryEvent.DeleteCategory(category))
+                                              }
+                                    },
+                                    modifier = Modifier
+                                        .background(color = if(!state.products.any { it.idProduct == category.id }) delete_button_color else Color.Gray, shape = CircleShape)
                             ) {
                                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete category")
                             }

@@ -54,6 +54,9 @@ fun OrderCard(user: Employee, getChequesDataList : List<GetChequesData>, onEvent
                 horizontalAlignment = Alignment.CenterHorizontally){
                 Text(modifier = Modifier.padding(4.dp),text = "Cheque: $dateString", fontSize = 20.sp , fontWeight = FontWeight.Medium)
                 Text(modifier = Modifier.padding(8.dp),text = getChequesDataList[0].chequeNumber , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(8.dp),text = "Total price: ${getChequesDataList[0].sumTotal}" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                Text(modifier = Modifier.padding(8.dp),text = "VAT: ${"%.2f".format(getChequesDataList[0].vat)}" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+
             }
 
 
@@ -68,10 +71,10 @@ fun OrderCard(user: Employee, getChequesDataList : List<GetChequesData>, onEvent
                 item{
                     Row(modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically){
-                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "productName" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "productNumber" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "sellingPrice" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
-                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "characteristics" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "Name" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "Amount" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "Price" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
+                        Text(modifier = Modifier.weight(1f).padding(4.dp),text = "Description" , fontSize = 16.sp , fontWeight = FontWeight.Medium)
                     }
 
                 }
