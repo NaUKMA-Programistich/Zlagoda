@@ -10,31 +10,11 @@ CREATE TABLE customerCard (
   percent INTEGER NOT NULL
 );
 
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c5-e136-11ed-b5ea-0242ac120002", "Patrick", "Bateman", NULL, "1234567", "New York", "A Stree", "12456", 20);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c6-e136-11ed-b5ea-0242ac120002", "John", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120002", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120004", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120005", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120007", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120008", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120009", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120011", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120012", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120013", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent)
-VALUES ("28af18c7-e136-11ed-b5ea-0242ac120014", "JohnTwo", "Smith", "Willimovych", "1234567", "Seatle", "B Street", "12452", 25);
-
-
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent) VALUES ("4bf4a618-ede7-11eb-ba80-0242ac130004", "Smith", "John", "Doe", "+5551234", "Los Angeles", "Beverly Hills", "90210", 15);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent) VALUES ("33d8ec76-e136-11ed-b5ea-0242ac120002", "Wong", "Linda", NULL, "+8885555", "San Francisco", "Market Street", "94103", 10);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent) VALUES ("42dbd726-e136-11ed-b5ea-0242ac120002", "Lee", "Daniel", "H.", "+5559876", "Chicago", "State Street", "60603", 5);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent) VALUES ("562c6ee5-e136-11ed-b5ea-0242ac120002", "Gonzalez", "Maria", "Elena", "+7771234", "Miami", "Ocean Drive", "33139", 25);
+INSERT INTO customerCard(cardNumber, custSurname, custName, custPatronymic, phoneNumber, city, street, zipCode, percent) VALUES ("6809b4f4-e136-11ed-b5ea-0242ac120002", "Brown", "David", "M.", "+5555555", "New York", "Broadway", "10012", 30);
 getCustomerCardByCardNumber:
 SELECT *
 FROM customerCard

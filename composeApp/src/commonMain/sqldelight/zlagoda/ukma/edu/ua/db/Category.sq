@@ -4,13 +4,17 @@ CREATE TABLE category (
 );
 
 INSERT INTO category (id, name)
-VALUES (1, 'Meat');
+VALUES (1, 'LapTops');
 INSERT INTO category (id, name)
-VALUES (2, 'Bakery');
+VALUES (2, 'Headphones');
 INSERT INTO category (id, name)
-VALUES (3, 'Household essentials');
+VALUES (3, 'Phones');
 INSERT INTO category (id, name)
-VALUES (4, 'Aousehold essentials');
+VALUES (4, 'PCs');
+INSERT INTO category (id, name)
+VALUES (5, 'Keyboards');
+INSERT INTO category (id, name)
+VALUES (6, 'Mouses');
 
 getCategoryById:
 SELECT *

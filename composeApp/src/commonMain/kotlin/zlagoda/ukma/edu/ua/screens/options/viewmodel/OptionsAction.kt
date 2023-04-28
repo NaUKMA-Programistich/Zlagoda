@@ -1,9 +1,6 @@
 package zlagoda.ukma.edu.ua.screens.options.viewmodel
 
-import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.db.GetProductsNotSoldAndNotPromotionalAndPriceGreatThan
-import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
-import zlagoda.ukma.edu.ua.db.GetSalesSummaryByCategory
+import zlagoda.ukma.edu.ua.db.*
 
 sealed class OptionsAction {
     object GoToLogin: OptionsAction()
@@ -13,4 +10,9 @@ sealed class OptionsAction {
 
     data class DubovikGroup(val data: List<GetSalesInfoForAllEmployees>): OptionsAction()
     data class DubovikNot(val data: List<Employee>): OptionsAction()
+
+    data class MelnykGroup(val data: List<GetListSellersRankAndTheirTopCategoriesRank>): OptionsAction()
+
+    data class MelnykNot(val data: List<String>): OptionsAction()
+
 }

@@ -53,8 +53,40 @@ class OptionsViewModel(
             is OptionsEvent.DzhosNot -> processDzhosNot(viewEvent.parameter)
             OptionsEvent.DubovikGroup -> processDubovikGroup()
             is OptionsEvent.DubovikNot -> processDubovikNot(viewEvent.parameter)
-            OptionsEvent.MelnykGroup -> {}
-            OptionsEvent.MelnykNot -> {}
+            is OptionsEvent.MelnykGroup -> processMelnykGroup(viewEvent.parameter)
+            is OptionsEvent.MelnykNot-> processMelnykNot()
+            OptionsEvent.MelnykNot -> processMelnykNot()
+        }
+    }
+
+    private fun processMelnykNot(){
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val data = reportRepository.melnykGetLowNotPopularCategoriesExceptCategoriesWithProductGaming()
+
+            setViewState(state)
+            setViewAction(OptionsAction.MelnykNot(data))
+        }
+    }
+
+    private fun processMelnykGroup(parameter: String){
+        withViewModelScope {
+            val state = viewStates().value
+            setViewState(OptionsState.Loading)
+
+            val parameterDouble = parameter.toDoubleOrNull()
+
+            if (parameterDouble == null) {
+                setViewState(state)
+                return@withViewModelScope
+            }
+
+            val data = reportRepository.melnykGetListSellersRankAndTheirTopCategoriesRank(parameterDouble)
+
+            setViewState(state)
+            setViewAction(OptionsAction.MelnykGroup(data))
         }
     }
 

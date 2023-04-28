@@ -10,10 +10,6 @@ CREATE TABLE storeProduct (
  * Use Integer for promotionalProduct cause there no BOOLEAN in SQLite
  */
 
-INSERT INTO storeProduct(upc, upcProm, idProduct, sellingPrice, productsNumber, promotionalProduct)
-VALUES ("29af18c3-e137-11ed-b5ea-0242ac120002", "39af18c3-e137-11ed-b5ea-0245ac120002", 1, 20.50, 1, 0);
-INSERT INTO storeProduct(upc, upcProm, idProduct, sellingPrice, productsNumber, promotionalProduct)
-VALUES ("39af18c3-e137-11ed-b5ea-0245ac120002", NULL, 1, 20.50, 1, 1);
 
 getStoreProductByUPC:
 SELECT *

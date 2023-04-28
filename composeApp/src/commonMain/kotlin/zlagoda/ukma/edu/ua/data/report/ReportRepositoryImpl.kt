@@ -2,11 +2,7 @@ package zlagoda.ukma.edu.ua.data.report
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.db.GetProductsNotSoldAndNotPromotionalAndPriceGreatThan
-import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
-import zlagoda.ukma.edu.ua.db.GetSalesSummaryByCategory
-import zlagoda.ukma.edu.ua.db.MyDatabase
+import zlagoda.ukma.edu.ua.db.*
 
 class ReportRepositoryImpl(
     database: MyDatabase
@@ -14,7 +10,7 @@ class ReportRepositoryImpl(
 
     private val dzhosQueries = database.dzhosQueries
     private val dubovikQueries = database.dubovikQueries
-    private val melnikQueries = database.melnikQueries
+    private val melnykQueries = database.melnykQueries
 
     override suspend fun dzhosGetSalesSummaryByCategory(): List<GetSalesSummaryByCategory> {
         return withContext(Dispatchers.IO) {
@@ -37,6 +33,18 @@ class ReportRepositoryImpl(
     override suspend fun dubovikGetEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(surname: String): List<Employee> {
         return withContext(Dispatchers.IO) {
             dubovikQueries.getEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(surname).executeAsList()
+        }
+    }
+
+    override suspend fun melnykGetListSellersRankAndTheirTopCategoriesRank(filterSellingPrice: Double?) : List<GetListSellersRankAndTheirTopCategoriesRank> {
+        return withContext(Dispatchers.IO) {
+            melnykQueries.getListSellersRankAndTheirTopCategoriesRank(filterSellingPrice).executeAsList()
+        }
+    }
+
+    override suspend fun melnykGetLowNotPopularCategoriesExceptCategoriesWithProductGaming() : List<String> {
+        return withContext(Dispatchers.IO) {
+            melnykQueries.getLowNotPopularCategoriesExceptCategoriesWithProductGaming().executeAsList()
         }
     }
 

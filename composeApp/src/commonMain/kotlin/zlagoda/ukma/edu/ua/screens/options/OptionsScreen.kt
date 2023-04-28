@@ -19,6 +19,8 @@ import zlagoda.ukma.edu.ua.screens.options.ui.dubovik.ComposableReportDubovikGro
 import zlagoda.ukma.edu.ua.screens.options.ui.dubovik.ComposableReportDubovikNot
 import zlagoda.ukma.edu.ua.screens.options.ui.dzhos.ComposableReportDzhosGroup
 import zlagoda.ukma.edu.ua.screens.options.ui.dzhos.ComposableReportDzhosNot
+import zlagoda.ukma.edu.ua.screens.options.ui.melnyk.ComposableReportMelnykGroup
+import zlagoda.ukma.edu.ua.screens.options.ui.melnyk.ComposableReportMelnykNot
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsAction
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsState
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsViewModel
@@ -68,6 +70,18 @@ internal fun OptionsScreen() {
             }
             is OptionsAction.DubovikNot -> modalController.present(alertConfiguration) { key ->
                 ComposableReportDubovikNot(
+                    action = action.data,
+                    onCloseClick = { modalController.popBackStack(key) },
+                )
+            }
+            is OptionsAction.MelnykGroup -> modalController.present(alertConfiguration) { key ->
+                ComposableReportMelnykGroup(
+                    action = action.data,
+                    onCloseClick = { modalController.popBackStack(key) },
+                )
+            }
+            is OptionsAction.MelnykNot -> modalController.present(alertConfiguration) { key ->
+                ComposableReportMelnykNot(
                     action = action.data,
                     onCloseClick = { modalController.popBackStack(key) },
                 )

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import zlagoda.ukma.edu.ua.core.theme.add_button_color
 import zlagoda.ukma.edu.ua.screens.options.ui.dubovik.ComposableReportDubovik
 import zlagoda.ukma.edu.ua.screens.options.ui.dzhos.ComposableReportDzhos
+import zlagoda.ukma.edu.ua.screens.options.ui.melnyk.ComposableReportMelnyk
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsEvent
 import zlagoda.ukma.edu.ua.screens.options.viewmodel.OptionsState
 
@@ -42,7 +43,7 @@ internal fun OptionsEntryDisplayScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            ComposableReportDzhos(onEvent)
+            ComposableReportMelnyk(onEvent)
             ComposableReportDubovik(onEvent)
             ComposableReportDzhos(onEvent)
         }

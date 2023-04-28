@@ -1,0 +1,55 @@
+-- Запит виконується шляхом з'єднання таблиць "employee", "cheque", "sale", "storeProduct", "product" та "category".
+-- Об'єднання виконується з допомогою INNER JOIN, де кожен рядок з однієї таблиці пов'язується з рядком з іншої таблиці на підставі спільного поля.
+-- Для визначення кількості та суми продажів застосовуються агрегатні функції COUNT та SUM відповідно. Результати групуються за допомогою GROUP BY.
+-- Сортується за спаданням по прізвищу працівника
+-- Параметром є значення що фільтрує певний поріг доходу , що здобув працівник
+
+getListSellersRankAndTheirTopCategoriesRank:
+SELECT emp.empl_surname, emp.empl_name, cat.name,
+    COUNT(sale.productNumber) AS productCount,
+    SUM(sale.sellingPrice) AS totalSales
+FROM employee emp
+INNER JOIN cheque ch ON emp.id_of_employee = ch.idEmployee
+INNER JOIN sale ON ch.chequeNumber = sale.chequeNumber
+INNER JOIN storeProduct storepr ON sale.upc = storepr.upc
+INNER JOIN product prod ON storepr.idProduct = prod.idProduct
+INNER JOIN category cat ON prod.categoryNumber = cat.id
+GROUP BY emp.empl_surname, emp.empl_name, cat.name
+HAVING SUM(sale.sellingPrice) >= :filterSellingPrice
+ORDER BY emp.empl_surname ASC;
+
+
+
+-- Запит виконується за допомогою вкладених функцій EXISTS, на першому етапі вибираються ті категорії продукти, яких не мають жодних продаж.
+-- На другому етапі обираються категорії що не мають продуктів до якяих входить слово 'Gaming'
+
+getLowNotPopularCategoriesExceptCategoriesWithProductGaming:
+SELECT DISTINCT cat.name
+FROM category cat
+WHERE
+    NOT EXISTS (
+        SELECT 1
+        FROM product prod
+        WHERE cat.id = prod.categoryNumber
+        AND EXISTS (
+            SELECT 1
+            FROM storeProduct storepr
+            WHERE prod.idProduct = storepr.idProduct
+            AND EXISTS (
+                SELECT 1
+                FROM sale
+                WHERE sale.upc = storepr.upc
+            )
+        )
+    )
+    AND NOT EXISTS (
+        SELECT 1
+        FROM product prod
+        WHERE cat.id = prod.categoryNumber
+          AND prod.productName LIKE '%Gaming%'
+);
+
+
+
+
+

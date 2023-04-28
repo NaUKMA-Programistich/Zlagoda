@@ -1,9 +1,6 @@
 package zlagoda.ukma.edu.ua.data.report
 
-import zlagoda.ukma.edu.ua.db.Employee
-import zlagoda.ukma.edu.ua.db.GetProductsNotSoldAndNotPromotionalAndPriceGreatThan
-import zlagoda.ukma.edu.ua.db.GetSalesInfoForAllEmployees
-import zlagoda.ukma.edu.ua.db.GetSalesSummaryByCategory
+import zlagoda.ukma.edu.ua.db.*
 
 interface ReportRepository {
 
@@ -13,4 +10,9 @@ interface ReportRepository {
     suspend fun dubovikGetSalesInfoForAllEmployees(): List<GetSalesInfoForAllEmployees>
 
     suspend fun dubovikGetEmployeesThatGetSalesOnlyForCustomerWithSpecificSurname(surname: String): List<Employee>
+
+    suspend fun melnykGetListSellersRankAndTheirTopCategoriesRank(filterSellingPrice: Double?) : List<GetListSellersRankAndTheirTopCategoriesRank>
+
+    suspend fun melnykGetLowNotPopularCategoriesExceptCategoriesWithProductGaming(): List<String>
+
 }

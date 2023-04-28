@@ -19,18 +19,19 @@ CREATE TABLE employee (
 );
 
 -- Peerers1337 123 (202c962c59075b64b07152d234b70) Manager
--- TestUser alexasda098 (05643749522c5f331694a255) Manager
-    -- IPZ WVj5T6DpGHotf2KfGmed (756795000b0e2d22714156e76) Manager
+-- TestUser alexasda098 (05643749522c5f331694a255) Seller
+-- IPZ WVj5T6DpGHotf2KfGmed (756795000b0e2d22714156e76) Seller
+
 -- Ilia 123 (756795000b0e2d22714156e76) Seller
 
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
-VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'absd','Peerers','Alop','Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '202c962c59075b64b07152d234b70', 'Peerers1337');
+VALUES ("28af18c2-e136-11ed-b5ea-0242ac120002", 'Harrison','Lucas','Alop','Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '202c962c59075b64b07152d234b70', 'Peerers1337');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
-VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'mmsdsbsd','Peerers',NULL,'Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '05643749522c5f331694a255', 'TestUser');
+VALUES ("28af1c8c-e136-11ed-b5ea-0242ac120002", 'Davis','Emily',NULL,'Seller',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '05643749522c5f331694a255', 'TestUser');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
-VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'ssssdsdbsd','Peerers',NULL,'Manager',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '756795000b0e2d22714156e76', 'IPZ');
+VALUES ("28af1f02-e136-11ed-b5ea-0242ac120002", 'Parker','Oliver',NULL,'Seller',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', '756795000b0e2d22714156e76', 'IPZ');
 INSERT INTO employee (id_of_employee, empl_surname,empl_name,empl_patronymic,empl_role,salary,date_of_birth,date_of_start,phone_number,city,street,zip_code,password,login)
-VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'nnbsd','Peerers',NULL,'Seller',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', 'ca20f74125a7b0f42893759', 'Ilia');
+VALUES ("28af20a6-e136-11ed-b5ea-0242ac120002", 'Anderson','Ava',NULL,'Seller',55000.00,'1998-01-03','2022-12-07','+1234567890','London','Baker','123', 'ca20f74125a7b0f42893759', 'Ilia');
 
 
 getEmployeeById:
