@@ -69,13 +69,14 @@ class ChequeRepositoryImpl(
 
     override suspend fun insertCheque(cheque: Cheque) {
         withContext(Dispatchers.IO) {
+            val calculatedVat = cheque.sumTotal * 0.2
             queries.insertCheque(
                 chequeNumber = cheque.chequeNumber.ifBlank { UUID.randomUUID().toString() },
                 idEmployee = cheque.idEmployee,
                 cardNumber = cheque.cardNumber,
                 printDate = cheque.printDate,
-                sumTotal = cheque.sumTotal,
-                vat = cheque.vat
+                sumTotal = cheque.sumTotal + calculatedVat,
+                vat = calculatedVat
             )
         }
     }
