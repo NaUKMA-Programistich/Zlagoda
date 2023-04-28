@@ -7,10 +7,7 @@ import zlagoda.ukma.edu.ua.data.employee.EmployeeRepository
 import zlagoda.ukma.edu.ua.data.login.LoginRepository
 import zlagoda.ukma.edu.ua.data.sale.SaleRepository
 import zlagoda.ukma.edu.ua.data.store_product.StoreProductRepository
-import zlagoda.ukma.edu.ua.db.Cheque
-import zlagoda.ukma.edu.ua.db.GetAllStoreProductsWithNames
-import zlagoda.ukma.edu.ua.db.Sale
-import zlagoda.ukma.edu.ua.db.StoreProduct
+import zlagoda.ukma.edu.ua.db.*
 import zlagoda.ukma.edu.ua.di.Injection
 
 
@@ -38,16 +35,18 @@ class OrderViewModel(
                             it.upc to (it)
                         }
                         employeeRepository.getAllSellers().collectLatest { employees ->
-
+                            repository.getChequesData().collectLatest { chequesData ->
+                                val chequesWithSalesMap: Map<String, List<GetChequesData>> = chequesData.groupBy { it.chequeNumber }
                                 setViewState(
                                     OrderState.OrderList(
                                         customerCardsData = customerCardMap,
                                         currentEmployee = currentEmployee,
                                         productMap = productMap,
-                                        employees = employees
+                                        employees = employees,
+                                        chequesWithSalesMap = chequesWithSalesMap
                                     )
                                 )
-
+                            }
                         }
                     }
                 }
@@ -59,10 +58,14 @@ class OrderViewModel(
         when (viewEvent) {
             is OrderEvent.CreateNewOrder -> processNewOrder()
             is OrderEvent.SaveOrder -> processSaveOrder(viewEvent.cheque, viewEvent.saleList)
+            is OrderEvent.DeleteOrder -> processDeleteOrder(viewEvent.chequeNumber)
             else -> {}
         }
     }
 
+    private fun process() {
+
+    }
     private fun processNewOrder() {
         withViewModelScope {
             val currentState = viewStates().value
@@ -71,7 +74,8 @@ class OrderViewModel(
                     OrderAction.OpenNewOrderDialog(
                         customerCardsData = currentState.customerCardsData,
                         currentEmployee = currentState.currentEmployee,
-                        productMap = currentState.productMap
+                        productMap = currentState.productMap,
+                        chequesWithSalesMap = currentState.chequesWithSalesMap
                     )
                 )
             }
@@ -98,5 +102,30 @@ class OrderViewModel(
             repository.insertCheque(cheque)
         }
     }
+
+    private fun processDeleteOrder(chequeNumber: String) {
+       withViewModelScope {
+            saleRepository.getSalesWithChequeNumber(chequeNumber).collectLatest { saleList ->
+                for (sale in saleList) {
+                    var storeProduct = storeProductRepository.getStoreProductByUPC(sale.upc)
+                    if (storeProduct != null)
+                        storeProductRepository.insertStoreProduct(
+                            StoreProduct(
+                                upc = storeProduct.upc,
+                                upcProm = "",
+                                idProduct = storeProduct.idProduct,
+                                sellingPrice = storeProduct.sellingPrice,
+                                productsNumber = storeProduct.productsNumber + sale.productNumber,
+                                promotionalProduct = storeProduct.promotionalProduct,
+                            )
+                        )
+                    saleRepository.deleteSaleByByUpcAndChequeNumber(sale.upc,sale.chequeNumber)
+                }
+            }
+            repository.deleteChequeByChequeNumber(chequeNumber)
+        }
+    }
+
+
 
 }

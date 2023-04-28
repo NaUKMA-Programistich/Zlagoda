@@ -55,7 +55,6 @@ internal fun RootComposeBuilder.NavigationGraph() {
                 EmployeeScreen()
             }
         }
-
         tab(content = OrdersTab(), colors = TabColors()) {
             screen(NavigationRoute.Orders.name) {
                 OrderScreen()
@@ -93,6 +92,11 @@ internal fun RootComposeBuilder.NavigationGraph() {
 @Composable
 private fun OrdersTab(): TabContent {
     return TabDefaults.content("Orders", vector = Icons.Default.ShoppingCart)
+}
+
+@Composable
+private fun OrderDetailsTab(): TabContent {
+    return TabDefaults.content("Order Details", vector = Icons.Default.ShoppingCart)
 }
 
 @Composable
@@ -142,6 +146,7 @@ internal enum class NavigationRoute {
     Login,
     Main,
     Orders,
+    OrderDetails,
     Products,
     StoreProducts,
     Categories,

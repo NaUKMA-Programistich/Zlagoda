@@ -27,7 +27,7 @@ import zlagoda.ukma.edu.ua.db.GetAllStoreProductsWithNames
 import zlagoda.ukma.edu.ua.db.Sale
 import zlagoda.ukma.edu.ua.screens.order.viewmodel.OrderEvent
 import java.util.*
-
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -54,7 +54,7 @@ internal fun OrderItemDialog(
         verticalArrangement = Arrangement.Top
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(20.dp,10.dp,20.dp,5.dp),
+            modifier = Modifier.fillMaxWidth().padding(20.dp, 10.dp, 20.dp, 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -73,38 +73,48 @@ internal fun OrderItemDialog(
 
         LazyColumn(modifier = Modifier.weight(1f)) {
             item {
-                Text(modifier = Modifier.fillMaxWidth().padding(15.dp,10.dp,10.dp,10.dp), text = "Employee:   ${user.empl_name} ${user.empl_surname}" , fontSize = 19.sp)
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(15.dp, 10.dp, 10.dp, 10.dp),
+                    text = "Employee:   ${user.empl_name} ${user.empl_surname}",
+                    fontSize = 19.sp
+                )
                 Divider(modifier = Modifier.fillMaxWidth())
             }
 
             item {
-                Text(modifier = Modifier.fillMaxWidth().padding(15.dp,10.dp,10.dp,10.dp), text = "CustomerCard:" , fontSize = 19.sp)
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(15.dp, 10.dp, 10.dp, 10.dp),
+                    text = "CustomerCard:",
+                    fontSize = 19.sp
+                )
                 Divider(modifier = Modifier.fillMaxWidth())
             }
 
             item {
                 OrderDataWithDropdown(
                     modifier = Modifier.fillMaxWidth().padding(5.dp),
-                    value = idCustomerCardToName[idCustomerCard]?: "None",
+                    value = idCustomerCardToName[idCustomerCard] ?: "None",
                     dropdownItems = idCustomerCardToName.toDropDownOrderDataItems(),
                     onItemClick = { idCustomerCard = it.id }
                 )
             }
 
             items(saleDataList) { data ->
-                saleItemAdder(saleDataList,data,productMap)
+                saleItemAdder(saleDataList, data, productMap)
             }
 
             item {
 
-                Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround){
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
                     Button(
                         modifier = Modifier.padding(15.dp),
-                        onClick = {saleDataList.add(SaleData()) },
+                        onClick = { saleDataList.add(SaleData()) },
                         shape = CircleShape,
-                        colors =  ButtonDefaults.buttonColors(
+                        colors = ButtonDefaults.buttonColors(
                             backgroundColor = MaterialTheme.colors.secondary,
                         )
                     ) {
@@ -113,9 +123,9 @@ internal fun OrderItemDialog(
 
                     Button(
                         modifier = Modifier.padding(15.dp),
-                        onClick = {if(saleDataList.isNotEmpty()) saleDataList.removeLast() },
+                        onClick = { if (saleDataList.isNotEmpty()) saleDataList.removeLast() },
                         shape = CircleShape,
-                        colors =  ButtonDefaults.buttonColors(
+                        colors = ButtonDefaults.buttonColors(
                             backgroundColor = MaterialTheme.colors.secondary,
                         )
                     ) {
@@ -133,33 +143,34 @@ internal fun OrderItemDialog(
                 Button(
                     modifier = Modifier.padding(15.dp),
                     onClick = {
-                        saleDataList.filter { it.productNumber.value!=0L }
-
-                        val chequeNumber = UUID.randomUUID().toString()
-                        onEvent(
-                            OrderEvent.SaveOrder(
-                                cheque = Cheque(
-                                    chequeNumber = chequeNumber,
-                                    idEmployee = user.id_of_employee,
-                                    cardNumber = idCustomerCard,
-                                    printDate = Date(),
-                                    sumTotal = saleDataList.sumOf { it.sellingPrice.value },
-                                    vat = 0.0,
-                                ),
-                                saleList = saleDataList.map {
-                                    Sale(
-                                        upc = it.upc.value,
+                        var res = saleDataList.filter { it.productNumber.value > 0L }
+                        if (res.isNotEmpty()) {
+                            val chequeNumber = UUID.randomUUID().toString()
+                            onEvent(
+                                OrderEvent.SaveOrder(
+                                    cheque = Cheque(
                                         chequeNumber = chequeNumber,
-                                        productNumber = it.productNumber.value.toLong(),
-                                        sellingPrice = it.sellingPrice.value,
-                                    )
-                                }
+                                        idEmployee = user.id_of_employee,
+                                        cardNumber = idCustomerCard,
+                                        printDate = Date(),
+                                        sumTotal = res.sumOf { it.sellingPrice.value },
+                                        vat = 0.0,
+                                    ),
+                                    saleList = res.map {
+                                        Sale(
+                                            upc = it.upc.value,
+                                            chequeNumber = chequeNumber,
+                                            productNumber = it.productNumber.value.toLong(),
+                                            sellingPrice = it.sellingPrice.value,
+                                        )
+                                    }
+                                )
                             )
-                        )
+                        }
                         onCloseClick()
                     },
                 ) {
-                    Text( text = "Save")
+                    Text(text = "Save")
                 }
             }
         }
@@ -190,7 +201,7 @@ fun saleItemAdder(
 
         OrderDataWithDropdown(
             modifier = Modifier.weight(1f).padding(5.dp, 8.dp, 5.dp, 5.dp),
-            value = product?.productName ?: "None",
+            value = if(product != null) "${product.productName} ${if(product.promotionalProduct>0) "Promotional" else ""}" else "None",
             dropdownItems = products.toDropDownProductDataItems(),
             onItemClick = { if (saleDataList.find { dataUpc -> dataUpc.upc.value == it.id } == null) data.upc.value = it.id }
         )
@@ -201,7 +212,7 @@ fun saleItemAdder(
                 onValueChange = {
                     val str = it.replace(Regex("[^\\d]"), "")
                     data.productNumber.value = if (str.isNotEmpty()) str.toLong() else 0L;
-                    data.sellingPrice.value = data.productNumber.value * product.sellingPrice * if (product.promotionalProduct == 1L) 0.8 else 1.0
+                    data.sellingPrice.value = (100 * data.productNumber.value * product.sellingPrice * if (product.promotionalProduct == 1L) 0.8 else 1.0).roundToInt().toDouble()/100.0
                     if (data.productNumber.value > product.productsNumber)
                         data.productNumber.value = product.productsNumber
                 },
@@ -226,7 +237,10 @@ fun Map<String, String>.toDropDownOrderDataItems(): List<OrderDataWithDropdown> 
 
 
 fun Map<String, GetAllStoreProductsWithNames>.toDropDownProductDataItems(): List<OrderDataWithDropdown> {
-    return this.toList().map { OrderDataWithDropdown(it.first, it.second.productName) }
+    return this.toList().map { OrderDataWithDropdown(
+        id = it.first,
+        text = "${it.second.productName} ${if(it.second.promotionalProduct>0) "Promotional" else ""}"
+    ) }
 }
 
 data class OrderDataWithDropdown(
